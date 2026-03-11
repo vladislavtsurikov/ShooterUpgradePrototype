@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using VladislavTsurikov.UISystem.Runtime.Core;
-using VladislavTsurikov.Utility.Runtime;
-using VladislavTsurikov.Utility.Runtime.Extensions;
 
 namespace VladislavTsurikov.UIBackSystem.Runtime
 {
@@ -15,7 +14,7 @@ namespace VladislavTsurikov.UIBackSystem.Runtime
         {
             UIHandler.OnUIHandlerOnShow += Push;
             UIHandler.OnUIHandlerHide += _ => Peek();
-            UIHandler.OnUIHandlerDestroyed += unit => _stack.ELRemove(unit);
+            UIHandler.OnUIHandlerDestroyed += Remove;
         }
 
         private static void Push(UIHandler handler)
@@ -34,6 +33,26 @@ namespace VladislavTsurikov.UIBackSystem.Runtime
             {
                 UIHandler top = _stack.Pop();
                 await top.Hide(cancellationToken);
+            }
+        }
+
+        private static void Remove(UIHandler handler)
+        {
+            if (!_stack.Contains(handler))
+            {
+                return;
+            }
+
+            UIHandler[] reordered = _stack
+                .Where(item => !ReferenceEquals(item, handler))
+                .Reverse()
+                .ToArray();
+
+            _stack.Clear();
+
+            foreach (UIHandler item in reordered)
+            {
+                _stack.Push(item);
             }
         }
     }

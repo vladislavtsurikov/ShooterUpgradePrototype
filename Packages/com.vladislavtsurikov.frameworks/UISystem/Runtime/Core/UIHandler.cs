@@ -32,6 +32,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 {
                     BecameActive?.Invoke(this);
                 }
+
+                _isActive = value;
             }
         }
 
