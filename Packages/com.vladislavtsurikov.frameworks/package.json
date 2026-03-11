@@ -1,0 +1,7 @@
+{
+  "name": "com.vladislavtsurikov.frameworks",
+  "version": "1.0.0",
+  "displayName": "VladislavTsurikov Frameworks",
+  "description": "Embedded frameworks used by ArmyClashTest.",
+  "unity": "2022.3"
+}

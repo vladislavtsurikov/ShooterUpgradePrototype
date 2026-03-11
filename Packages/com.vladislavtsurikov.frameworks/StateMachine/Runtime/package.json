@@ -1,0 +1,10 @@
+{
+  "name": "com.vladislavtsurikov.frameworks.statemachine",
+  "version": "0.0.1",
+  "displayName": "VladislavTsurikov StateMachine",
+  "unity": "2021.3",
+  "description": "Data-driven state machine integrated with EntityDataAction.",
+  "author": {
+    "name": "Vladislav Tsurikov"
+  }
+}

@@ -1,0 +1,19 @@
+{
+    "name": "VladislavTsurikov.Utility.CustomInspectorIntegration",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5c9c0ef81e306bb4fb8182d62410223a",
+        "GUID:3aaf044f27854e348638436fa2f57b24"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

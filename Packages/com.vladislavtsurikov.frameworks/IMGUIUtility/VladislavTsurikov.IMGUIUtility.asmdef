@@ -1,0 +1,26 @@
+{
+    "name": "VladislavTsurikov.IMGUIUtility",
+    "rootNamespace": "",
+    "references": [
+        "GUID:86afa44309ced704d99b18db08754600",
+        "GUID:3aaf044f27854e348638436fa2f57b24",
+        "VladislavTsurikov.Core",
+        "VladislavTsurikov.Color",
+        "VladislavTsurikov.Utility",
+        "VladislavTsurikov.AttributeUtility",
+        "VladislavTsurikov.DeepCopy",
+        "VladislavTsurikov.UnityUtility",
+        "VladislavTsurikov.ReflectionUtility",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
