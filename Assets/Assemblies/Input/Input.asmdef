@@ -1,0 +1,23 @@
+{
+    "name": "AutoStrike.Input",
+    "rootNamespace": "AutoStrike.Input",
+    "references": [
+        "Zenject",
+        "VladislavTsurikov.EntityDataAction",
+        "VladislavTsurikov.ReflectionUtility",
+        "UniRx",
+        "OdinSerializer",
+        "Unity.InputSystem",
+        "VladislavTsurikov.ComponentStack",
+        "VladislavTsurikov.ActionFlow"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
