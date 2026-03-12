@@ -34,12 +34,20 @@ Path: `Packages/com.vladislavtsurikov.frameworks/EntityDataAction.Shared/Runtime
 Main types:
 - `RuntimeStat`
   - stores link to `Stat`;
-  - stores current value in `ReactiveProperty<float>` for reactive subscriptions.
+  - stores runtime data dictionary keyed by runtime-data type.
+- `RuntimeStatUtility`
+  - fluent access entrypoint for runtime data, for example `runtimeStat.Runtime().Data<RuntimeStatValueData>()`.
+- `RuntimeStatValueData`
+  - stores current value in `ReactiveProperty<float>`;
+  - owns clamp and value save/restore logic.
+- `RuntimeStatLevelData`
+  - stores applied level in `ReactiveProperty<int>`;
+  - owns level save/restore logic.
 - `StatsEntityData`
   - stores `StatCollection`;
   - builds runtime dictionary `Dictionary<string, RuntimeStat>` by `stat.Id`;
-  - applies clamp rules from `StatValueComponent` on all set/add operations;
-  - exposes stat API (`SetStatValue`, `AddStatValue`, `GetStatValueById`, etc.).
+  - rebuilds `RuntimeStatData` from stat authoring components;
+  - exposes stat lookup API and level write API.
 - `ModifiersData`
   - stores active modifier effects in `ReactiveCollection<ModifierStatEffect>`.
 - `ApplyModifierStatEffectAction`
@@ -51,10 +59,10 @@ Main types:
 
 1. Designer configures `Stat` assets and groups them into `StatCollection`.
 2. Entity receives `StatsEntityData.Collection`.
-3. `StatsEntityData.RebuildFromCollection()` creates runtime values from each stat's `StatValueComponent.BaseValue`.
+3. `StatsEntityData.RebuildFromCollection()` creates runtime data from stat components and restores saved runtime state.
 4. Modifier changes are written into `ModifiersData.Effects`.
 5. `ApplyModifierStatEffectAction` reacts to collection changes and recomputes final values.
-6. Any subscriber to `RuntimeStat.Value` gets updates reactively.
+6. Any subscriber to `runtimeStat.Runtime().Data<RuntimeStatValueData>().Value` gets updates reactively.
 
 ## Why It Is Extensible
 
@@ -68,7 +76,7 @@ Main types:
 
 - Ensure each `Stat.Id` is unique in a `StatCollection`, otherwise dictionary keys collide.
 - Current modifier application strategy is "rebuild base + apply all modifiers"; this is simple and deterministic.
-- Clamp logic is centralized in `StatValueComponent`, so all write paths use same min/max behavior.
+- Clamp and persistence logic live in runtime data, while authoring components only describe how runtime data should be built.
 
 ## Related Files
 

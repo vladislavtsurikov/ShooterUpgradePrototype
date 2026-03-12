@@ -1,0 +1,29 @@
+.root {
+    position: relative;
+    flex-grow: 1;
+}
+
+.kills-panel {
+    position: absolute;
+    top: 20px;
+    right: 44px;
+    min-width: 290px;
+    height: 64px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgba(17, 31, 41, 0.86);
+    border-radius: 2px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.kills-text {
+    color: rgb(233, 239, 242);
+    font-size: 22px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+}
+
+.compatibility-hidden {
+    display: none;
+}

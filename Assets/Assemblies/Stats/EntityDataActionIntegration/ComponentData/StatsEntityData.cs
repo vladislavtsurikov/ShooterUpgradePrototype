@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using OdinSerializer;
-using VladislavTsurikov.Nody.Runtime.Core;
+using UnityEngine;
 using VladislavTsurikov.ActionFlow.Runtime.Stats;
+using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
 namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
@@ -37,18 +38,20 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         public void RebuildFromCollection()
         {
-            _stats.Clear();
-
             if (_collection == null)
             {
+                _stats.Clear();
                 return;
             }
 
             var sourceStats = _collection.Stats;
             if (sourceStats == null)
             {
+                _stats.Clear();
                 return;
             }
+
+            var rebuiltStats = new Dictionary<string, RuntimeStat>(sourceStats.Count);
 
             for (int i = 0; i < sourceStats.Count; i++)
             {
@@ -58,81 +61,85 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                     continue;
                 }
 
-                float value = GetDefaultValue(stat);
-                _stats[stat.Id] = new RuntimeStat(stat, value);
-            }
-        }
+                RuntimeStat runtimeStat = _stats.TryGetValue(stat.Id, out RuntimeStat existing)
+                    ? existing
+                    : new RuntimeStat();
 
-        public bool SetStatValue(Stat stat, float value)
-        {
-            RuntimeStat runtimeStat = GetRuntimeStatById(stat.Id);
-            float previous = runtimeStat.CurrentValue;
-            runtimeStat.CurrentValue = ApplyClamp(stat, value);
-            if (previous.Equals(runtimeStat.CurrentValue))
+                runtimeStat.SetStat(stat);
+                runtimeStat.ClearRuntimeData();
+                BuildRuntimeComponents(stat, runtimeStat);
+                runtimeStat.Runtime().Restore();
+
+                rebuiltStats[stat.Id] = runtimeStat;
+            }
+
+            _stats.Clear();
+            foreach (KeyValuePair<string, RuntimeStat> pair in rebuiltStats)
             {
-                return false;
+                _stats[pair.Key] = pair.Value;
             }
-
-            MarkDirty();
-            return true;
         }
 
-        public bool AddStatValue(Stat stat, float delta)
-        {
-            RuntimeStat runtimeStat = GetRuntimeStatById(stat.Id);
-            float previous = runtimeStat.CurrentValue;
-            runtimeStat.CurrentValue = ApplyClamp(stat, runtimeStat.CurrentValue + delta);
-            if (previous.Equals(runtimeStat.CurrentValue))
-            {
-                return false;
-            }
-
-            MarkDirty();
-            return true;
-        }
-
-        public bool AddStatValueById(string id, float delta)
-        {
-            RuntimeStat runtimeStat = GetRuntimeStatById(id);
-            float previous = runtimeStat.CurrentValue;
-            runtimeStat.CurrentValue = ApplyClamp(runtimeStat.Stat, runtimeStat.CurrentValue + delta);
-            if (previous.Equals(runtimeStat.CurrentValue))
-            {
-                return false;
-            }
-
-            MarkDirty();
-            return true;
-        }
-
-        public bool SetStatValueById(string id, float value)
-        {
-            RuntimeStat runtimeStat = GetRuntimeStatById(id);
-            float previous = runtimeStat.CurrentValue;
-            runtimeStat.CurrentValue = ApplyClamp(runtimeStat.Stat, value);
-            if (previous.Equals(runtimeStat.CurrentValue))
-            {
-                return false;
-            }
-
-            MarkDirty();
-            return true;
-        }
-
-        public float GetStatValueById(string id) => GetRuntimeStatById(id).CurrentValue;
+        public float GetStatValueById(string id) => GetRuntimeStatById(id).Runtime().Data<RuntimeStatValueData>().CurrentValue;
 
         public RuntimeStat GetRuntimeStatById(string id) => _stats[id];
 
-        private float GetDefaultValue(Stat stat)
+        public int GetStatLevelById(string statId)
         {
-            StatValueComponent valueComponent = stat.ComponentStack.GetElement<StatValueComponent>();
-            return valueComponent != null ? valueComponent.BaseValue : 0f;
+            if (!GetRuntimeStatById(statId).Runtime().TryData(out RuntimeStatLevelData component))
+            {
+                return 0;
+            }
+
+            return component.AppliedLevel.Value;
         }
 
-        private float ApplyClamp(Stat stat, float value)
+        public bool SetStatLevelById(string statId, int level)
         {
-            StatValueComponent valueComponent = stat.ComponentStack.GetElement<StatValueComponent>();
-            return valueComponent != null ? valueComponent.ApplyClamp(value) : value;
+            RuntimeStat runtimeStat = GetRuntimeStatById(statId);
+            if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData component))
+            {
+                return false;
+            }
+
+            if (!component.SetLevel(level))
+            {
+                return false;
+            }
+
+            runtimeStat.Runtime().Persist();
+            MarkDirty();
+            return true;
         }
+
+        public bool AddStatLevelById(string statId, int delta) => SetStatLevelById(statId, GetStatLevelById(statId) + delta);
+
+        public void NotifyStatChanged(string statId)
+        {
+            GetRuntimeStatById(statId).Runtime().Persist();
+            MarkDirty();
+        }
+
+        private static void BuildRuntimeComponents(Stat stat, RuntimeStat runtimeStat)
+        {
+            IList<ComponentData> components = stat.ComponentStack.List;
+            if (components == null)
+            {
+                return;
+            }
+
+            var context = new RuntimeStatBuildContext(stat.Id);
+            for (int i = 0; i < components.Count; i++)
+            {
+                if (components[i] is not StatComponentData statComponent)
+                {
+                    continue;
+                }
+
+                RuntimeStatData runtimeData = statComponent.CreateRuntimeComponent(context);
+                runtimeStat.AddRuntimeData(runtimeData);
+            }
+        }
+
     }
 }

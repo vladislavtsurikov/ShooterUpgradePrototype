@@ -1,6 +1,7 @@
 using OdinSerializer;
 using UnityEngine;
 using VladislavTsurikov.CustomInspector.Runtime;
+using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 using VladislavTsurikov.Nody.Runtime.AdvancedNodeStack;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
@@ -10,7 +11,7 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
     [Persistent]
     [Name("Stats/Value")]
     [global::Nody.Runtime.Core.GroupAttribute("Stats")]
-    public sealed class StatValueComponent : ComponentData
+    public sealed class StatValueComponent : StatComponentData
     {
         [OdinSerialize]
         private float _baseValue;
@@ -60,5 +61,10 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
         }
 
         public void SetBaseValue(float value) => _baseValue = ApplyClamp(value);
+
+        public override RuntimeStatData CreateRuntimeComponent(RuntimeStatBuildContext context)
+        {
+            return new RuntimeStatValueData(_baseValue, Save, _clampEnabled, _useMin, _minValue, _useMax, _maxValue);
+        }
     }
 }

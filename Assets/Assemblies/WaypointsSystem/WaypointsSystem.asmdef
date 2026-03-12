@@ -1,0 +1,27 @@
+{
+    "name": "WaypointsSystem",
+    "rootNamespace": "WaypointsSystem",
+    "references": [
+        "Zenject",
+        "VladislavTsurikov.EntityDataAction",
+        "VladislavTsurikov.StateMachine",
+        "UniRx",
+        "VladislavTsurikov.ScriptableObjectUtility",
+        "OdinSerializer",
+        "VladislavTsurikov.Nody",
+        "VladislavTsurikov.ReflectionUtility",
+        "VladislavTsurikov.ComponentStack",
+        "VladislavTsurikov.IMGUIUtility",
+        "VladislavTsurikov.CustomInspector",
+        "VladislavTsurikov.ActionFlow"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

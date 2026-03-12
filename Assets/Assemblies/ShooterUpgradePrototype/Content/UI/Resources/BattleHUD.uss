@@ -1,0 +1,49 @@
+.hud-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.hud-chip {
+    min-height: 64px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: rgba(255, 255, 255, 0.14);
+    border-right-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: rgba(0, 0, 0, 0.42);
+    border-left-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(27, 31, 38, 0.88);
+    color: rgb(244, 246, 248);
+    font-size: 28px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.hud-hp {
+    position: absolute;
+    left: 72px;
+    top: 48px;
+    min-width: 310px;
+    justify-content: center;
+}
+
+.hud-upgrade-button {
+    position: absolute;
+    right: 72px;
+    top: 48px;
+    min-width: 250px;
+}
+
+.hud-upgrade-button:hover {
+    background-color: rgba(45, 52, 63, 0.96);
+}

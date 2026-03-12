@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using OdinSerializer;
 using UnityEngine;
+using System.Linq;
 
 namespace VladislavTsurikov.ActionFlow.Runtime.Stats
 {
@@ -23,6 +24,18 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
 
         public IReadOnlyList<Entry> Entries => _entries;
         public StatsComponentStack ComponentStack => _componentStack;
+
+        public void SetEntries(IEnumerable<Entry> entries)
+        {
+            _entries.Clear();
+
+            if (entries == null)
+            {
+                return;
+            }
+
+            _entries.AddRange(entries.ToList());
+        }
 
         private void OnEnable()
         {

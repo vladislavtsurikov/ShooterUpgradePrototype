@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:game="ShooterUpgradePrototype.UI.UISystem.Views" editor-extension-mode="False">
+    <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/Resources/BattleHUD.uss" />
+    <game:BattleHUDView class="hud-root">
+        <game:PlayerHealthHUDView class="hud-chip hud-hp" text="HP: 0 / 0" />
+        <game:OpenUpgradeHUDButtonView class="hud-chip hud-upgrade-button" text="Upgrade" />
+    </game:BattleHUDView>
+</ui:UXML>

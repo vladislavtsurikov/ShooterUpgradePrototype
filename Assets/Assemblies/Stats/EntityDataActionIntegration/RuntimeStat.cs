@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using OdinSerializer;
-using UniRx;
 using VladislavTsurikov.ActionFlow.Runtime.Stats;
 
 namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
@@ -9,36 +9,78 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
     public sealed class RuntimeStat
     {
         [OdinSerialize] private Stat _stat;
-        [OdinSerialize] private ReactiveProperty<float> _value;
+        [OdinSerialize] private Dictionary<string, RuntimeStatData> _runtimeData;
 
         public Stat Stat => _stat;
 
-        public ReactiveProperty<float> Value => EnsureValue();
-
-        public float CurrentValue
-        {
-            get => Value.Value;
-            set => Value.Value = value;
-        }
-
         public RuntimeStat()
         {
+            _runtimeData = new Dictionary<string, RuntimeStatData>();
         }
 
-        public RuntimeStat(Stat stat, float value)
+        public void SetStat(Stat stat)
         {
             _stat = stat;
-            EnsureValue().Value = value;
         }
 
-        private ReactiveProperty<float> EnsureValue()
+        public void ClearRuntimeData()
         {
-            if (_value == null)
+            _runtimeData.Clear();
+        }
+
+        internal void RestoreRuntimeData()
+        {
+            var context = new RuntimeStatBuildContext(_stat.Id);
+
+            foreach (RuntimeStatData data in _runtimeData.Values)
             {
-                _value = new ReactiveProperty<float>();
+                data.Restore(context);
+            }
+        }
+
+        internal void PersistRuntimeData()
+        {
+            var context = new RuntimeStatBuildContext(_stat.Id);
+
+            foreach (RuntimeStatData data in _runtimeData.Values)
+            {
+                data.Persist(context);
+            }
+        }
+
+        internal void AddRuntimeData(RuntimeStatData data)
+        {
+            if (data == null)
+            {
+                return;
             }
 
-            return _value;
+            _runtimeData[data.GetType().AssemblyQualifiedName ?? data.GetType().FullName] = data;
+        }
+
+        internal T GetRuntimeData<T>() where T : RuntimeStatData
+        {
+            if (TryGetRuntimeData(out T data))
+            {
+                return data;
+            }
+
+            throw new KeyNotFoundException($"Runtime data `{typeof(T).Name}` was not found on stat `{_stat?.Id}`.");
+        }
+
+        internal bool TryGetRuntimeData<T>(out T data) where T : RuntimeStatData
+        {
+            foreach (RuntimeStatData runtimeComponent in _runtimeData.Values)
+            {
+                if (runtimeComponent is T typedComponent)
+                {
+                    data = typedComponent;
+                    return true;
+                }
+            }
+
+            data = null;
+            return false;
         }
     }
 }

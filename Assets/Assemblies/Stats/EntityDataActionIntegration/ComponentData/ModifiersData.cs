@@ -1,5 +1,6 @@
 using OdinSerializer;
 using UniRx;
+using System.Collections.Generic;
 using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
@@ -38,6 +39,21 @@ namespace ArmyClash.Battle.Data
             bool removed = Effects.Remove(effect);
             MarkDirty();
             return removed;
+        }
+
+        public void ReplaceAll(IEnumerable<ModifierStatEffect> effects)
+        {
+            Effects.Clear();
+
+            if (effects != null)
+            {
+                foreach (ModifierStatEffect effect in effects)
+                {
+                    Effects.Add(effect);
+                }
+            }
+
+            MarkDirty();
         }
     }
 }

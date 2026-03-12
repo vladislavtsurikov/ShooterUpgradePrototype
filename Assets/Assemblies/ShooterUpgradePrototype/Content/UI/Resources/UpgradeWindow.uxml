@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:game="ShooterUpgradePrototype.UI.UISystem.Views" editor-extension-mode="False">
+    <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/Resources/UpgradeWindow.uss" />
+    <game:UpgradeWindowView>
+        <ui:VisualElement name="backdrop" class="upgrade-backdrop">
+            <ui:VisualElement name="modalPanel" class="upgrade-modal">
+                <ui:VisualElement class="upgrade-header">
+                    <ui:Label name="titleLabel" class="upgrade-title" text="CHARACTER UPGRADES" />
+                    <ui:Button name="closeButton" class="upgrade-close-button" text="X" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="upgrade-points-panel">
+                    <ui:Label name="availablePointsLabel" class="upgrade-points-label" text="Available Points: 0" />
+                </ui:VisualElement>
+
+                <ui:VisualElement name="rowsContainer" class="upgrade-rows-container" />
+
+                <ui:Button name="applyButton" class="upgrade-apply-button" text="APPLY" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </game:UpgradeWindowView>
+</ui:UXML>

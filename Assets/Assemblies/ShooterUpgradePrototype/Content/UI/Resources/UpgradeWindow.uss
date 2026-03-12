@@ -1,0 +1,108 @@
+.upgrade-backdrop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(7, 12, 18, 0.46);
+}
+
+.upgrade-modal {
+    width: 920px;
+    max-width: 92%;
+    padding-bottom: 32px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: rgba(255, 255, 255, 0.14);
+    border-right-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: rgba(0, 0, 0, 0.42);
+    border-left-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(38, 44, 54, 0.96);
+}
+
+.upgrade-header {
+    min-height: 86px;
+    padding-left: 28px;
+    padding-right: 20px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(21, 26, 35, 0.58);
+    border-bottom-width: 2px;
+    border-bottom-color: rgba(0, 0, 0, 0.28);
+}
+
+.upgrade-title {
+    flex-grow: 1;
+    color: rgb(205, 216, 230);
+    font-size: 34px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.upgrade-close-button {
+    width: 72px;
+    height: 58px;
+    color: rgb(234, 237, 240);
+    font-size: 28px;
+    -unity-font-style: bold;
+    background-color: rgba(55, 61, 71, 0.96);
+}
+
+.upgrade-points-panel {
+    margin-top: 24px;
+    margin-right: 28px;
+    margin-left: 28px;
+    min-height: 64px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(23, 28, 35, 0.54);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.upgrade-points-label {
+    color: rgb(245, 246, 247);
+    font-size: 28px;
+    -unity-font-style: bold;
+}
+
+.upgrade-rows-container {
+    margin-top: 22px;
+    margin-right: 28px;
+    margin-left: 28px;
+    padding-top: 8px;
+    padding-right: 20px;
+    padding-bottom: 8px;
+    padding-left: 20px;
+    background-color: rgba(67, 74, 85, 0.56);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.upgrade-apply-button {
+    align-self: center;
+    margin-top: 30px;
+    width: 340px;
+    height: 78px;
+    color: rgb(245, 249, 255);
+    font-size: 32px;
+    -unity-font-style: bold;
+    background-color: rgb(42, 89, 181);
+}
+
+.upgrade-apply-button:disabled {
+    opacity: 0.45;
+}
