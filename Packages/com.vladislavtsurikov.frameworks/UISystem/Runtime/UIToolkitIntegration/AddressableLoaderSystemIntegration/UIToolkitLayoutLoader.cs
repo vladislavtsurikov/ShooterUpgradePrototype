@@ -1,6 +1,8 @@
 #if UI_SYSTEM_ADDRESSABLE_LOADER_SYSTEM
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.UIElements;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 
@@ -31,8 +33,18 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return LoadedLayout;
             }
 
-            LoadedLayout = await LoadAndTrack<VisualTreeAsset>(LayoutAddress, cancellationToken);
-            _layoutLoaded = true;
+            try
+            {
+                LoadedLayout = await LoadAndTrack<VisualTreeAsset>(LayoutAddress, cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning(
+                    $"[UIToolkitLayoutLoader] Addressable load failed for `{LayoutAddress}` in `{GetType().Name}`. Falling back to Resources. Exception: {exception.Message}");
+                LoadedLayout = TryLoadFromResources();
+            }
+
+            _layoutLoaded = LoadedLayout != null;
 
             return LoadedLayout;
         }
@@ -42,6 +54,17 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             _layoutLoaded = false;
             LoadedLayout = null;
             return UniTask.CompletedTask;
+        }
+
+        private VisualTreeAsset TryLoadFromResources()
+        {
+            VisualTreeAsset layout = Resources.Load<VisualTreeAsset>(LayoutAddress);
+            if (layout != null)
+            {
+                return layout;
+            }
+
+            return Resources.Load<VisualTreeAsset>($"UI/{LayoutAddress}");
         }
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.Core.Runtime;
 using VladislavTsurikov.UISystem.Runtime.Core.Graph;
+using VladislavTsurikov.ReflectionUtility.Runtime;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
@@ -37,7 +38,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             {
                 _filters.Add(filter);
 
-                NodeTree tree = NodeTreeAsset.Instance.Tree;
+                NodeTree tree = GetNodeTree();
 
                 if (tree.Roots.Count == 0)
                 {
@@ -140,6 +141,66 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 cancellationToken.ThrowIfCancellationRequested();
                 await TraverseMissingUIHandler(child, handler, cancellationToken);
             }
+        }
+
+        private static NodeTree GetNodeTree()
+        {
+            NodeTree tree = NodeTreeAsset.Instance?.Tree;
+            if (tree != null && tree.Roots.Count > 0)
+            {
+                return tree;
+            }
+
+            return BuildNodeTreeAtRuntime();
+        }
+
+        private static NodeTree BuildNodeTreeAtRuntime()
+        {
+            Type[] allTypes = AllTypesDerivedFrom<UIHandler>.Types;
+            var typeToNode = new Dictionary<Type, Node>();
+
+            foreach (Type type in allTypes)
+            {
+                var node = new Node
+                {
+                    HandlerType = type,
+                    Filters = type
+                        .GetCustomAttributes(typeof(FilterAttribute), true)
+                        .Cast<FilterAttribute>()
+                        .Select(filter => filter.GetType())
+                        .ToList()
+                };
+
+                typeToNode[type] = node;
+            }
+
+            var roots = new List<Node>();
+
+            foreach (Type type in allTypes)
+            {
+                Node node = typeToNode[type];
+                ParentUIHandlerAttribute parentAttribute = type
+                    .GetCustomAttributes(typeof(ParentUIHandlerAttribute), true)
+                    .Cast<ParentUIHandlerAttribute>()
+                    .FirstOrDefault();
+
+                if (parentAttribute != null && typeToNode.TryGetValue(parentAttribute.ParentType, out Node parentNode))
+                {
+                    parentNode.Children.Add(node);
+                    continue;
+                }
+
+                if (parentAttribute != null)
+                {
+                    Debug.LogWarning(
+                        $"[UIHandlerManager] Runtime tree generation skipped `{type.FullName}` because parent `{parentAttribute.ParentType?.FullName}` was not found.");
+                    continue;
+                }
+
+                roots.Add(node);
+            }
+
+            return new NodeTree { Roots = roots };
         }
     }
 }
