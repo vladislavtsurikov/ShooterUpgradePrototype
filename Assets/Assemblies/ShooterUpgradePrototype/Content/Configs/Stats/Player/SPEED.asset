@@ -11,14 +11,125 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6e45335c0eb3b546891cfd683ee8aae, type: 3}
   m_Name: SPEED
-  m_EditorClassIdentifier: VladislavTsurikov.Stats::VladislavTsurikov.ActionFlow.Runtime.Stats.Stat
+  m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
-    SerializedBytes: 01010f0000005f0063006f006d0070006f006e0065006e00740053007400610063006b002f00000000015700000056006c0061006400690073006c0061007600540073007500720069006b006f0076002e0041006300740069006f006e0046006c006f0077002e00520075006e00740069006d0065002e00530074006100740073002e005300740061007400730043006f006d0070006f006e0065006e00740053007400610063006b002c00200056006c0061006400690073006c0061007600540073007500720069006b006f0076002e00530074006100740073000000000001010c0000005f0065006c0065006d0065006e0074004c006900730074002f0100000001a400000056006c0061006400690073006c0061007600540073007500720069006b006f0076002e005500740069006c006900740079002e00520075006e00740069006d0065002e004f0062007300650072007600610062006c0065004c00690073007400600031005b005b0056006c0061006400690073006c0061007600540073007500720069006b006f0076002e004e006f00640079002e00520075006e00740069006d0065002e0043006f00720065002e0043006f006d0070006f006e0065006e00740044006100740061002c00200056006c0061006400690073006c0061007600540073007500720069006b006f0076002e0043006f006d0070006f006e0065006e00740053007400610063006b005d005d002c00200056006c0061006400690073006c0061007600540073007500720069006b006f0076002e005500740069006c0069007400790001000000060100000000000000022f02000000015600000056006c0061006400690073006c0061007600540073007500720069006b006f0076002e0041006300740069006f006e0046006c006f0077002e00520075006e00740069006d0065002e00530074006100740073002e005300740061007400560061006c007500650043006f006d0070006f006e0065006e0074002c00200056006c0061006400690073006c0061007600540073007500720069006b006f0076002e0053007400610074007300020000002b0115000000530065006c00650063007400530065007400740069006e006700730046006f006c0064006f0075007400012b01070000005f00610063007400690076006500012b01090000005f00730065006c0065006300740065006400012701070000005f006e006f0064006500490064000124000000640030006500650061003800630032002d0061006500620066002d0034003400660036002d0061003600300037002d0064003500310065003700360064003300620033006400660003010e0000005f006700720061007000680050006f0073006900740069006f006e002f03000000012b00000055006e0069007400790045006e00670069006e0065002e0056006500630074006f00720032002c00200055006e0069007400790045006e00670069006e0065002e0043006f00720065004d006f00640075006c00650020000000002000000000051f010a0000005f006200610073006500560061006c00750065000000e0402b010d0000005f0063006c0061006d00700045006e00610062006c0065006400001f01090000005f006d0061007800560061006c0075006500000000001f01090000005f006d0069006e00560061006c0075006500000000002b01070000005f007500730065004d0061007800002b01070000005f007500730065004d0069006e000005070505
-    ReferencedUnityObjects: []
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: cc1b6bb713e8ec347a01e5b362bdfb77, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: _componentStack
+      Entry: 7
+      Data: 0|VladislavTsurikov.ActionFlow.Runtime.Stats.StatsComponentStack, VladislavTsurikov.Stats
+    - Name: _elementList
+      Entry: 7
+      Data: 1|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
+        VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 2|VladislavTsurikov.ActionFlow.Runtime.Stats.StatValueComponent, VladislavTsurikov.Stats
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: 83991566-131d-43c4-a27e-4a5c765050b1
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _save
+      Entry: 5
+      Data: false
+    - Name: _baseValue
+      Entry: 4
+      Data: 7
+    - Name: _clampEnabled
+      Entry: 5
+      Data: true
+    - Name: _maxValue
+      Entry: 4
+      Data: 0
+    - Name: _minValue
+      Entry: 4
+      Data: 0.1
+    - Name: _useMax
+      Entry: 5
+      Data: false
+    - Name: _useMin
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|VladislavTsurikov.ActionFlow.Runtime.Stats.StatLevelTableComponent,
+        VladislavTsurikov.Stats
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: 915484a5-ee64-4783-9a28-3f0f02967563
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _save
+      Entry: 5
+      Data: true
+    - Name: _levelProgressionTable
+      Entry: 10
+      Data: 0
+    - Name: _initialLevel
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   _id: SPEED
