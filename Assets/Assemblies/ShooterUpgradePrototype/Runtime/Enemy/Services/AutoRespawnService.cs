@@ -20,16 +20,15 @@ namespace ShooterUpgradePrototype.Enemy.Services
         public AutoRespawnService(
             EnemyRegistryService registry,
             EnemySpawnConfig config,
-            WaypointPathEntitySpawner spawner,
-            KillCounterService killCounterService)
+            WaypointPathEntitySpawner spawner)
         {
             _registry = registry;
             _config = config;
             _spawner = spawner;
 
-            killCounterService.Kills
-                .Where(kills => kills > 0)
-                .Where(_ => _registry.Enemies.Count < _config.MaxMobCount)
+            _registry.Enemies
+                .ObserveCountChanged()
+                .Where(count => count < _config.MaxMobCount)
                 .Subscribe(_ => Run())
                 .AddTo(_subscriptions);
 
@@ -49,6 +48,11 @@ namespace ShooterUpgradePrototype.Enemy.Services
         public void Run()
         {
             if (!_config.IsValid())
+            {
+                return;
+            }
+
+            if (_registry.Enemies.Count >= _config.MaxMobCount)
             {
                 return;
             }

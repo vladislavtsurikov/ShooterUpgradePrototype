@@ -20,9 +20,6 @@ namespace AutoStrike.Actions
         private EnemyRegistryService _registry;
 
         [Inject]
-        private KillCounterService _killCounter;
-
-        [Inject]
         private EnemyRewardService _rewardService;
 
         protected override void OnEnable()
@@ -59,7 +56,6 @@ namespace AutoStrike.Actions
 
             EnemyEntity enemy = (EnemyEntity)EntityMonoBehaviour;
             _registry.Unregister(enemy);
-            _killCounter.Increment();
             _rewardService.Grant(runtimeData.KillRewardPoints.Value);
 
             Object.Destroy(EntityMonoBehaviour.gameObject);
