@@ -27,52 +27,26 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         {
         }
 
+        public UpgradeWindowView() => RegisterCallback<AttachToPanelEvent>(HandleAttachToPanel);
+
         public string BindingId => nameof(UpgradeWindowView);
         public VisualElement Element => this;
-
-        public IObservable<Unit> OnApplyClicked
-        {
-            get
-            {
-                EnsureInitialized();
-                return _applyClicked;
-            }
-        }
-
-        public IObservable<Unit> OnCloseClicked
-        {
-            get
-            {
-                EnsureInitialized();
-                return _closeClicked;
-            }
-        }
-
-        public IObservable<Unit> OnBackdropClicked
-        {
-            get
-            {
-                EnsureInitialized();
-                return _backdropClicked;
-            }
-        }
+        public IObservable<Unit> OnApplyClicked => _applyClicked;
+        public IObservable<Unit> OnCloseClicked => _closeClicked;
+        public IObservable<Unit> OnBackdropClicked => _backdropClicked;
 
         public void SetAvailablePointsText(string text)
         {
-            EnsureInitialized();
             _availablePointsLabel.text = text;
         }
 
         public void SetApplyEnabled(bool enabled)
         {
-            EnsureInitialized();
             _applyButton.SetEnabled(enabled);
         }
 
         public IReadOnlyList<UpgradeStatRowView> EnsureRows(int count, VisualTreeAsset rowTemplate)
         {
-            EnsureInitialized();
-
             if (rowTemplate == null)
             {
                 throw new InvalidOperationException("Upgrade row template is not loaded.");
@@ -103,7 +77,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
             return _rowViews;
         }
 
-        private void EnsureInitialized()
+        private void HandleAttachToPanel(AttachToPanelEvent evt)
         {
             if (_initialized)
             {

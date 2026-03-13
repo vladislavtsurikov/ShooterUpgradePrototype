@@ -3,12 +3,10 @@
 #if UI_SYSTEM_ZENJECT
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using ShooterUpgradePrototype.Progression.Configs;
-using ShooterUpgradePrototype.Progression.Models;
-using ShooterUpgradePrototype.Progression.Services;
 using ShooterUpgradePrototype.UI.UISystem.Loaders;
 using ShooterUpgradePrototype.UI.UISystem.Views;
 using UniRx;
+using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration;
 using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
@@ -20,20 +18,15 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
     [ParentUIHandler(typeof(UIToolkitScreens))]
     public sealed class UpgradeWindowHandler : UIToolkitUIHandler
     {
-        private readonly PlayerUpgradeService _playerUpgradeService;
         private readonly UpgradeStatRowLayoutLoader _rowLayoutLoader;
-
-        private PendingUpgradeState _draft;
         private UpgradeWindowView _view;
 
         public UpgradeWindowHandler(
             DiContainer container,
             UpgradeWindowLayoutLoader loader,
-            UpgradeStatRowLayoutLoader rowLayoutLoader,
-            PlayerUpgradeService playerUpgradeService) : base(container, loader)
+            UpgradeStatRowLayoutLoader rowLayoutLoader) : base(container, loader)
         {
             _rowLayoutLoader = rowLayoutLoader;
-            _playerUpgradeService = playerUpgradeService;
         }
 
         protected override string GetRootName() => "ShooterUpgradePrototypeUpgradeWindow";
@@ -54,7 +47,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                 BindViewOnce(disposables);
             }
 
-            _draft = _playerUpgradeService.CreateDraft();
             Render();
 
             return UniTask.CompletedTask;
@@ -62,32 +54,21 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 
         private async UniTaskVoid CloseAsync(bool applyChanges)
         {
-            if (applyChanges && _draft != null)
-            {
-                _playerUpgradeService.ApplyDraft(_draft);
-            }
-
-            _draft = null;
+            // TODO: apply draft changes after Progression service is restored.
             await UINavigator.Hide<UpgradeWindowHandler, UIToolkitScreens>(CancellationToken.None);
         }
 
         private void Render()
         {
-            if (_draft == null || _view == null || _rowLayoutLoader.LoadedLayout == null)
+            if (_view == null)
             {
                 return;
             }
 
-            _view.SetAvailablePointsText($"Available Points: {_draft.AvailablePoints}");
-
-            var rows = _view.EnsureRows(_playerUpgradeService.Tracks.Count, _rowLayoutLoader.LoadedLayout);
-            for (int index = 0; index < _playerUpgradeService.Tracks.Count; index++)
-            {
-                UpgradeTrackConfig track = _playerUpgradeService.Tracks[index];
-                BindRow(rows[index], track);
-            }
-
-            _view.SetApplyEnabled(_playerUpgradeService.HasPendingChanges(_draft));
+            // TODO: render real upgrade tracks after Progression configs/models/services are restored.
+            _view.SetAvailablePointsText("Available Points: --");
+            _view.EnsureRows(0, _rowLayoutLoader.LoadedLayout);
+            _view.SetApplyEnabled(false);
         }
 
         private void BindViewOnce(CompositeDisposable disposables)
@@ -103,27 +84,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             _view.OnBackdropClicked
                 .Subscribe(_ => CloseAsync(applyChanges: false).Forget())
                 .AddTo(disposables);
-        }
-
-        private void BindRow(UpgradeStatRowView row, UpgradeTrackConfig track)
-        {
-            int appliedLevel = _playerUpgradeService.GetAppliedLevel(track.Id);
-            int draftLevel = _draft.GetLevel(track.Id);
-            int pendingDelta = draftLevel - appliedLevel;
-            bool canUpgrade = _draft.AvailablePoints > 0 && draftLevel < track.MaxLevel;
-
-            row.SetTitle(track.DisplayName);
-            row.SetPendingDelta(pendingDelta > 0 ? $"+ {pendingDelta}" : string.Empty, pendingDelta > 0);
-            row.SetLevel(draftLevel, track.MaxLevel);
-            row.SetUpgradeEnabled(canUpgrade);
-            row.SetUpgradeRequestedHandler(() =>
-            {
-                // TODO: move each row to a dedicated presenter after UISystem supports repeated handler instances per row type.
-                if (_playerUpgradeService.TryIncrementDraft(_draft, track.Id))
-                {
-                    Render();
-                }
-            });
         }
     }
 }

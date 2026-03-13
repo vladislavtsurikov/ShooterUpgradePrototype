@@ -17,31 +17,29 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         {
         }
 
+        public UpgradeStatRowView() => RegisterCallback<AttachToPanelEvent>(HandleAttachToPanel);
+
         public string BindingId => nameof(UpgradeStatRowView);
         public VisualElement Element => this;
 
         public void SetTitle(string text)
         {
-            EnsureInitialized();
             _statNameLabel.text = text;
         }
 
         public void SetPendingDelta(string text, bool visible)
         {
-            EnsureInitialized();
             _pendingDeltaLabel.text = text;
             _pendingDeltaLabel.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         public void SetUpgradeEnabled(bool enabled)
         {
-            EnsureInitialized();
             _upgradeButton.SetEnabled(enabled);
         }
 
         public void SetLevel(int currentLevel, int maxLevel)
         {
-            EnsureInitialized();
             _levelSegmentsContainer.Clear();
 
             for (int index = 0; index < maxLevel; index++)
@@ -60,11 +58,10 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
 
         public void SetUpgradeRequestedHandler(Action handler)
         {
-            EnsureInitialized();
             _upgradeRequested = handler;
         }
 
-        private void EnsureInitialized()
+        private void HandleAttachToPanel(AttachToPanelEvent evt)
         {
             if (_initialized)
             {

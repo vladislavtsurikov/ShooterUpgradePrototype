@@ -19,8 +19,10 @@
         "OdinSerializer",
         "WaypointsSystem",
         "WaypointPathEntitySpawner",
+        "VladislavTsurikov.LevelProgression",
         "VladislavTsurikov.Stats",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "AutoStrike.Input"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

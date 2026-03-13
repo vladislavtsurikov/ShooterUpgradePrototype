@@ -2,9 +2,11 @@
 #if UI_SYSTEM_ZENJECT
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using ShooterUpgradePrototype.Progression.Services;
 using ShooterUpgradePrototype.UI.UISystem.Views;
 using UniRx;
+using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
+using VladislavTsurikov.UISystem.Runtime.Core;
+using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 using Zenject;
 
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
@@ -13,34 +15,20 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
     [ParentUIHandler(typeof(BattleHUDRootHandler))]
     public sealed class PlayerHealthHUDHandler : ParentBoundUIToolkitHandler
     {
-        private readonly PlayerUpgradeService _playerUpgradeService;
-
         private PlayerHealthHUDView _view;
 
-        public PlayerHealthHUDHandler(DiContainer container, PlayerUpgradeService playerUpgradeService)
-            : base(container) => _playerUpgradeService = playerUpgradeService;
+        public PlayerHealthHUDHandler(DiContainer container) : base(container)
+        {
+        }
 
         protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             _view = GetUIComponent<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
 
-            _playerUpgradeService.CurrentHealth
-                .CombineLatest(_playerUpgradeService.MaxHealth, FormatHealth)
-                .Subscribe(_view.SetHealthText)
-                .AddTo(disposables);
-
-            _view.SetHealthText(FormatHealth(
-                _playerUpgradeService.CurrentHealth.Value,
-                _playerUpgradeService.MaxHealth.Value));
+            // TODO: restore reactive HP binding after Progression/player runtime services are added back.
+            _view.SetHealthText("HP: -- / --");
 
             return UniTask.CompletedTask;
-        }
-
-        private static string FormatHealth(float currentHealth, float maxHealth)
-        {
-            int roundedCurrent = UnityEngine.Mathf.RoundToInt(currentHealth);
-            int roundedMax = UnityEngine.Mathf.RoundToInt(maxHealth);
-            return $"HP: {roundedCurrent} / {roundedMax}";
         }
     }
 }

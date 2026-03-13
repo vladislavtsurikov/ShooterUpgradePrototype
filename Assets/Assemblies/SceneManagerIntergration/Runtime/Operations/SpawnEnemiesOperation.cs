@@ -1,8 +1,8 @@
 using System.Threading;
+using AutoStrike.Config;
 using AutoStrike.Spawning;
 using Cysharp.Threading.Tasks;
 using ShooterUpgradePrototype.Enemy.Services;
-using ShooterUpgradePrototype.Progression.Configs;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using VladislavTsurikov.SceneManagerTool.Runtime.SettingsSystem;
@@ -17,7 +17,7 @@ namespace ArmyClash.SceneManager
     public sealed class SpawnEnemiesOperation : Action
     {
         [Inject]
-        private ShooterUpgradePrototypeConfig _config;
+        private EnemySpawnConfig _config;
 
         [Inject]
         private EnemyRegistryService _registry;
@@ -27,9 +27,9 @@ namespace ArmyClash.SceneManager
 
         protected override UniTask<bool> Run(CancellationToken token)
         {
-            if (_config.Enemy.MaxMobCount > 0)
+            if (_config.MaxMobCount > 0)
             {
-                _spawner.SpawnMaxCountEntity(_registry.Enemies.Count, _config.Enemy.MaxMobCount);
+                _spawner.SpawnMaxCountEntity(_registry.Enemies.Count, _config.MaxMobCount);
             }
 
             return UniTask.FromResult(true);
