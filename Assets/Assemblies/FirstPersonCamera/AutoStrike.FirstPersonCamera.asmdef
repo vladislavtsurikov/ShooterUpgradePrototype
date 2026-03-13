@@ -4,7 +4,11 @@
     "references": [
         "AutoStrike.Input",
         "VladislavTsurikov.EntityDataAction",
-        "VladislavTsurikov.ReflectionUtility"
+        "VladislavTsurikov.ReflectionUtility",
+        "VladislavTsurikov.ActionFlow",
+        "VladislavTsurikov.ComponentStack",
+        "UniRx",
+        "OdinSerializer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

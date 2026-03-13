@@ -7,7 +7,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
 {
     [RequiresData(typeof(LookInputData))]
     [Name("AutoStrike.FirstPersonCamera/Actions/MobileFirstPersonCameraLook")]
-    public sealed class MobileFirstPersonCameraLookAction : FirstPersonCameraLookActionBase
+    public sealed class MobileFirstPersonCameraLookAction : FirstPersonCameraLookAction
     {
         [Header("Touch Drag")]
         [SerializeField]
@@ -20,13 +20,16 @@ namespace AutoStrike.FirstPersonCamera.Actions
         [SerializeField]
         private bool _useUnscaledDeltaTime;
 
-        private void Update()
+        protected override void HandleLookDelta(Vector2 lookDelta)
         {
-            Vector2 look = Vector2.Scale(LookInputData.LookDelta.Value, _dragSensitivity);
+            Vector2 look = Vector2.Scale(lookDelta, _dragSensitivity);
+            ApplyLook(look);
+        }
 
+        protected override void HandleLookRate(Vector2 lookRate)
+        {
             float deltaTime = _useUnscaledDeltaTime ? Time.unscaledDeltaTime : Time.deltaTime;
-            look += Vector2.Scale(LookInputData.LookRate.Value, _rateSensitivity) * deltaTime;
-
+            Vector2 look = Vector2.Scale(lookRate, _rateSensitivity) * deltaTime;
             ApplyLook(look);
         }
     }

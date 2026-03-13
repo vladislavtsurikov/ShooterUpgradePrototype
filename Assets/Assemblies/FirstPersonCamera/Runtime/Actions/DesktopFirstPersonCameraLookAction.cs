@@ -7,14 +7,14 @@ namespace AutoStrike.FirstPersonCamera.Actions
 {
     [RequiresData(typeof(LookInputData))]
     [Name("AutoStrike.FirstPersonCamera/Actions/DesktopFirstPersonCameraLook")]
-    public sealed class DesktopFirstPersonCameraLookAction : FirstPersonCameraLookActionBase
+    public sealed class DesktopFirstPersonCameraLookAction : FirstPersonCameraLookAction
     {
         [SerializeField]
         private Vector2 _sensitivity = new(0.15f, 0.15f);
 
-        private void Update()
+        protected override void HandleLookDelta(Vector2 lookDelta)
         {
-            Vector2 look = Vector2.Scale(LookInputData.LookDelta.Value, _sensitivity);
+            Vector2 look = Vector2.Scale(lookDelta, _sensitivity);
             ApplyLook(look);
         }
     }

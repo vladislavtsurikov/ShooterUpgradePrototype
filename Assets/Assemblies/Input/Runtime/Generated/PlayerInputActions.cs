@@ -181,7 +181,7 @@ namespace AutoStrike.Input.Generated
                 {
                     ""name"": """",
                     ""id"": ""0adaeaff-5086-4ebf-88b6-db083eb50e6f"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
@@ -203,7 +203,18 @@ namespace AutoStrike.Input.Generated
                 {
                     ""name"": """",
                     ""id"": ""99795487-3ad3-4539-a54b-d2e5b7da1a72"",
-                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7273b13-5300-4466-8bde-3fc127218b4c"",
+                    ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mobile"",
@@ -249,6 +260,11 @@ namespace AutoStrike.Input.Generated
                 {
                     ""devicePath"": ""<Touchscreen>"",
                     ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": true,
                     ""isOR"": false
                 }
             ]
