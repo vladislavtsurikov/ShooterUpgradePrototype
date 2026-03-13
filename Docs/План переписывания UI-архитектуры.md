@@ -25,7 +25,7 @@
 
 Что это подтверждает:
 
-- `ButtonUIToolkitHandler` резолвит `GetUIComponent(...)` через `Parent?.GetType() ?? GetType()`
+- `ParentBoundUIToolkitHandler` в `UISystem` резолвит `GetUIComponent(...)` через `Parent?.GetType() ?? GetType()`
 - `UIHandler.Show(...)` после показа родителя вызывает `InitializeChildren(...)`
 - значит child handler без собственного loader может инициализироваться поверх уже загруженного parent layout
 
@@ -35,17 +35,7 @@
 - `PlayerHealthHUDHandler` может быть child presenter-ом над уже загруженным label;
 - `OpenUpgradeHUDButtonHandler` может быть child presenter-ом над уже загруженной кнопкой.
 
-Ограничение текушего runtime:
-
-- для кнопки готовый базовый класс уже есть: `ButtonUIToolkitHandler`;
-- для не-кнопочного presenter-а вроде `PlayerHealthHUDHandler` готового аналога нет;
-- поэтому нужен маленький локальный базовый класс по образцу `ButtonUIToolkitHandler`.
-
-То есть пакет переписывать не нужно. Текущий `UISystem` это уже поддерживает.
-
-## Название локального базового handler-а
-
-Наш локальный аналог `ButtonUIHandler` не должен называться через `Button`, потому что он будет использоваться не только для кнопок.
+Практический вывод:
 
 Целевое имя:
 
@@ -58,8 +48,11 @@
 
 Что он должен делать:
 
-- наследоваться от `ComponentBindingUIToolkitHandler`;
+- находиться в `UISystem`, а не в проекте;
+- заменить старый `ButtonUIToolkitHandler`;
+- наследоваться от `ChildSpawningUIToolkitHandler`, чтобы не потерять старое spawn-поведение;
 - переопределять `GetUIComponent(...)`;
+- переопределять `TryGetUIComponent(...)`;
 - резолвить binding через `Parent?.GetType() ?? GetType()`.
 
 ## Главная проблема текущей реализации
@@ -492,11 +485,11 @@ await UINavigator.Hide<UpgradeWindowHandler, UIToolkitScreens>(cancellationToken
 
 Именно под них сделать два отдельных child presenter-а.
 
-## Шаг 4. Ввести `ParentBoundUIToolkitHandler`
+## Шаг 4. Заменить `ButtonUIToolkitHandler` на `ParentBoundUIToolkitHandler`
 
-Добавить локальный базовый handler для маленьких presenter-ов над уже загруженным родительским layout.
+Перенести общий base handler в `UISystem`.
 
-Он должен заменить идею переиспользования `ButtonUIToolkitHandler` для всего подряд.
+Он должен заменить старый `ButtonUIToolkitHandler`, чтобы один и тот же базовый тип использовался и для кнопок, и для label presenter-ов, и для других parent-bound presenter-ов.
 
 ## Шаг 5. Ввести `UpgradeWindowView`
 
