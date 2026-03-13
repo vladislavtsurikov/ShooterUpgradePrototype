@@ -1,6 +1,8 @@
 using System;
 using OdinSerializer;
 using UniRx;
+using UnityEngine;
+using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
 using VladislavTsurikov.ActionFlow.Runtime.Stats;
 
 namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
@@ -8,28 +10,28 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
     [Serializable]
     public sealed class RuntimeStatLevelData : RuntimeStatData
     {
-        [OdinSerialize] private Table _table;
+        [OdinSerialize] private LevelProgressionTable _levelProgressionTable;
         [OdinSerialize] private int _initialLevel;
         [OdinSerialize] private ReactiveProperty<int> _appliedLevel;
 
-        public Table Table => _table;
+        public LevelProgressionTable LevelProgressionTable => _levelProgressionTable;
         public ReactiveProperty<int> AppliedLevel => EnsureAppliedLevel();
 
         public RuntimeStatLevelData()
         {
         }
 
-        public RuntimeStatLevelData(Table table, int initialLevel, bool save)
+        public RuntimeStatLevelData(LevelProgressionTable levelProgressionTable, int initialLevel, bool save)
             : base(save)
         {
-            _table = table;
-            _initialLevel = table != null ? table.ClampLevel(initialLevel) : initialLevel;
+            _levelProgressionTable = levelProgressionTable;
+            _initialLevel = levelProgressionTable != null ? levelProgressionTable.ClampLevel(initialLevel) : initialLevel;
             SetLevel(_initialLevel);
         }
 
         public bool SetLevel(int level)
         {
-            int clampedLevel = _table != null ? _table.ClampLevel(level) : level;
+            int clampedLevel = _levelProgressionTable != null ? _levelProgressionTable.ClampLevel(level) : level;
             if (AppliedLevel.Value == clampedLevel)
             {
                 return false;

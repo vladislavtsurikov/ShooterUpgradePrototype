@@ -1,5 +1,7 @@
+using Nody.Runtime.Core;
 using OdinSerializer;
 using UnityEngine;
+using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
@@ -11,17 +13,26 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
     public sealed class StatLevelTableComponent : StatComponentData
     {
         [OdinSerialize]
-        private Table _table;
+        private LevelProgressionTable _levelProgressionTable;
 
         [OdinSerialize]
         private int _initialLevel;
 
-        public Table Table => _table;
+        public LevelProgressionTable LevelProgressionTable => _levelProgressionTable;
         public int InitialLevel => _initialLevel;
+
+        public void Configure(LevelProgressionTable levelProgressionTable, int initialLevel, bool save)
+        {
+            SetSave(save);
+            _levelProgressionTable = levelProgressionTable;
+            _initialLevel = levelProgressionTable != null
+                ? levelProgressionTable.ClampLevel(initialLevel)
+                : Mathf.Max(0, initialLevel);
+        }
 
         public override RuntimeStatData CreateRuntimeComponent(RuntimeStatBuildContext context)
         {
-            return new RuntimeStatLevelData(_table, _initialLevel, Save);
+            return new RuntimeStatLevelData(_levelProgressionTable, _initialLevel, Save);
         }
     }
 }

@@ -10,6 +10,11 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
 
         public bool Save => _save;
 
+        public void SetSave(bool save)
+        {
+            _save = save;
+        }
+
         public abstract RuntimeStatData CreateRuntimeComponent(RuntimeStatBuildContext context);
     }
 }

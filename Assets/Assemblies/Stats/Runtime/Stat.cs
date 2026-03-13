@@ -19,6 +19,33 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
         public string Id => _id;
         public StatsComponentStack ComponentStack => _componentStack;
 
+        public void SetId(string id)
+        {
+            _id = id;
+        }
+
+        public void ReplaceComponents(params StatComponentData[] components)
+        {
+            _componentStack ??= new StatsComponentStack();
+            _componentStack.Setup(true, new object[] { this });
+            _componentStack.List.Clear();
+
+            if (components != null)
+            {
+                for (int i = 0; i < components.Length; i++)
+                {
+                    if (components[i] == null)
+                    {
+                        continue;
+                    }
+
+                    _componentStack.List.Add(components[i]);
+                }
+            }
+
+            _componentStack.Setup(true, new object[] { this });
+        }
+
         private void OnEnable()
         {
             _componentStack ??= new StatsComponentStack();

@@ -37,6 +37,8 @@ Main types:
   - stores runtime data dictionary keyed by runtime-data type.
 - `RuntimeStatUtility`
   - fluent access entrypoint for runtime data, for example `runtimeStat.Runtime().Data<RuntimeStatValueData>()`.
+- `StatsEntityDataUtility`
+  - fluent access entrypoint from stats container, for example `stats.Stat("HP").Data<RuntimeStatValueData>()`.
 - `RuntimeStatValueData`
   - stores current value in `ReactiveProperty<float>`;
   - owns clamp and value save/restore logic.
@@ -46,8 +48,7 @@ Main types:
 - `StatsEntityData`
   - stores `StatCollection`;
   - builds runtime dictionary `Dictionary<string, RuntimeStat>` by `stat.Id`;
-  - rebuilds `RuntimeStatData` from stat authoring components;
-  - exposes stat lookup API and level write API.
+  - rebuilds `RuntimeStatData` from stat authoring components.
 - `ModifiersData`
   - stores active modifier effects in `ReactiveCollection<ModifierStatEffect>`.
 - `ApplyModifierStatEffectAction`
@@ -62,7 +63,7 @@ Main types:
 3. `StatsEntityData.RebuildFromCollection()` creates runtime data from stat components and restores saved runtime state.
 4. Modifier changes are written into `ModifiersData.Effects`.
 5. `ApplyModifierStatEffectAction` reacts to collection changes and recomputes final values.
-6. Any subscriber to `runtimeStat.Runtime().Data<RuntimeStatValueData>().Value` gets updates reactively.
+6. Any subscriber to `stats.Stat("HP").Data<RuntimeStatValueData>().Value` gets updates reactively.
 
 ## Why It Is Extensible
 

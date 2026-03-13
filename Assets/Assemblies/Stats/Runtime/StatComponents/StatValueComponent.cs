@@ -62,6 +62,24 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
 
         public void SetBaseValue(float value) => _baseValue = ApplyClamp(value);
 
+        public void Configure(
+            float baseValue,
+            bool save,
+            bool clampEnabled,
+            bool useMin,
+            float minValue,
+            bool useMax,
+            float maxValue)
+        {
+            SetSave(save);
+            _clampEnabled = clampEnabled;
+            _useMin = clampEnabled && useMin;
+            _minValue = minValue;
+            _useMax = clampEnabled && useMax;
+            _maxValue = maxValue;
+            SetBaseValue(baseValue);
+        }
+
         public override RuntimeStatData CreateRuntimeComponent(RuntimeStatBuildContext context)
         {
             return new RuntimeStatValueData(_baseValue, Save, _clampEnabled, _useMin, _minValue, _useMax, _maxValue);

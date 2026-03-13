@@ -3,6 +3,7 @@
     "rootNamespace": "",
     "references": [
         "OdinSerializer",
+        "VladislavTsurikov.LevelProgression",
         "VladislavTsurikov.ComponentStack",
         "VladislavTsurikov.CustomInspector",
         "VladislavTsurikov.ReflectionUtility",
@@ -12,7 +13,8 @@
         "VladislavTsurikov.ActionFlow",
         "UniRx",
         "UniTask",
-        "VladislavTsurikov.Core"
+        "VladislavTsurikov.Core",
+        "VladislavTsurikov.Utility"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

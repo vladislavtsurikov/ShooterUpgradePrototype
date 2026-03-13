@@ -80,41 +80,9 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             }
         }
 
-        public float GetStatValueById(string id) => GetRuntimeStatById(id).Runtime().Data<RuntimeStatValueData>().CurrentValue;
+        internal RuntimeStat GetRuntimeStatById(string id) => _stats[id];
 
-        public RuntimeStat GetRuntimeStatById(string id) => _stats[id];
-
-        public int GetStatLevelById(string statId)
-        {
-            if (!GetRuntimeStatById(statId).Runtime().TryData(out RuntimeStatLevelData component))
-            {
-                return 0;
-            }
-
-            return component.AppliedLevel.Value;
-        }
-
-        public bool SetStatLevelById(string statId, int level)
-        {
-            RuntimeStat runtimeStat = GetRuntimeStatById(statId);
-            if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData component))
-            {
-                return false;
-            }
-
-            if (!component.SetLevel(level))
-            {
-                return false;
-            }
-
-            runtimeStat.Runtime().Persist();
-            MarkDirty();
-            return true;
-        }
-
-        public bool AddStatLevelById(string statId, int delta) => SetStatLevelById(statId, GetStatLevelById(statId) + delta);
-
-        public void NotifyStatChanged(string statId)
+        internal void PersistStat(string statId)
         {
             GetRuntimeStatById(statId).Runtime().Persist();
             MarkDirty();

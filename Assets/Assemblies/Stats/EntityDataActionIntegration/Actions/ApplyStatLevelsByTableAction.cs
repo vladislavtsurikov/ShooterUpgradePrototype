@@ -3,6 +3,7 @@ using System.Threading;
 using ArmyClash.Battle.Data;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
 using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
@@ -28,7 +29,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             foreach (RuntimeStat runtimeStat in statsEntityData.Stats.Values)
             {
                 if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelComponent) ||
-                    levelComponent.Table == null)
+                    levelComponent.LevelProgressionTable == null)
                 {
                     continue;
                 }
@@ -39,7 +40,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                 }
 
                 float baseValue = valueComponent.BaseValue;
-                float targetValue = levelComponent.Table.GetValue(levelComponent.AppliedLevel.Value);
+                float targetValue = levelComponent.LevelProgressionTable.GetValue(levelComponent.AppliedLevel.Value);
                 float delta = targetValue - baseValue;
 
                 if (Mathf.Approximately(delta, 0f))

@@ -56,14 +56,13 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             for (int i = 0; i < entries.Count; i++)
             {
                 Stat stat = entries[i].Stat;
-                RuntimeStat runtimeStat = stats.GetRuntimeStatById(stat.Id);
-                RuntimeStatValueData valueData = runtimeStat.Runtime().Data<RuntimeStatValueData>();
+                RuntimeStatValueData valueData = stats.Stat(stat.Id).RuntimeData<RuntimeStatValueData>();
                 if (!valueData.AddValue(entries[i].Delta))
                 {
                     continue;
                 }
 
-                stats.NotifyStatChanged(stat.Id);
+                stats.Stat(stat.Id).Persist();
             }
         }
     }
