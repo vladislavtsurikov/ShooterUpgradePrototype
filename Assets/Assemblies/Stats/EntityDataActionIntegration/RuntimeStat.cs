@@ -12,6 +12,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         [OdinSerialize] private Dictionary<string, RuntimeStatData> _runtimeData;
 
         public Stat Stat => _stat;
+        public string StatId => _stat?.Id;
 
         public RuntimeStat()
         {
@@ -30,21 +31,10 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         internal void RestoreRuntimeData()
         {
-            var context = new RuntimeStatBuildContext(_stat.Id);
-
             foreach (RuntimeStatData data in _runtimeData.Values)
             {
-                data.Restore(context);
-            }
-        }
-
-        internal void PersistRuntimeData()
-        {
-            var context = new RuntimeStatBuildContext(_stat.Id);
-
-            foreach (RuntimeStatData data in _runtimeData.Values)
-            {
-                data.Persist(context);
+                data.BindRuntimeStat(this);
+                data.Restore();
             }
         }
 
@@ -55,6 +45,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                 return;
             }
 
+            data.BindRuntimeStat(this);
             _runtimeData[data.GetType().AssemblyQualifiedName ?? data.GetType().FullName] = data;
         }
 

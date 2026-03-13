@@ -21,11 +21,5 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         public bool TryData<T>(out T data) where T : RuntimeStatData =>
             _statsEntityData.GetRuntimeStatById(_statId).Runtime().TryData(out data);
-
-        public StatsEntityStatFluent Persist()
-        {
-            _statsEntityData.PersistStat(_statId);
-            return this;
-        }
     }
 }

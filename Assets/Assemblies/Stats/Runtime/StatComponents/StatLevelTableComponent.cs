@@ -30,7 +30,7 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
                 : Mathf.Max(0, initialLevel);
         }
 
-        public override RuntimeStatData CreateRuntimeComponent(RuntimeStatBuildContext context)
+        public override RuntimeStatData CreateRuntimeComponent()
         {
             return new RuntimeStatLevelData(_levelProgressionTable, _initialLevel, Save);
         }

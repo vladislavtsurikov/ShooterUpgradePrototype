@@ -29,15 +29,15 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             _useMax = useMax;
             _maxValue = maxValue;
             _baseValue = ApplyClamp(baseValue);
-            EnsureValue().Value = _baseValue;
+            Value.Value = _baseValue;
         }
 
         public float BaseValue => _baseValue;
-        public ReactiveProperty<float> Value => EnsureValue();
+        public ReactiveProperty<float> Value => _value ??= new ReactiveProperty<float>();
         public float CurrentValue
         {
             get => Value.Value;
-            set => Value.Value = ApplyClamp(value);
+            set => SetValue(value);
         }
 
         public bool SetValue(float value)
@@ -49,6 +49,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             }
 
             Value.Value = clampedValue;
+            Save();
             return true;
         }
 
@@ -80,37 +81,30 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             return value;
         }
 
-        public override void Restore(RuntimeStatBuildContext context)
+        protected override void RestoreDefaultsInternal()
         {
             ResetToBaseValue();
-
-            if (!Save || !PlayerPrefs.HasKey(GetValueKey(context.StatId)))
-            {
-                return;
-            }
-
-            CurrentValue = PlayerPrefs.GetFloat(GetValueKey(context.StatId));
         }
 
-        public override void Persist(RuntimeStatBuildContext context)
+        protected override void RestoreInternal()
         {
-            if (!Save)
+            if (string.IsNullOrEmpty(StatId) || !PlayerPrefs.HasKey(GetValueKey(StatId)))
             {
                 return;
             }
 
-            PlayerPrefs.SetFloat(GetValueKey(context.StatId), CurrentValue);
+            Value.Value = ApplyClamp(PlayerPrefs.GetFloat(GetValueKey(StatId)));
+        }
+
+        protected override void SaveInternal()
+        {
+            if (string.IsNullOrEmpty(StatId))
+            {
+                return;
+            }
+
+            PlayerPrefs.SetFloat(GetValueKey(StatId), CurrentValue);
             PlayerPrefs.Save();
-        }
-
-        private ReactiveProperty<float> EnsureValue()
-        {
-            if (_value == null)
-            {
-                _value = new ReactiveProperty<float>();
-            }
-
-            return _value;
         }
 
         public static string GetValueKey(string statId) => $"{statId}Value";

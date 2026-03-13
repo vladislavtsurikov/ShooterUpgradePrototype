@@ -61,8 +61,6 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                 {
                     continue;
                 }
-
-                stats.Stat(stat.Id).Persist();
             }
         }
     }

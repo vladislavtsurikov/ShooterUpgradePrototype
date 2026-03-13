@@ -15,6 +15,6 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
             _save = save;
         }
 
-        public abstract RuntimeStatData CreateRuntimeComponent(RuntimeStatBuildContext context);
+        public abstract RuntimeStatData CreateRuntimeComponent();
     }
 }

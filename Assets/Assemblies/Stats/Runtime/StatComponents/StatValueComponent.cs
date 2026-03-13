@@ -80,7 +80,7 @@ namespace VladislavTsurikov.ActionFlow.Runtime.Stats
             SetBaseValue(baseValue);
         }
 
-        public override RuntimeStatData CreateRuntimeComponent(RuntimeStatBuildContext context)
+        public override RuntimeStatData CreateRuntimeComponent()
         {
             return new RuntimeStatValueData(_baseValue, Save, _clampEnabled, _useMin, _minValue, _useMax, _maxValue);
         }

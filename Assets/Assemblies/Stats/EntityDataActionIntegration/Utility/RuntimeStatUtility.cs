@@ -23,11 +23,5 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             _runtimeStat.RestoreRuntimeData();
             return this;
         }
-
-        public RuntimeStatFluent Persist()
-        {
-            _runtimeStat.PersistRuntimeData();
-            return this;
-        }
     }
 }

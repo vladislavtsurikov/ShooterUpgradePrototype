@@ -15,7 +15,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         [OdinSerialize] private ReactiveProperty<int> _appliedLevel;
 
         public LevelProgressionTable LevelProgressionTable => _levelProgressionTable;
-        public ReactiveProperty<int> AppliedLevel => EnsureAppliedLevel();
+        public ReactiveProperty<int> AppliedLevel => _appliedLevel ??= new ReactiveProperty<int>();
 
         public RuntimeStatLevelData()
         {
@@ -38,38 +38,36 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             }
 
             AppliedLevel.Value = clampedLevel;
+            Save();
             return true;
         }
 
-        private ReactiveProperty<int> EnsureAppliedLevel()
+        protected override void RestoreDefaultsInternal()
         {
-            if (_appliedLevel == null)
-            {
-                _appliedLevel = new ReactiveProperty<int>();
-            }
-
-            return _appliedLevel;
+            AppliedLevel.Value = _levelProgressionTable != null
+                ? _levelProgressionTable.ClampLevel(_initialLevel)
+                : _initialLevel;
         }
 
-        public override void Restore(RuntimeStatBuildContext context)
+        protected override void RestoreInternal()
         {
-            int level = _initialLevel;
-            if (Save && PlayerPrefs.HasKey(GetLevelKey(context.StatId)))
-            {
-                level = PlayerPrefs.GetInt(GetLevelKey(context.StatId), _initialLevel);
-            }
-
-            SetLevel(level);
-        }
-
-        public override void Persist(RuntimeStatBuildContext context)
-        {
-            if (!Save)
+            if (string.IsNullOrEmpty(StatId) || !PlayerPrefs.HasKey(GetLevelKey(StatId)))
             {
                 return;
             }
 
-            PlayerPrefs.SetInt(GetLevelKey(context.StatId), AppliedLevel.Value);
+            int level = PlayerPrefs.GetInt(GetLevelKey(StatId), _initialLevel);
+            AppliedLevel.Value = _levelProgressionTable != null ? _levelProgressionTable.ClampLevel(level) : level;
+        }
+
+        protected override void SaveInternal()
+        {
+            if (string.IsNullOrEmpty(StatId))
+            {
+                return;
+            }
+
+            PlayerPrefs.SetInt(GetLevelKey(StatId), AppliedLevel.Value);
             PlayerPrefs.Save();
         }
 

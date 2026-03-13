@@ -82,12 +82,6 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         internal RuntimeStat GetRuntimeStatById(string id) => _stats[id];
 
-        internal void PersistStat(string statId)
-        {
-            GetRuntimeStatById(statId).Runtime().Persist();
-            MarkDirty();
-        }
-
         private static void BuildRuntimeComponents(Stat stat, RuntimeStat runtimeStat)
         {
             IList<ComponentData> components = stat.ComponentStack.List;
@@ -96,7 +90,6 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                 return;
             }
 
-            var context = new RuntimeStatBuildContext(stat.Id);
             for (int i = 0; i < components.Count; i++)
             {
                 if (components[i] is not StatComponentData statComponent)
@@ -104,7 +97,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                     continue;
                 }
 
-                RuntimeStatData runtimeData = statComponent.CreateRuntimeComponent(context);
+                RuntimeStatData runtimeData = statComponent.CreateRuntimeComponent();
                 runtimeStat.AddRuntimeData(runtimeData);
             }
         }
