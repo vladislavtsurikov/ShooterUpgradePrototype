@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8d21545bc97004ba59dae2528276aa, type: 3}
+  m_Name: HP_LevelProgression
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _values
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 11
+    - Name: 
+      Entry: 4
+      Data: 100
+    - Name: 
+      Entry: 4
+      Data: 120
+    - Name: 
+      Entry: 4
+      Data: 140
+    - Name: 
+      Entry: 4
+      Data: 160
+    - Name: 
+      Entry: 4
+      Data: 180
+    - Name: 
+      Entry: 4
+      Data: 200
+    - Name: 
+      Entry: 4
+      Data: 220
+    - Name: 
+      Entry: 4
+      Data: 240
+    - Name: 
+      Entry: 4
+      Data: 260
+    - Name: 
+      Entry: 4
+      Data: 280
+    - Name: 
+      Entry: 4
+      Data: 300
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _progression
+      Entry: 7
+      Data: 1|VladislavTsurikov.ActionFlow.Runtime.LevelProgression.LinearProgressionTable,
+        VladislavTsurikov.LevelProgression
+    - Name: _maxLevel
+      Entry: 3
+      Data: 10
+    - Name: _baseValue
+      Entry: 4
+      Data: 100
+    - Name: _incrementPerLevel
+      Entry: 4
+      Data: 20
+    - Name: 
+      Entry: 8
+      Data: 
