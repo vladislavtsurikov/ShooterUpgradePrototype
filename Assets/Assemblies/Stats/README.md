@@ -32,6 +32,11 @@ Main types:
 Path: `Packages/com.vladislavtsurikov.frameworks/EntityDataAction.Shared/Runtime/Stats`
 
 Main types:
+- `StatsEntityState`
+  - plain runtime model for one stat container;
+  - stores `StatCollection`;
+  - builds runtime dictionary `Dictionary<string, RuntimeStat>` by `stat.Id`;
+  - rebuilds `RuntimeStatData` from stat authoring components.
 - `RuntimeStat`
   - stores link to `Stat`;
   - stores runtime data dictionary keyed by runtime-data type.
@@ -46,9 +51,12 @@ Main types:
   - stores applied level in `ReactiveProperty<int>`;
   - owns level save/restore logic.
 - `StatsEntityData`
-  - stores `StatCollection`;
-  - builds runtime dictionary `Dictionary<string, RuntimeStat>` by `stat.Id`;
-  - rebuilds `RuntimeStatData` from stat authoring components.
+  - `ComponentData` wrapper around `StatsEntityState`;
+  - can resolve stats from local embedded data or from a shared `StatsEntityConfig`;
+  - preserves entity-facing API `Entity.GetData<StatsEntityData>()`.
+- `StatsEntityConfig`
+  - ScriptableObject that can hold shared `StatsEntityState`;
+  - can be reused as a global stats source across scenes.
 - `ModifiersData`
   - stores active modifier effects in `ReactiveCollection<ModifierStatEffect>`.
 - `ApplyModifierStatEffectAction`

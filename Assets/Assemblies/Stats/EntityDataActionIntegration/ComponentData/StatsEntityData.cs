@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using OdinSerializer;
-using UnityEngine;
 using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
@@ -10,97 +8,87 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
     [Name("Stats/StatsEntity")]
     public sealed class StatsEntityData : ComponentData
     {
-        [OdinSerialize] private StatCollection _collection;
-        [OdinSerialize] private readonly Dictionary<string, RuntimeStat> _stats = new();
+        [OdinSerialize] private StatsEntitySourceType _sourceType;
+        [OdinSerialize] private StatsEntityState _localStats = new();
+        [OdinSerialize] private StatsEntityConfig _globalConfig;
 
-        public StatCollection Collection
+        public StatsEntitySourceType SourceType
         {
-            get => _collection;
+            get => _sourceType;
             set
             {
-                if (_collection == value)
+                if (_sourceType == value)
                 {
                     return;
                 }
 
-                _collection = value;
-                RebuildFromCollection();
+                _sourceType = value;
+                ResolveData().EnsureInitialized();
                 MarkDirty();
             }
         }
 
-        public IReadOnlyDictionary<string, RuntimeStat> Stats => _stats;
+        public StatsEntityConfig GlobalConfig
+        {
+            get => _globalConfig;
+            set
+            {
+                if (_globalConfig == value)
+                {
+                    return;
+                }
+
+                _globalConfig = value;
+                ResolveData().EnsureInitialized();
+                MarkDirty();
+            }
+        }
+
+        public StatsEntityState LocalStats => _localStats ??= new StatsEntityState();
+
+        public StatsEntityState Data => ResolveData();
+
+        public bool UsesGlobalConfig => _sourceType == StatsEntitySourceType.Global && _globalConfig != null;
+
+        public StatCollection Collection
+        {
+            get => Data?.Collection;
+            set
+            {
+                ResolveWritableData().Collection = value;
+                MarkDirty();
+            }
+        }
+
+        public System.Collections.Generic.IReadOnlyDictionary<string, RuntimeStat> Stats => Data?.Stats;
 
         protected override void SetupComponent(object[] setupData = null)
         {
-            RebuildFromCollection();
+            Data?.EnsureInitialized();
         }
 
-        public void RebuildFromCollection()
+        public void RebuildFromCollection() => ResolveWritableData().RebuildFromCollection();
+
+        internal RuntimeStat GetRuntimeStatById(string id) => Data.GetRuntimeStatById(id);
+
+        private StatsEntityState ResolveData()
         {
-            if (_collection == null)
+            if (_sourceType == StatsEntitySourceType.Global && _globalConfig != null)
             {
-                _stats.Clear();
-                return;
+                return _globalConfig.Stats;
             }
 
-            var sourceStats = _collection.Stats;
-            if (sourceStats == null)
-            {
-                _stats.Clear();
-                return;
-            }
-
-            var rebuiltStats = new Dictionary<string, RuntimeStat>(sourceStats.Count);
-
-            for (int i = 0; i < sourceStats.Count; i++)
-            {
-                Stat stat = sourceStats[i];
-                if (stat == null)
-                {
-                    continue;
-                }
-
-                RuntimeStat runtimeStat = _stats.TryGetValue(stat.Id, out RuntimeStat existing)
-                    ? existing
-                    : new RuntimeStat();
-
-                runtimeStat.SetStat(stat);
-                runtimeStat.ClearRuntimeData();
-                BuildRuntimeComponents(stat, runtimeStat);
-                runtimeStat.Runtime().Restore();
-
-                rebuiltStats[stat.Id] = runtimeStat;
-            }
-
-            _stats.Clear();
-            foreach (KeyValuePair<string, RuntimeStat> pair in rebuiltStats)
-            {
-                _stats[pair.Key] = pair.Value;
-            }
+            return LocalStats;
         }
 
-        internal RuntimeStat GetRuntimeStatById(string id) => _stats[id];
-
-        private static void BuildRuntimeComponents(Stat stat, RuntimeStat runtimeStat)
+        private StatsEntityState ResolveWritableData()
         {
-            IList<ComponentData> components = stat.ComponentStack.List;
-            if (components == null)
+            if (_sourceType == StatsEntitySourceType.Global && _globalConfig != null)
             {
-                return;
+                return _globalConfig.Stats;
             }
 
-            for (int i = 0; i < components.Count; i++)
-            {
-                if (components[i] is not StatComponentData statComponent)
-                {
-                    continue;
-                }
-
-                RuntimeStatData runtimeData = statComponent.CreateRuntimeComponent();
-                runtimeStat.AddRuntimeData(runtimeData);
-            }
+            return LocalStats;
         }
-
     }
 }

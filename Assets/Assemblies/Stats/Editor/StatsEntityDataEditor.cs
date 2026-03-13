@@ -32,21 +32,57 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Editor.Stats
             BuildStyles();
 
             float y = rect.y;
-            float collectionHeight = EditorGUIUtility.singleLineHeight;
-            Rect collectionRect = new Rect(rect.x, y, rect.width, collectionHeight);
+            float lineHeight = EditorGUIUtility.singleLineHeight;
+
+            Rect sourceRect = new Rect(rect.x, y, rect.width, lineHeight);
             EditorGUI.BeginChangeCheck();
-            StatCollection collection = (StatCollection)EditorGUI.ObjectField(
-                collectionRect,
-                "Collection",
-                _data.Collection,
-                typeof(StatCollection),
-                false);
+            StatsEntitySourceType sourceType = (StatsEntitySourceType)EditorGUI.EnumPopup(
+                sourceRect,
+                "Source",
+                _data.SourceType);
             if (EditorGUI.EndChangeCheck())
             {
-                _data.Collection = collection;
+                _data.SourceType = sourceType;
                 MarkTargetDirty();
             }
-            y += collectionHeight + 6f;
+            y += lineHeight + 4f;
+
+            if (_data.SourceType == StatsEntitySourceType.Global)
+            {
+                Rect configRect = new Rect(rect.x, y, rect.width, lineHeight);
+                EditorGUI.BeginChangeCheck();
+                StatsEntityConfig config = (StatsEntityConfig)EditorGUI.ObjectField(
+                    configRect,
+                    "Global Config",
+                    _data.GlobalConfig,
+                    typeof(StatsEntityConfig),
+                    false);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    _data.GlobalConfig = config;
+                    MarkTargetDirty();
+                }
+
+                y += lineHeight + 6f;
+            }
+
+            Rect collectionRect = new Rect(rect.x, y, rect.width, lineHeight);
+            using (new EditorGUI.DisabledScope(_data.SourceType == StatsEntitySourceType.Global))
+            {
+                EditorGUI.BeginChangeCheck();
+                StatCollection collection = (StatCollection)EditorGUI.ObjectField(
+                    collectionRect,
+                    "Collection",
+                    _data.Collection,
+                    typeof(StatCollection),
+                    false);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    _data.Collection = collection;
+                    MarkTargetDirty();
+                }
+            }
+            y += lineHeight + 6f;
 
             float headerHeight = EditorGUIUtility.singleLineHeight;
             EditorGUI.LabelField(new Rect(rect.x, y, rect.width, headerHeight), "Stats", _headerStyle);
@@ -98,12 +134,16 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Editor.Stats
                 return EditorGUIUtility.singleLineHeight;
             }
 
+            float sourceHeight = EditorGUIUtility.singleLineHeight + 4f;
+            float configHeight = _data.SourceType == StatsEntitySourceType.Global
+                ? EditorGUIUtility.singleLineHeight + 6f
+                : 0f;
             float collectionHeight = EditorGUIUtility.singleLineHeight + 6f;
             int count = _data.Stats != null ? _data.Stats.Count : 0;
             float headerHeight = EditorGUIUtility.singleLineHeight + 4f;
             float rowHeight = EditorGUIUtility.singleLineHeight + 8f;
             float rowsHeight = count > 0 ? count * (rowHeight + 2f) : EditorGUIUtility.singleLineHeight;
-            return collectionHeight + headerHeight + rowsHeight;
+            return sourceHeight + configHeight + collectionHeight + headerHeight + rowsHeight;
         }
 
         private static string BuildClampText(StatValueComponent component, float value)
