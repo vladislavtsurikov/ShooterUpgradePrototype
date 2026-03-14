@@ -9,7 +9,7 @@ using VladislavTsurikov.ReflectionUtility;
 
 namespace AutoStrike.Actions
 {
-    [RequiresData(typeof(StatsEntityData), typeof(FireInputData), typeof(FirstPersonCameraRigData))]
+    [RequiresData(typeof(StatsEntityData), typeof(FireInputData), typeof(CameraData))]
     [Name("AutoStrike/Actions/AttackTarget")]
     public sealed class AttackTargetAction : EntityMonoBehaviourAction
     {
@@ -26,8 +26,8 @@ namespace AutoStrike.Actions
         [Min(1f)]
         private float _maxShootDistance = 250f;
 
-        private readonly CompositeDisposable _subscriptions = new();
-        private FirstPersonCameraRigData _cameraRigData;
+        private CompositeDisposable _subscriptions = new();
+        private CameraData _cameraData;
         private StatsEntityData _attackerStats;
         private FireInputData _fireInputData;
         private float _cooldownRemaining;
@@ -36,9 +36,10 @@ namespace AutoStrike.Actions
         {
             _attackerStats = Entity.GetData<StatsEntityData>();
             _fireInputData = Entity.GetData<FireInputData>();
-            _cameraRigData = Entity.GetData<FirstPersonCameraRigData>();
+            _cameraData = Entity.GetData<CameraData>();
             _cooldownRemaining = 0f;
 
+            _subscriptions ??= new CompositeDisposable();
             _subscriptions.Clear();
             _fireInputData.IsFirePressed
                 .Select(isPressed =>
@@ -52,25 +53,17 @@ namespace AutoStrike.Actions
 
         protected override void OnDisable()
         {
-            _subscriptions.Clear();
+            _subscriptions?.Clear();
         }
 
         protected override void Update()
         {
-            if (_cooldownRemaining > 0f)
-            {
-                _cooldownRemaining = Mathf.Max(0f, _cooldownRemaining - Time.deltaTime);
-            }
+            _cooldownRemaining = Mathf.Max(0f, _cooldownRemaining - Time.deltaTime);
         }
 
         private void AttackStep()
         {
-            if (_cooldownRemaining > 0f)
-            {
-                return;
-            }
-
-            Camera camera = _cameraRigData?.Camera;
+            Camera camera = _cameraData?.Camera;
             if (camera == null)
             {
                 return;

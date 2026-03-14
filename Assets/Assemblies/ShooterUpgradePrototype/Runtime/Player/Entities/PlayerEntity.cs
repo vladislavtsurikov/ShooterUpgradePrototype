@@ -12,13 +12,11 @@ namespace ShooterUpgradePrototype.Player.Entities
 {
     public sealed class PlayerEntity : EntityMonoBehaviour
     {
-        [SerializeField] private StatsEntityConfig _statsConfig;
-
         protected override Type[] ComponentDataTypesToCreate() =>
             new[]
             {
                 typeof(StatsEntityData),
-                typeof(FirstPersonCameraRigData),
+                typeof(CameraData),
                 typeof(MoveInputData),
                 typeof(LookInputData),
                 typeof(FireInputData),
@@ -35,41 +33,5 @@ namespace ShooterUpgradePrototype.Player.Entities
                 typeof(DesktopFirstPersonCameraLookAction),
                 typeof(AttackTargetAction)
             };
-
-        protected override void OnAfterCreateDataAndActions()
-        {
-            base.OnAfterCreateDataAndActions();
-
-            FirstPersonCameraRigData cameraRigData = GetData<FirstPersonCameraRigData>();
-            cameraRigData?.Initialize(ResolveCamera(), transform, ResolvePitchTransform());
-
-            StatsEntityData stats = GetData<StatsEntityData>();
-            if (stats == null || _statsConfig == null)
-            {
-                return;
-            }
-
-            stats.SourceType = StatsEntitySourceType.Global;
-            stats.GlobalConfig = _statsConfig;
-            stats.RebuildFromCollection();
-
-            ApplyStatLevelsByTableAction applyLevelsAction = GetAction<ApplyStatLevelsByTableAction>();
-            applyLevelsAction?.ApplyLevels();
-        }
-
-        private Camera ResolveCamera() => GetComponentInChildren<Camera>(true);
-
-        private Transform ResolvePitchTransform()
-        {
-            Camera camera = ResolveCamera();
-            if (camera == null)
-            {
-                return transform;
-            }
-
-            return camera.transform.parent != null
-                ? camera.transform.parent
-                : camera.transform;
-        }
     }
 }

@@ -20,7 +20,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
         private readonly CompositeDisposable _subscriptions = new();
         private float _pitch;
-        private FirstPersonCameraRigData _cameraRigData;
+        private CameraData _cameraData;
 
         protected LookInputData LookInputData { get; private set; }
 
@@ -28,9 +28,11 @@ namespace AutoStrike.FirstPersonCamera.Actions
         {
             _subscriptions.Clear();
             LookInputData = Entity.GetData<LookInputData>();
-            _cameraRigData = Entity.GetData<FirstPersonCameraRigData>();
+            _cameraData = Entity.GetData<CameraData>();
 
-            Transform pitchTransform = _cameraRigData?.PitchTransform;
+            Transform pitchTransform = _cameraData?.Camera != null
+                ? _cameraData.Camera.transform
+                : null;
             if (pitchTransform == null)
             {
                 return;
@@ -56,13 +58,9 @@ namespace AutoStrike.FirstPersonCamera.Actions
                 return;
             }
 
-            Transform yawTransform = _cameraRigData?.YawTransform;
-            if (yawTransform != null)
-            {
-                yawTransform.Rotate(0f, look.x, 0f, Space.World);
-            }
+            EntityMonoBehaviour.transform.Rotate(0f, look.x, 0f, Space.World);
 
-            if (_cameraRigData?.PitchTransform == null)
+            if (_cameraData?.Camera == null)
             {
                 return;
             }
@@ -74,7 +72,9 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
         private void ApplyPitchRotation()
         {
-            Transform pitchTransform = _cameraRigData?.PitchTransform;
+            Transform pitchTransform = _cameraData?.Camera != null
+                ? _cameraData.Camera.transform
+                : null;
             if (pitchTransform == null)
             {
                 return;
@@ -101,7 +101,6 @@ namespace AutoStrike.FirstPersonCamera.Actions
                 .Subscribe(HandleLookRate)
                 .AddTo(_subscriptions);
         }
-
         private static float NormalizeAngle(float angle)
         {
             if (angle > 180f)
