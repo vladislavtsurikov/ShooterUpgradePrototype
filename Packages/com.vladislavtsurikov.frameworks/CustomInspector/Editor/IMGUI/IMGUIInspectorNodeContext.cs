@@ -23,7 +23,7 @@ namespace VladislavTsurikov.CustomInspector.Editor.IMGUI
             Rect rect,
             float totalHeight,
             IMGUIRecursiveFieldsDrawer recursiveFieldsDrawer,
-            Action<object, Rect> drawNestedFields)
+            Func<object, Rect, float> drawNestedFields)
             : base(
                 target,
                 field,
@@ -45,7 +45,7 @@ namespace VladislavTsurikov.CustomInspector.Editor.IMGUI
         public Rect Rect { get; set; }
         public float TotalHeight { get; set; }
         public IMGUIRecursiveFieldsDrawer RecursiveFieldsDrawer { get; }
-        public Action<object, Rect> DrawNestedFields { get; }
+        public Func<object, Rect, float> DrawNestedFields { get; }
     }
 }
 #endif

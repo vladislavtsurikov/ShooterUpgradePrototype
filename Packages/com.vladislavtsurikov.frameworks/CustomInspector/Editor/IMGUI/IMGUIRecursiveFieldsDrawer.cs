@@ -13,28 +13,38 @@ namespace VladislavTsurikov.CustomInspector.Editor.IMGUI
             object value,
             FieldInfo fieldInfo,
             Rect fieldRect,
-            Action<object, Rect> drawField)
+            Func<object, Rect, float> drawField)
         {
             EditorGUI.indentLevel++;
 
             var foldoutState = GetFoldoutState(value);
+            Rect foldoutRect = new Rect(
+                fieldRect.x,
+                fieldRect.y,
+                fieldRect.width,
+                EditorGUIUtility.singleLineHeight);
 
-            foldoutState = EditorGUI.Foldout(fieldRect, foldoutState, ObjectNames.NicifyVariableName(fieldInfo.Name));
+            foldoutState = EditorGUI.Foldout(
+                foldoutRect,
+                foldoutState,
+                ObjectNames.NicifyVariableName(fieldInfo.Name));
 
             SetFoldoutState(value, foldoutState);
 
             var foldoutHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
             fieldRect.y += foldoutHeight;
+            fieldRect.height = Mathf.Max(0f, fieldRect.height - foldoutHeight);
 
+            float nestedHeight = 0f;
             if (foldoutState)
             {
-                drawField(value, fieldRect);
+                nestedHeight = drawField?.Invoke(value, fieldRect) ?? 0f;
             }
 
             EditorGUI.indentLevel--;
 
-            return new RecursiveDrawResult(foldoutHeight, foldoutState);
+            return new RecursiveDrawResult(foldoutHeight + nestedHeight, foldoutState);
         }
 
         public readonly struct RecursiveDrawResult

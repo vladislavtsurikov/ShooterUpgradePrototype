@@ -23,7 +23,7 @@ namespace VladislavTsurikov.CustomInspector.Editor.IMGUI
                 context.Value,
                 context.Field,
                 imguiContext.Rect,
-                (nestedTarget, nestedRect) => imguiContext.DrawNestedFields?.Invoke(nestedTarget, nestedRect));
+                (nestedTarget, nestedRect) => imguiContext.DrawNestedFields?.Invoke(nestedTarget, nestedRect) ?? 0f);
 
             if (!result.IsExpanded)
             {

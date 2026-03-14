@@ -5,7 +5,8 @@
         "GUID:6f7c2c763c464614a3efc88a2e2e88c8",
         "GUID:c58cb679f31162c47bc160d1f716ecea",
         "GUID:a4cac7205a624b644ba15c8a468d3ad8",
-        "GUID:86afa44309ced704d99b18db08754600"
+        "GUID:86afa44309ced704d99b18db08754600",
+        "Unity.Localization"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -14,6 +15,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.localization",
+            "expression": "1.0.0",
+            "define": "UNITY_LOCALIZATION"
+        }
+    ],
     "noEngineReferences": false
 }

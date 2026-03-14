@@ -37,12 +37,14 @@ namespace VladislavTsurikov.CustomInspector.Editor.IMGUI
             ButtonDrawer.DrawButtons(target, ref rect);
         }
 
-        private void DrawFieldsRecursive(object target, Rect rect, int? elementIndex)
+        private float DrawFieldsRecursive(object target, Rect rect, int? elementIndex)
         {
             if (target == null)
             {
-                return;
+                return 0f;
             }
+
+            float startHeight = _totalHeight;
 
             foreach (var processedField in GetProcessedFields(target))
             {
@@ -67,6 +69,8 @@ namespace VladislavTsurikov.CustomInspector.Editor.IMGUI
                 rect = context.Rect;
                 _totalHeight = context.TotalHeight;
             }
+
+            return _totalHeight - startHeight;
         }
 
         public float GetFieldsHeight(object target, int? elementIndex = null)
@@ -105,7 +109,12 @@ namespace VladislavTsurikov.CustomInspector.Editor.IMGUI
                 }
                 else
                 {
-                    _totalHeight += EditorGUIUtility.singleLineHeight;
+                    _totalHeight += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+                    if (processedField.Value != null && _imguiRecursiveFieldsDrawer.IsExpanded(processedField.Value))
+                    {
+                        CalculateFieldsHeight(processedField.Value, elementIndex);
+                    }
                 }
             }
         }

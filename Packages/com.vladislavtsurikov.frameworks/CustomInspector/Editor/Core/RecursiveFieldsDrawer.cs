@@ -6,6 +6,8 @@ namespace VladislavTsurikov.CustomInspector.Editor.Core
     {
         private readonly Dictionary<object, bool> _foldoutStates = new();
 
+        public bool IsExpanded(object value) => GetFoldoutState(value);
+
         protected bool GetFoldoutState(object value)
         {
             if (value == null)
