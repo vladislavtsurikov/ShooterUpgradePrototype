@@ -5,13 +5,12 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
-using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 using Zenject;
 
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
-    [SceneFilter("TestScene_1", "TestScene_2", "Battle")]
+    [SceneFilter("Battle")]
     public sealed class Root : UIToolkitUIHandler
     {
         public Root(DiContainer container, RootLoader loader)
