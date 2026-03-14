@@ -9,10 +9,14 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
     [Serializable]
     public sealed class StatsEntityState
     {
-        [OdinSerialize] private StatCollection _collection;
+        [OdinSerialize]
+        private StatCollection _collection;
 
-        [NonSerialized] private Dictionary<string, RuntimeStat> _stats = new();
-        [NonSerialized] private bool _isInitialized;
+        [NonSerialized]
+        private Dictionary<string, RuntimeStat> _stats = new();
+
+        [NonSerialized]
+        private bool _isInitialized;
 
         public StatCollection Collection
         {

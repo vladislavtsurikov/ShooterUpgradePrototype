@@ -1,23 +1,24 @@
 using System;
 using AutoStrike.Actions;
-using AutoStrike.Data;
+using AutoStrike.FirstPersonCamera.Actions;
+using AutoStrike.FirstPersonCamera.Data;
 using AutoStrike.Input.Actions;
 using AutoStrike.Input.Data;
-using ArmyClash.Battle.Data;
-using VladislavTsurikov.EntityDataAction.Runtime.Core;
+using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
+using VladislavTsurikov.EntityDataAction.Runtime.Core;
 
-namespace AutoStrike.Entities
+namespace ShooterUpgradePrototype.Player.Entities
 {
     public sealed class PlayerEntity : EntityMonoBehaviour
     {
+        [SerializeField] private StatsEntityConfig _statsConfig;
+
         protected override Type[] ComponentDataTypesToCreate() =>
             new[]
             {
                 typeof(StatsEntityData),
-                typeof(ModifiersData),
-                typeof(TargetData),
-                typeof(AttackDistanceData),
+                typeof(FirstPersonCameraRigData),
                 typeof(MoveInputData),
                 typeof(LookInputData),
                 typeof(FireInputData),
@@ -26,16 +27,49 @@ namespace AutoStrike.Entities
         protected override Type[] ActionTypesToCreate() =>
             new[]
             {
-                typeof(ApplyModifierStatEffectAction),
                 typeof(ApplyStatLevelsByTableAction),
                 typeof(ReadMoveInputAction),
                 typeof(ReadLookInputAction),
                 typeof(ReadFireInputAction),
                 typeof(MoveByInputAction),
-                typeof(UpdateAutoAttackTargetAction),
-                typeof(RotateByInputAction),
-                typeof(RotateToTargetAction),
+                typeof(DesktopFirstPersonCameraLookAction),
                 typeof(AttackTargetAction)
             };
+
+        protected override void OnAfterCreateDataAndActions()
+        {
+            base.OnAfterCreateDataAndActions();
+
+            FirstPersonCameraRigData cameraRigData = GetData<FirstPersonCameraRigData>();
+            cameraRigData?.Initialize(ResolveCamera(), transform, ResolvePitchTransform());
+
+            StatsEntityData stats = GetData<StatsEntityData>();
+            if (stats == null || _statsConfig == null)
+            {
+                return;
+            }
+
+            stats.SourceType = StatsEntitySourceType.Global;
+            stats.GlobalConfig = _statsConfig;
+            stats.RebuildFromCollection();
+
+            ApplyStatLevelsByTableAction applyLevelsAction = GetAction<ApplyStatLevelsByTableAction>();
+            applyLevelsAction?.ApplyLevels();
+        }
+
+        private Camera ResolveCamera() => GetComponentInChildren<Camera>(true);
+
+        private Transform ResolvePitchTransform()
+        {
+            Camera camera = ResolveCamera();
+            if (camera == null)
+            {
+                return transform;
+            }
+
+            return camera.transform.parent != null
+                ? camera.transform.parent
+                : camera.transform;
+        }
     }
 }

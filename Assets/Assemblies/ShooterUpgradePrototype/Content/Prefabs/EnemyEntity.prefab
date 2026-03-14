@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1523f6fe2fe416e88e00d6171cdf91b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Enemy.Entities.EnemyEntity
+  _statsCollection: {fileID: 11400000, guid: f6389f926fc14cb4bb0a9be923dda1d1, type: 2}
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 

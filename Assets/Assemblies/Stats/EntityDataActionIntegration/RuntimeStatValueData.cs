@@ -81,14 +81,14 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             return value;
         }
 
-        protected override void RestoreDefaultsInternal()
+        protected override void RestoreDefaultsValue()
         {
             ResetToBaseValue();
         }
 
-        protected override void RestoreInternal()
+        protected override void RestoreValue()
         {
-            if (string.IsNullOrEmpty(StatId) || !PlayerPrefs.HasKey(GetValueKey(StatId)))
+            if (!PlayerPrefs.HasKey(GetValueKey(StatId)))
             {
                 return;
             }
@@ -96,13 +96,8 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             Value.Value = ApplyClamp(PlayerPrefs.GetFloat(GetValueKey(StatId)));
         }
 
-        protected override void SaveInternal()
+        protected override void SaveValue()
         {
-            if (string.IsNullOrEmpty(StatId))
-            {
-                return;
-            }
-
             PlayerPrefs.SetFloat(GetValueKey(StatId), CurrentValue);
             PlayerPrefs.Save();
         }

@@ -1,39 +1,31 @@
 using UniRx;
+using ShooterUpgradePrototype.Player.Services;
 
 namespace ShooterUpgradePrototype.Enemy.Services
 {
     public sealed class EnemyRewardService
     {
-        private readonly ReactiveProperty<int> _availablePoints = new(0);
+        private readonly PlayerStatsService _playerStatsService;
 
-        public IReadOnlyReactiveProperty<int> AvailablePoints => _availablePoints;
+        public EnemyRewardService(PlayerStatsService playerStatsService)
+        {
+            _playerStatsService = playerStatsService;
+        }
+
+        public IReadOnlyReactiveProperty<int> AvailablePoints => _playerStatsService.AvailableExp;
 
         public void Grant(int points)
         {
-            if (points <= 0)
-            {
-                return;
-            }
-
-            _availablePoints.Value += points;
+            _playerStatsService.AddExp(points);
         }
 
         public bool TrySpend(int points)
         {
-            if (points <= 0)
-            {
-                return true;
-            }
-
-            if (_availablePoints.Value < points)
-            {
-                return false;
-            }
-
-            _availablePoints.Value -= points;
-            return true;
+            return _playerStatsService.TrySpendExp(points);
         }
 
-        public void Reset() => _availablePoints.Value = 0;
+        public void Reset()
+        {
+        }
     }
 }

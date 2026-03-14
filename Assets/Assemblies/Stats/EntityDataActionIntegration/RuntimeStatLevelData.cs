@@ -3,7 +3,6 @@ using OdinSerializer;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
 
 namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 {
@@ -42,16 +41,16 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             return true;
         }
 
-        protected override void RestoreDefaultsInternal()
+        protected override void RestoreDefaultsValue()
         {
             AppliedLevel.Value = _levelProgressionTable != null
                 ? _levelProgressionTable.ClampLevel(_initialLevel)
                 : _initialLevel;
         }
 
-        protected override void RestoreInternal()
+        protected override void RestoreValue()
         {
-            if (string.IsNullOrEmpty(StatId) || !PlayerPrefs.HasKey(GetLevelKey(StatId)))
+            if (!PlayerPrefs.HasKey(GetLevelKey(StatId)))
             {
                 return;
             }
@@ -60,13 +59,8 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             AppliedLevel.Value = _levelProgressionTable != null ? _levelProgressionTable.ClampLevel(level) : level;
         }
 
-        protected override void SaveInternal()
+        protected override void SaveValue()
         {
-            if (string.IsNullOrEmpty(StatId))
-            {
-                return;
-            }
-
             PlayerPrefs.SetInt(GetLevelKey(StatId), AppliedLevel.Value);
             PlayerPrefs.Save();
         }

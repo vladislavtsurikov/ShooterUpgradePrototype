@@ -22,7 +22,9 @@
         "VladislavTsurikov.LevelProgression",
         "VladislavTsurikov.Stats",
         "Unity.InputSystem",
-        "AutoStrike.Input"
+        "AutoStrike.Input",
+        "AutoStrike.FirstPersonCamera",
+        "Unity.Localization"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

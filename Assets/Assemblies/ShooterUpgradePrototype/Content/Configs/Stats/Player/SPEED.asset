@@ -31,7 +31,7 @@ MonoBehaviour:
         VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 7
       Data: 2|VladislavTsurikov.ActionFlow.Runtime.Stats.StatValueComponent, VladislavTsurikov.Stats
@@ -43,10 +43,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: false
+      Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 83991566-131d-43c4-a27e-4a5c765050b1
+      Data: 95e9b41a-0c35-49bc-9d6e-2d97f410d3d7
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -64,22 +64,22 @@ MonoBehaviour:
       Data: false
     - Name: _baseValue
       Entry: 4
-      Data: 7
+      Data: 0
     - Name: _clampEnabled
       Entry: 5
-      Data: true
+      Data: false
     - Name: _maxValue
       Entry: 4
       Data: 0
     - Name: _minValue
       Entry: 4
-      Data: 0.1
+      Data: 0
     - Name: _useMax
       Entry: 5
       Data: false
     - Name: _useMin
       Entry: 5
-      Data: true
+      Data: false
     - Name: 
       Entry: 8
       Data: 
@@ -98,7 +98,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 915484a5-ee64-4783-9a28-3f0f02967563
+      Data: 0cb7e4fd-150e-472e-a0b5-2c74d41cfd19
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -120,6 +120,43 @@ MonoBehaviour:
     - Name: _initialLevel
       Entry: 3
       Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|VladislavTsurikov.ActionFlow.Runtime.Stats.UpgradeWindowStatComponent,
+        VladislavTsurikov.Stats
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: fef10a98-c013-4c15-9cb7-b0fc86129933
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _save
+      Entry: 5
+      Data: false
+    - Name: _order
+      Entry: 3
+      Data: 1
     - Name: 
       Entry: 8
       Data: 

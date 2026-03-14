@@ -2,6 +2,7 @@ using System;
 using AutoStrike.Actions;
 using ArmyClash.WaypointsSystem.Runtime.Movement;
 using UnityEngine;
+using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 
@@ -10,6 +11,7 @@ namespace ShooterUpgradePrototype.Enemy.Entities
     public sealed class EnemyEntity : EntityMonoBehaviour
     {
         private const string HealthId = "HP";
+        [SerializeField] private StatCollection _statsCollection;
 
         protected override Type[] ComponentDataTypesToCreate() =>
             new[]
@@ -28,6 +30,22 @@ namespace ShooterUpgradePrototype.Enemy.Entities
                 typeof(PatrolRotateAction),
                 typeof(DeathAction)
             };
+
+        protected override void OnAfterCreateDataAndActions()
+        {
+            base.OnAfterCreateDataAndActions();
+
+            StatsEntityData stats = GetData<StatsEntityData>();
+            if (stats == null)
+            {
+                return;
+            }
+
+            stats.SourceType = StatsEntitySourceType.Local;
+            stats.GlobalConfig = null;
+            stats.Collection = _statsCollection;
+            stats.RebuildFromCollection();
+        }
 
         public bool IsAlive
         {

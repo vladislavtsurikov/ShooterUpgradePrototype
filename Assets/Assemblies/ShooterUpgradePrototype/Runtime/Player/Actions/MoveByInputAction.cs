@@ -54,7 +54,9 @@ namespace AutoStrike.Actions
         private void MoveStep()
         {
             Vector2 input = _inputData.MoveDirection.Value;
-            Vector3 direction = new(input.x, 0f, input.y);
+            Transform transform = EntityMonoBehaviour.transform;
+            Vector3 direction = transform.right * input.x + transform.forward * input.y;
+            direction.y = 0f;
 
             direction.Normalize();
             float speed = _stats.Stat(SpeedId).RuntimeData<RuntimeStatValueData>().CurrentValue;

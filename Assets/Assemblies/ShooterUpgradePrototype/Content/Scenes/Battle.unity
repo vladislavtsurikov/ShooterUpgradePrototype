@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &380721725
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2208,6 +2208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfbaf8757e9f4106a917c281bda322cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Infrastructure.Installers.ShooterUpgradePrototypeInstaller
+  _playerStatsConfig: {fileID: 11400000, guid: d3d7d4546660d194481d76ecfb693c78, type: 2}
+  _playerStatsCollection: {fileID: 11400000, guid: 9315e217746d5094fabfa424540bb843, type: 2}
 --- !u!114 &2500000202
 MonoBehaviour:
   m_ObjectHideFlags: 0

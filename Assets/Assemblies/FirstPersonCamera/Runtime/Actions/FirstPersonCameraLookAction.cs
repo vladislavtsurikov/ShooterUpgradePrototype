@@ -1,4 +1,5 @@
 using AutoStrike.Input.Data;
+using AutoStrike.FirstPersonCamera.Data;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
@@ -7,13 +8,6 @@ namespace AutoStrike.FirstPersonCamera.Actions
 {
     public abstract class FirstPersonCameraLookAction : EntityMonoBehaviourAction
     {
-        [Header("Rig")]
-        [SerializeField]
-        private Transform _yawTransform;
-
-        [SerializeField]
-        private Transform _pitchTransform;
-
         [Header("Pitch")]
         [SerializeField]
         private float _minPitch = -80f;
@@ -26,6 +20,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
         private readonly CompositeDisposable _subscriptions = new();
         private float _pitch;
+        private FirstPersonCameraRigData _cameraRigData;
 
         protected LookInputData LookInputData { get; private set; }
 
@@ -33,18 +28,22 @@ namespace AutoStrike.FirstPersonCamera.Actions
         {
             _subscriptions.Clear();
             LookInputData = Entity.GetData<LookInputData>();
+            _cameraRigData = Entity.GetData<FirstPersonCameraRigData>();
 
-            _yawTransform ??= EntityMonoBehaviour.transform;
-            _pitchTransform ??= _yawTransform;
+            Transform pitchTransform = _cameraRigData?.PitchTransform;
+            if (pitchTransform == null)
+            {
+                return;
+            }
 
-            _pitch = NormalizeAngle(_pitchTransform.localEulerAngles.x);
+            _pitch = NormalizeAngle(pitchTransform.localEulerAngles.x);
             _pitch = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
 
             ApplyPitchRotation();
             SubscribeToLookInput();
         }
 
-        protected virtual void OnDisable() => _subscriptions.Clear();
+        protected override void OnDisable() => _subscriptions.Clear();
 
         protected virtual void HandleLookDelta(Vector2 lookDelta) => ApplyLook(lookDelta);
 
@@ -57,12 +56,13 @@ namespace AutoStrike.FirstPersonCamera.Actions
                 return;
             }
 
-            if (_yawTransform != null)
+            Transform yawTransform = _cameraRigData?.YawTransform;
+            if (yawTransform != null)
             {
-                _yawTransform.Rotate(0f, look.x, 0f, Space.World);
+                yawTransform.Rotate(0f, look.x, 0f, Space.World);
             }
 
-            if (_pitchTransform == null)
+            if (_cameraRigData?.PitchTransform == null)
             {
                 return;
             }
@@ -74,9 +74,15 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
         private void ApplyPitchRotation()
         {
-            Vector3 localEulerAngles = _pitchTransform.localEulerAngles;
+            Transform pitchTransform = _cameraRigData?.PitchTransform;
+            if (pitchTransform == null)
+            {
+                return;
+            }
+
+            Vector3 localEulerAngles = pitchTransform.localEulerAngles;
             localEulerAngles.x = _pitch;
-            _pitchTransform.localEulerAngles = localEulerAngles;
+            pitchTransform.localEulerAngles = localEulerAngles;
         }
 
         private void SubscribeToLookInput()

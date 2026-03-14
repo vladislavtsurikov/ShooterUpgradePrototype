@@ -1,30 +1,64 @@
-using System.Collections.Generic;
 using System.Threading;
-using ArmyClash.Battle.Data;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
+using UniRx;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
 namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 {
-    [RequiresData(typeof(StatsEntityData), typeof(ModifiersData))]
+    [RequiresData(typeof(StatsEntityData))]
     [Name("Stats/Apply Stat Levels By Table")]
     public sealed class ApplyStatLevelsByTableAction : EntityMonoBehaviourAction
     {
+        private readonly CompositeDisposable _subscriptions = new();
+
+        protected override void OnEnable()
+        {
+            RebindLevelSubscriptions();
+        }
+
+        protected override void OnDisable()
+        {
+            _subscriptions.Clear();
+        }
+
         protected override UniTask<bool> Run(CancellationToken token)
         {
             ApplyLevels();
             return UniTask.FromResult(true);
         }
 
+        private void RebindLevelSubscriptions()
+        {
+            _subscriptions.Clear();
+
+            StatsEntityData statsEntityData = Get<StatsEntityData>();
+            if (statsEntityData?.Stats == null)
+            {
+                return;
+            }
+
+            foreach (RuntimeStat runtimeStat in statsEntityData.Stats.Values)
+            {
+                if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelData))
+                {
+                    continue;
+                }
+
+                levelData.AppliedLevel
+                    .Skip(1)
+                    .Subscribe(_ => ApplyLevels())
+                    .AddTo(_subscriptions);
+            }
+        }
+
         public void ApplyLevels()
         {
             StatsEntityData statsEntityData = Get<StatsEntityData>();
-            ModifiersData modifiersData = Get<ModifiersData>();
-            var effects = new List<ModifierStatEffect>();
+            if (statsEntityData?.Stats == null)
+            {
+                return;
+            }
 
             foreach (RuntimeStat runtimeStat in statsEntityData.Stats.Values)
             {
@@ -39,35 +73,9 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                     continue;
                 }
 
-                float baseValue = valueComponent.BaseValue;
                 float targetValue = levelComponent.LevelProgressionTable.GetValue(levelComponent.AppliedLevel.Value);
-                float delta = targetValue - baseValue;
-
-                if (Mathf.Approximately(delta, 0f))
-                {
-                    continue;
-                }
-
-                effects.Add(BuildModifier(runtimeStat.Stat, delta));
+                valueComponent.SetValue(targetValue);
             }
-
-            modifiersData.ReplaceAll(effects);
-        }
-
-        private static ModifierStatEffect BuildModifier(Stat stat, float delta)
-        {
-            var effect = ScriptableObject.CreateInstance<ModifierStatEffect>();
-            effect.hideFlags = HideFlags.HideAndDontSave;
-            effect.SetEntries(new[]
-            {
-                new StatEffect.Entry
-                {
-                    Stat = stat,
-                    Delta = delta
-                }
-            });
-
-            return effect;
         }
     }
 }

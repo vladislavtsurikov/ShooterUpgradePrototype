@@ -5,7 +5,7 @@ using VladislavTsurikov.ReflectionUtility;
 
 namespace AutoStrike.FirstPersonCamera.Actions
 {
-    [RequiresData(typeof(LookInputData))]
+    [RequiresData(typeof(LookInputData), typeof(Data.FirstPersonCameraRigData))]
     [Name("AutoStrike.FirstPersonCamera/Actions/DesktopFirstPersonCameraLook")]
     public sealed class DesktopFirstPersonCameraLookAction : FirstPersonCameraLookAction
     {

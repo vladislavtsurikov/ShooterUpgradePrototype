@@ -42,10 +42,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: false
+      Data: true
     - Name: _nodeId
       Entry: 1
-      Data: f30187b4-c310-4509-9728-708e00c32ec9
+      Data: 5d7b3897-5b3a-4ade-9399-baa5591ad5fb
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule

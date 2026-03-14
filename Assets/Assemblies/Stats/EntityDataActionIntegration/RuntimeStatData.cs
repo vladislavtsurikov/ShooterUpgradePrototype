@@ -21,14 +21,14 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         public void Restore()
         {
-            RestoreDefaultsInternal();
+            RestoreDefaultsValue();
 
             if (!ShouldSave || _runtimeStat == null)
             {
                 return;
             }
 
-            RestoreInternal();
+            RestoreValue();
         }
 
         internal void BindRuntimeStat(RuntimeStat runtimeStat)
@@ -43,22 +43,22 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                 return;
             }
 
-            SaveInternal();
+            SaveValue();
         }
 
         protected string StatId => _runtimeStat?.StatId;
 
         protected RuntimeStat RuntimeStat => _runtimeStat;
 
-        protected virtual void RestoreDefaultsInternal()
+        protected virtual void RestoreDefaultsValue()
         {
         }
 
-        protected virtual void RestoreInternal()
+        protected virtual void RestoreValue()
         {
         }
 
-        protected virtual void SaveInternal()
+        protected virtual void SaveValue()
         {
         }
     }
