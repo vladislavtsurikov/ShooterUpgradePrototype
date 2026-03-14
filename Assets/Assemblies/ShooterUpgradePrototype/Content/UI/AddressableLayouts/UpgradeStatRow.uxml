@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:game="ShooterUpgradePrototype.UI.UISystem.Views" editor-extension-mode="False">
-    <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/Resources/UpgradeStatRow.uss" />
+    <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/AddressableLayouts/UpgradeStatRow.uss" />
     <game:UpgradeStatRowView class="upgrade-row">
         <ui:Label name="statNameLabel" class="upgrade-row-name" text="Speed" />
         <ui:VisualElement name="levelSegmentsContainer" class="upgrade-row-segments" />
