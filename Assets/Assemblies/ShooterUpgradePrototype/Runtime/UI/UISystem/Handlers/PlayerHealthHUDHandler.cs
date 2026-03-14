@@ -2,6 +2,7 @@
 #if UI_SYSTEM_ZENJECT
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using ShooterUpgradePrototype.Player.Services;
 using ShooterUpgradePrototype.UI.UISystem.Views;
 using UniRx;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
@@ -15,18 +16,28 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
     [ParentUIHandler(typeof(BattleHUDRootHandler))]
     public sealed class PlayerHealthHUDHandler : ParentBoundUIToolkitHandler
     {
+        private readonly PlayerStatsService _playerStatsService;
         private PlayerHealthHUDView _view;
 
-        public PlayerHealthHUDHandler(DiContainer container) : base(container)
+        public PlayerHealthHUDHandler(DiContainer container, PlayerStatsService playerStatsService) : base(container)
         {
+            _playerStatsService = playerStatsService;
         }
 
         protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             _view = GetUIComponent<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
 
-            // TODO: restore reactive HP binding after Progression/player runtime services are added back.
-            _view.SetHealthText("HP: -- / --");
+            _playerStatsService.GetValueProperty("HP")
+                .CombineLatest(
+                    _playerStatsService.GetLevelProperty("HP"),
+                    (currentValue, _) => currentValue)
+                .Subscribe(currentValue =>
+                {
+                    float maxValue = _playerStatsService.GetCurrentMaxValue("HP");
+                    _view.SetHealthText($"HP: {currentValue:0.##} / {maxValue:0.##}");
+                })
+                .AddTo(disposables);
 
             return UniTask.CompletedTask;
         }

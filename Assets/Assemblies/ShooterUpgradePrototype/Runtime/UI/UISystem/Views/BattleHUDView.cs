@@ -3,13 +3,10 @@ using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
 namespace ShooterUpgradePrototype.UI.UISystem.Views
 {
-    public sealed class BattleHUDView : VisualElement, IBindableUIElement
+    public sealed class BattleHUDView : BindableVisualElement
     {
         public new class UxmlFactory : UxmlFactory<BattleHUDView, UxmlTraits>
         {
         }
-
-        public string BindingId => nameof(BattleHUDView);
-        public VisualElement Element => this;
     }
 }

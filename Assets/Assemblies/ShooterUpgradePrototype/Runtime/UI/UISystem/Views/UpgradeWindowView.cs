@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UniRx;
-using UnityEngine;
 using UnityEngine.UIElements;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
 namespace ShooterUpgradePrototype.UI.UISystem.Views
 {
-    public sealed class UpgradeWindowView : VisualElement, IBindableUIElement
+    public sealed class UpgradeWindowView : BindableVisualElement
     {
-        private readonly Subject<Unit> _applyClicked = new();
-        private readonly Subject<Unit> _closeClicked = new();
-        private readonly Subject<Unit> _backdropClicked = new();
         private readonly List<TemplateContainer> _rowContainers = new();
         private readonly List<UpgradeStatRowView> _rowViews = new();
 
@@ -21,19 +17,17 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         private VisualElement _backdrop;
         private VisualElement _modalPanel;
         private VisualElement _rowsContainer;
-        private bool _initialized;
 
         public new class UxmlFactory : UxmlFactory<UpgradeWindowView, UxmlTraits>
         {
         }
 
-        public UpgradeWindowView() => RegisterCallback<AttachToPanelEvent>(HandleAttachToPanel);
-
-        public string BindingId => nameof(UpgradeWindowView);
-        public VisualElement Element => this;
-        public IObservable<Unit> OnApplyClicked => _applyClicked;
-        public IObservable<Unit> OnCloseClicked => _closeClicked;
-        public IObservable<Unit> OnBackdropClicked => _backdropClicked;
+        public IObservable<Unit> OnApplyClicked => _applyButton.OnClickAsObservable();
+        public IObservable<Unit> OnCloseClicked => _closeButton.OnClickAsObservable();
+        public IObservable<Unit> OnBackdropClicked => _backdrop
+            .OnClickEventAsObservable()
+            .Where(evt => ReferenceEquals(evt.target, _backdrop))
+            .Select(_ => Unit.Default);
 
         public void SetAvailablePointsText(string text)
         {
@@ -77,40 +71,22 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
             return _rowViews;
         }
 
-        private void HandleAttachToPanel(AttachToPanelEvent evt)
+        protected override void InitializeElements()
         {
-            if (_initialized)
-            {
-                return;
-            }
+            _backdrop = this.Q<VisualElement>("backdrop")
+                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'backdrop'.");
+            _modalPanel = this.Q<VisualElement>("modalPanel")
+                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'modalPanel'.");
+            _availablePointsLabel = this.Q<Label>("availablePointsLabel")
+                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'availablePointsLabel'.");
+            _rowsContainer = this.Q<VisualElement>("rowsContainer")
+                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'rowsContainer'.");
+            _applyButton = this.Q<Button>("applyButton")
+                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'applyButton'.");
+            _closeButton = this.Q<Button>("closeButton")
+                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'closeButton'.");
 
-            _backdrop = this.Q<VisualElement>("backdrop");
-            _modalPanel = this.Q<VisualElement>("modalPanel");
-            _availablePointsLabel = this.Q<Label>("availablePointsLabel");
-            _rowsContainer = this.Q<VisualElement>("rowsContainer");
-            _applyButton = this.Q<Button>("applyButton");
-            _closeButton = this.Q<Button>("closeButton");
-
-            if (_backdrop == null || _modalPanel == null || _availablePointsLabel == null ||
-                _rowsContainer == null || _applyButton == null || _closeButton == null)
-            {
-                throw new InvalidOperationException("UpgradeWindowView is missing required UI elements.");
-            }
-
-            _applyButton.clicked += () => _applyClicked.OnNext(Unit.Default);
-            _closeButton.clicked += () => _closeClicked.OnNext(Unit.Default);
-            _backdrop.RegisterCallback<ClickEvent>(HandleBackdropClicked);
             _modalPanel.RegisterCallback<ClickEvent>(HandleModalClicked);
-
-            _initialized = true;
-        }
-
-        private void HandleBackdropClicked(ClickEvent evt)
-        {
-            if (ReferenceEquals(evt.target, _backdrop))
-            {
-                _backdropClicked.OnNext(Unit.Default);
-            }
         }
 
         private static void HandleModalClicked(ClickEvent evt) => evt.StopPropagation();

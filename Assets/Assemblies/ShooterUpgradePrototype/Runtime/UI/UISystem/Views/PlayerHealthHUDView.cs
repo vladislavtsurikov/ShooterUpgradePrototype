@@ -12,6 +12,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         public string BindingId => nameof(PlayerHealthHUDView);
         public VisualElement Element => this;
 
-        public void SetHealthText(string text) => this.text = text;
+        public void SetHealthText(string value) => text = value;
     }
 }

@@ -1,26 +1,22 @@
 using System;
+using UniRx;
 using UnityEngine.UIElements;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
 namespace ShooterUpgradePrototype.UI.UISystem.Views
 {
-    public sealed class UpgradeStatRowView : VisualElement, IBindableUIElement
+    public sealed class UpgradeStatRowView : BindableVisualElement
     {
         private Label _pendingDeltaLabel;
         private VisualElement _levelSegmentsContainer;
         private Label _statNameLabel;
         private Button _upgradeButton;
-        private Action _upgradeRequested;
-        private bool _initialized;
 
         public new class UxmlFactory : UxmlFactory<UpgradeStatRowView, UxmlTraits>
         {
         }
 
-        public UpgradeStatRowView() => RegisterCallback<AttachToPanelEvent>(HandleAttachToPanel);
-
-        public string BindingId => nameof(UpgradeStatRowView);
-        public VisualElement Element => this;
+        public IObservable<Unit> OnUpgradeClicked => _upgradeButton.OnClickAsObservable();
 
         public void SetTitle(string text)
         {
@@ -56,31 +52,16 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
             }
         }
 
-        public void SetUpgradeRequestedHandler(Action handler)
+        protected override void InitializeElements()
         {
-            _upgradeRequested = handler;
-        }
-
-        private void HandleAttachToPanel(AttachToPanelEvent evt)
-        {
-            if (_initialized)
-            {
-                return;
-            }
-
-            _statNameLabel = this.Q<Label>("statNameLabel");
-            _pendingDeltaLabel = this.Q<Label>("pendingDeltaLabel");
-            _levelSegmentsContainer = this.Q<VisualElement>("levelSegmentsContainer");
-            _upgradeButton = this.Q<Button>("upgradeButton");
-
-            if (_statNameLabel == null || _pendingDeltaLabel == null ||
-                _levelSegmentsContainer == null || _upgradeButton == null)
-            {
-                throw new InvalidOperationException("UpgradeStatRowView is missing required UI elements.");
-            }
-
-            _upgradeButton.clicked += () => _upgradeRequested?.Invoke();
-            _initialized = true;
+            _statNameLabel = this.Q<Label>("statNameLabel")
+                ?? throw new InvalidOperationException("UpgradeStatRowView is missing 'statNameLabel'.");
+            _pendingDeltaLabel = this.Q<Label>("pendingDeltaLabel")
+                ?? throw new InvalidOperationException("UpgradeStatRowView is missing 'pendingDeltaLabel'.");
+            _levelSegmentsContainer = this.Q<VisualElement>("levelSegmentsContainer")
+                ?? throw new InvalidOperationException("UpgradeStatRowView is missing 'levelSegmentsContainer'.");
+            _upgradeButton = this.Q<Button>("upgradeButton")
+                ?? throw new InvalidOperationException("UpgradeStatRowView is missing 'upgradeButton'.");
         }
     }
 }

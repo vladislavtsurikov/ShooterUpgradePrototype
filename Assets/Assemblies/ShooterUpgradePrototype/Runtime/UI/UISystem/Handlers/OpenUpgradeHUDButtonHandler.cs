@@ -36,8 +36,15 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 
         private async UniTaskVoid ShowUpgradeWindow(CancellationToken cancellationToken)
         {
-            // TODO: replace with a dedicated navigation guard if re-show behavior becomes an issue.
-            await UINavigator.Show<UpgradeWindowHandler, UIToolkitScreens>(cancellationToken);
+            UpgradeWindowHandler existingWindow =
+                UIHandlerUtility.FindHandler<UpgradeWindowHandler>(typeof(Screens));
+
+            if (existingWindow?.IsActive == true)
+            {
+                return;
+            }
+
+            await UINavigator.Show<UpgradeWindowHandler, Screens>(cancellationToken);
         }
     }
 }
