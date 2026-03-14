@@ -4,7 +4,7 @@ using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
     [SceneFilter("TestScene_1", "TestScene_2", "Battle")]
-    public sealed class UIToolkitLayerUnderScreensLoader : UIToolkitLayerLayoutLoader
+    public sealed class PopupsLoader : LayerLayoutLoader
     {
     }
 }

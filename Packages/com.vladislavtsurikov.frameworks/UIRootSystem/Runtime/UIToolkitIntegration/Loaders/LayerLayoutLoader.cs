@@ -3,7 +3,7 @@ using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
-    public abstract class UIToolkitLayerLayoutLoader : UIToolkitLayoutLoader
+    public abstract class LayerLayoutLoader : UIToolkitLayoutLoader
     {
         public override string LayoutAddress => "UIRootSystem_UIToolkitLayer";
     }

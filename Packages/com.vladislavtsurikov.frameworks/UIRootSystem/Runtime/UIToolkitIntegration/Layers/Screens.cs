@@ -7,17 +7,17 @@ using Zenject;
 
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
-    [ParentUIHandler(typeof(UIToolkitUIRoot))]
+    [ParentUIHandler(typeof(Root))]
     [SceneFilter("TestScene_1", "TestScene_2", "Battle")]
-    public sealed class UIToolkitPopups : UIToolkitLayer
+    public sealed class Screens : Layer
     {
-        public UIToolkitPopups(DiContainer container, UIToolkitPopupsLoader loader)
+        public Screens(DiContainer container, ScreensLoader loader)
             : base(container, loader)
         {
         }
 
-        protected override string GetParentContainerName() => UIToolkitRootSlots.PopupsRoot;
-        protected override string GetRootName() => "Popups";
+        protected override string GetParentContainerName() => RootSlots.ScreensRoot;
+        protected override string GetRootName() => "Screens";
     }
 }
 #endif

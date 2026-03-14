@@ -7,16 +7,16 @@ using Zenject;
 
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
-    [ParentUIHandler(typeof(UIToolkitUIRoot))]
+    [ParentUIHandler(typeof(Root))]
     [SceneFilter("TestScene_1", "TestScene_2", "Battle")]
-    public sealed class UIToolkitHUD : UIToolkitLayer
+    public sealed class HUD : Layer
     {
-        public UIToolkitHUD(DiContainer container, UIToolkitHUDLoader loader)
+        public HUD(DiContainer container, HUDLoader loader)
             : base(container, loader)
         {
         }
 
-        protected override string GetParentContainerName() => UIToolkitRootSlots.HudRoot;
+        protected override string GetParentContainerName() => RootSlots.HudRoot;
         protected override string GetRootName() => "HUD";
     }
 }

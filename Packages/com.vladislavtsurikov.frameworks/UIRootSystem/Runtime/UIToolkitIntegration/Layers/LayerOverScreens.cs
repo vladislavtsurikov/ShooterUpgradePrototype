@@ -7,17 +7,17 @@ using Zenject;
 
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
-    [ParentUIHandler(typeof(UIToolkitUIRoot))]
+    [ParentUIHandler(typeof(Root))]
     [SceneFilter("TestScene_1", "TestScene_2", "Battle")]
-    public sealed class UIToolkitLayerUnderScreens : UIToolkitLayer
+    public sealed class LayerOverScreens : Layer
     {
-        public UIToolkitLayerUnderScreens(DiContainer container, UIToolkitLayerUnderScreensLoader loader)
+        public LayerOverScreens(DiContainer container, LayerOverScreensLoader loader)
             : base(container, loader)
         {
         }
 
-        protected override string GetParentContainerName() => UIToolkitRootSlots.LayerUnderScreensRoot;
-        protected override string GetRootName() => "LayerUnderScreens";
+        protected override string GetParentContainerName() => RootSlots.LayerOverScreensRoot;
+        protected override string GetRootName() => "LayerOverScreens";
     }
 }
 #endif

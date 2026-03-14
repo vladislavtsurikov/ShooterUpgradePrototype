@@ -12,9 +12,9 @@ using Zenject;
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
     [SceneFilter("TestScene_1", "TestScene_2", "Battle")]
-    public sealed class UIToolkitUIRoot : UIToolkitUIHandler
+    public sealed class Root : UIToolkitUIHandler
     {
-        public UIToolkitUIRoot(DiContainer container, UIToolkitUIRootLoader loader)
+        public Root(DiContainer container, RootLoader loader)
             : base(container, loader)
         {
         }
@@ -23,7 +23,7 @@ namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
             CancellationToken cancellationToken,
             CompositeDisposable disposables) => await Show(cancellationToken);
 
-        protected override string GetRootName() => "UIToolkitUIRoot";
+        protected override string GetRootName() => "UIRoot";
     }
 }
 #endif

@@ -1,6 +1,6 @@
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
-    public static class UIToolkitRootSlots
+    public static class RootSlots
     {
         public const string LayerUnderScreensRoot = "layerUnderScreensRoot";
         public const string HudRoot = "hudRoot";

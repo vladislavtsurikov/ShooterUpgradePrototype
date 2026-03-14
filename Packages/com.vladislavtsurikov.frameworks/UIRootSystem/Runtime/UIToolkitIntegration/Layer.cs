@@ -9,9 +9,9 @@ using Zenject;
 
 namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
 {
-    public abstract class UIToolkitLayer : UIToolkitUIHandler
+    public abstract class Layer : UIToolkitUIHandler
     {
-        protected UIToolkitLayer(DiContainer container, UIToolkitLayoutLoader loader)
+        protected Layer(DiContainer container, UIToolkitLayoutLoader loader)
             : base(container, loader)
         {
         }
