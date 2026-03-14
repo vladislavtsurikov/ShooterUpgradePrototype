@@ -17,7 +17,8 @@
         "VladislavTsurikov.Core",
         "VladislavTsurikov.IMGUIUtility",
         "VladislavTsurikov.AutoDefines",
-        "UniRx"
+        "UniRx",
+        "Unity.Localization"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -26,6 +27,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.localization",
+            "expression": "1.0.0",
+            "define": "UNITY_LOCALIZATION"
+        }
+    ],
     "noEngineReferences": false
 }

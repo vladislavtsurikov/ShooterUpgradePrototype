@@ -7,6 +7,23 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
     public static class UIToolkitObservableExtensions
     {
+        public static IObservable<ClickEvent> OnClickEventAsObservable(this VisualElement element)
+        {
+            if (element == null)
+            {
+                return Observable.Throw<ClickEvent>(new ArgumentNullException(nameof(element)));
+            }
+
+            return Observable.Create<ClickEvent>(observer =>
+            {
+                void OnClicked(ClickEvent evt) => observer.OnNext(evt);
+
+                element.RegisterCallback<ClickEvent>(OnClicked);
+
+                return Disposable.Create(() => element.UnregisterCallback<ClickEvent>(OnClicked));
+            });
+        }
+
         public static IObservable<Unit> OnClickAsObservable(this Button button)
         {
             if (button == null)

@@ -92,7 +92,5 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
         }
     }
 }
-
 #endif
-
 #endif
