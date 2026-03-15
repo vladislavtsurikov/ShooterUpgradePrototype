@@ -4,10 +4,13 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
     public static class UIToolkitBindingId
     {
-        public static string FromTypeAndIndex(Type handlerType, string bindingId, int index = 0)
+        public static string FromTypeAndIndex(Type handlerType, string bindingId, int index = 0,
+            string instanceKey = null)
         {
             string handlerName = handlerType.Name;
-            return $"{handlerName}:{bindingId}#{index}";
+            return string.IsNullOrEmpty(instanceKey)
+                ? $"{handlerName}:{bindingId}#{index}"
+                : $"{handlerName}:{instanceKey}:{bindingId}#{index}";
         }
     }
 }

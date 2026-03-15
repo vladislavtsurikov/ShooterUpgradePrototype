@@ -17,6 +17,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         protected virtual bool AllowMultipleActiveChildren => true;
 
         public UIHandler Parent { get; private set; }
+        public string InstanceKey { get; private set; }
 
         public bool IsActive
         {
@@ -50,6 +51,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public static event Action<UIHandler> OnUIHandlerAfterHide;
 
         public static event Action<UIHandler> OnUIHandlerDestroyed;
+
+        internal Action<UIHandler> DestroyedCallback { get; set; }
 
         internal UniTask Initialize(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
@@ -166,7 +169,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             IsActive = false;
         }
 
-        protected async UniTask Destroy(bool unload, CancellationToken cancellationToken)
+        internal async UniTask Destroy(bool unload, CancellationToken cancellationToken)
         {
             foreach (UIHandler child in Children)
             {
@@ -175,14 +178,17 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             await DestroyUIHandler(unload, cancellationToken, Disposables);
 
+            DestroyedCallback?.Invoke(this);
             Dispose();
 
             OnUIHandlerDestroyed?.Invoke(this);
         }
 
         protected internal void AddUIHandlerChild(UIHandler child) => Children.Add(child);
+        protected internal void RemoveUIHandlerChild(UIHandler child) => Children.Remove(child);
 
         internal void SetParent(UIHandler parent) => Parent = parent;
+        internal void SetInstanceKey(string instanceKey) => InstanceKey = instanceKey;
 
         private void TrackChildActivation()
         {

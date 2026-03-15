@@ -5,16 +5,15 @@ using System.Threading;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using ShooterUpgradePrototype.Player.Services;
-using ShooterUpgradePrototype.UI.UISystem.Loaders;
-using ShooterUpgradePrototype.UI.UISystem.Views;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Localization;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration;
 using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 using Zenject;
+using ShooterUpgradePrototype.UI.UISystem.Loaders;
+using ShooterUpgradePrototype.UI.UISystem.Views;
 
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
@@ -22,37 +21,30 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
     [UIParent(typeof(Root), RootSlots.ScreensRoot)]
     public sealed class UpgradeWindowHandler : UIToolkitUIHandler
     {
-        private readonly UpgradeStatRowLayoutLoader _rowLayoutLoader;
+        private readonly UIHandlerManager _uiHandlerManager;
         private readonly PlayerStatsService _playerStatsService;
         private readonly IReadOnlyList<string> _upgradeStatIds;
         private readonly Dictionary<string, int> _draftLevels = new();
-        private readonly Dictionary<string, string> _localizedTitles = new();
+        private readonly Dictionary<string, UpgradeStatRowHandler> _rowHandlers = new();
         private UpgradeWindowView _view;
-        private int _boundRowCount;
         private bool _isViewBound;
 
         public UpgradeWindowHandler(
             DiContainer container,
             UpgradeWindowLayoutLoader loader,
-            UpgradeStatRowLayoutLoader rowLayoutLoader,
-            PlayerStatsService playerStatsService) : base(container, loader)
+            PlayerStatsService playerStatsService,
+            UIHandlerManager uiHandlerManager) : base(container, loader)
         {
-            _rowLayoutLoader = rowLayoutLoader;
             _playerStatsService = playerStatsService;
+            _uiHandlerManager = uiHandlerManager;
             _upgradeStatIds = _playerStatsService.GetUpgradeWindowStatIds();
         }
 
         protected override string SpawnedRootName => "ShooterUpgradePrototypeUpgradeWindow";
 
-        protected override async UniTask BeforeShowUIHandler(
+        protected override async UniTask AfterShowUIHandler(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
-        {
-            await base.BeforeShowUIHandler(cancellationToken, disposables);
-            await _rowLayoutLoader.LoadLayoutIfNotLoaded(cancellationToken);
-        }
-
-        protected override UniTask AfterShowUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             if (_view == null)
             {
@@ -65,11 +57,18 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                 _isViewBound = true;
             }
 
+            await EnsureRowHandlers(cancellationToken);
+            await ShowRowHandlers(cancellationToken);
+
             _draftLevels.Clear();
 
             Render();
+        }
 
-            return UniTask.CompletedTask;
+        protected override async UniTask OnHideUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        {
+            await base.OnHideUIHandler(cancellationToken, disposables);
+            await HideRowHandlers(cancellationToken);
         }
 
         private async UniTaskVoid CloseAsync(bool applyChanges)
@@ -97,22 +96,25 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             int availableDraftPoints = GetAvailableDraftPoints();
             _view.SetAvailablePointsText($"Available Points: {availableDraftPoints}");
 
-            IReadOnlyList<UpgradeStatRowView> rows = _view.EnsureRows(_upgradeStatIds.Count, _rowLayoutLoader.LoadedLayout);
-            BindRowsOnce(rows, Disposables);
-
             for (int i = 0; i < _upgradeStatIds.Count; i++)
             {
                 string statId = _upgradeStatIds[i];
-                UpgradeStatRowView row = rows[i];
+                if (!_rowHandlers.TryGetValue(statId, out UpgradeStatRowHandler rowHandler))
+                {
+                    continue;
+                }
+
                 int draftLevels = GetDraftLevel(statId);
                 int currentLevel = _playerStatsService.GetAppliedLevel(statId);
                 int previewLevel = currentLevel + draftLevels;
                 int maxLevel = _playerStatsService.GetMaxLevel(statId);
 
-                row.SetTitle(GetDisplayTitle(statId));
-                row.SetLevel(previewLevel, maxLevel);
-                row.SetPendingDelta(BuildPendingDeltaText(statId, currentLevel, previewLevel), draftLevels > 0);
-                row.SetUpgradeEnabled(previewLevel < maxLevel && availableDraftPoints > 0);
+                rowHandler.Render(
+                    previewLevel,
+                    maxLevel,
+                    BuildPendingDeltaText(statId, currentLevel, previewLevel),
+                    draftLevels > 0,
+                    previewLevel < maxLevel && availableDraftPoints > 0);
             }
 
             _view.SetApplyEnabled(_draftLevels.Count > 0);
@@ -126,8 +128,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 
             foreach (string statId in _upgradeStatIds)
             {
-                BindLocalizedTitle(statId, disposables);
-
                 _playerStatsService.GetLevelProperty(statId)
                     .Subscribe(_ => Render())
                     .AddTo(disposables);
@@ -166,16 +166,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             ? draftLevel
             : 0;
 
-        private string GetDisplayTitle(string statId)
-        {
-            if (_localizedTitles.TryGetValue(statId, out string title) && !string.IsNullOrWhiteSpace(title))
-            {
-                return title;
-            }
-
-            return _playerStatsService.GetStatName(statId);
-        }
-
         private int GetAvailableDraftPoints()
         {
             int spentDraftPoints = 0;
@@ -201,45 +191,60 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             return delta >= 0f ? $"+{delta:0.##}" : delta.ToString("0.##");
         }
 
-        private void BindRowsOnce(IReadOnlyList<UpgradeStatRowView> rows, CompositeDisposable disposables)
+        private async UniTask EnsureRowHandlers(CancellationToken cancellationToken)
         {
-            while (_boundRowCount < rows.Count)
+            foreach (string statId in _upgradeStatIds)
             {
-                int rowIndex = _boundRowCount;
-                UpgradeStatRowView row = rows[rowIndex];
+                if (_rowHandlers.ContainsKey(statId))
+                {
+                    continue;
+                }
 
-                row.OnUpgradeClicked
-                    .Subscribe(_ => AddDraftLevel(_upgradeStatIds[rowIndex]))
-                    .AddTo(disposables);
-
-                _boundRowCount++;
+                UpgradeStatRowHandler rowHandler =
+                    await _uiHandlerManager.CreateDynamicChild<UpgradeStatRowHandler>(this, statId, cancellationToken);
+                rowHandler.UpgradeRequested += HandleUpgradeRequested;
+                _rowHandlers[statId] = rowHandler;
             }
         }
 
-        private void BindLocalizedTitle(string statId, CompositeDisposable disposables)
+        private async UniTask ShowRowHandlers(CancellationToken cancellationToken)
         {
-            string fallbackTitle = _playerStatsService.GetStatName(statId);
-            _localizedTitles[statId] = fallbackTitle;
-
-            if (!_playerStatsService.TryGetLocalizedStatName(statId, out LocalizedString localizedString))
+            foreach (UpgradeStatRowHandler rowHandler in _rowHandlers.Values)
             {
-                return;
+                if (rowHandler.IsActive)
+                {
+                    continue;
+                }
+
+                await rowHandler.Show(cancellationToken);
+            }
+        }
+
+        private async UniTask HideRowHandlers(CancellationToken cancellationToken)
+        {
+            foreach (UpgradeStatRowHandler rowHandler in _rowHandlers.Values)
+            {
+                if (!rowHandler.IsActive)
+                {
+                    continue;
+                }
+
+                await rowHandler.Hide(cancellationToken);
+            }
+        }
+
+        private void HandleUpgradeRequested(string statId) => AddDraftLevel(statId);
+
+        public override void DisposeUIHandler()
+        {
+            foreach (KeyValuePair<string, UpgradeStatRowHandler> pair in _rowHandlers)
+            {
+                pair.Value.UpgradeRequested -= HandleUpgradeRequested;
             }
 
-            void HandleStringChanged(string localizedValue)
-            {
-                _localizedTitles[statId] = string.IsNullOrWhiteSpace(localizedValue)
-                    ? fallbackTitle
-                    : localizedValue;
+            _rowHandlers.Clear();
 
-                Render();
-            }
-
-            localizedString.StringChanged += HandleStringChanged;
-            localizedString.RefreshString();
-
-            Disposable.Create(() => localizedString.StringChanged -= HandleStringChanged)
-                .AddTo(disposables);
+            base.DisposeUIHandler();
         }
     }
 }

@@ -15,12 +15,11 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         }
 
         public static T FindHandler<T>() where T : UIHandler => FindHandler<T>(null);
-
-        public static T FindHandler<T>(Type parentType) where T : UIHandler
+        public static T FindHandler<T>(Type parentType, string instanceKey) where T : UIHandler
         {
             try
             {
-                var id = UIHandlerBindingId.FromParentType(parentType);
+                string id = UIHandlerBindingId.FromParentType(parentType, instanceKey);
                 return ProjectContext.Instance.Container.ResolveId<T>(id);
             }
             catch
@@ -28,5 +27,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 return null;
             }
         }
+
+        public static T FindHandler<T>(Type parentType) where T : UIHandler
+            => FindHandler<T>(parentType, null);
     }
 }

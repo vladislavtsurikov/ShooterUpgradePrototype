@@ -16,7 +16,9 @@ namespace VladislavTsurikov.UISystem.Editor.Core.Graph
         [MenuItem("Tools/UISystem/Generate Node Tree")]
         public static void Generate()
         {
-            Type[] allTypes = AllTypesDerivedFrom<UIHandler>.Types;
+            Type[] allTypes = AllTypesDerivedFrom<UIHandler>.Types
+                .Where(type => !Attribute.IsDefined(type, typeof(DynamicUIChildAttribute), inherit: true))
+                .ToArray();
             Dictionary<Type, Node> typeToNode = CreateNodes(allTypes);
             List<Node> roots = BuildHierarchy(allTypes, typeToNode);
 

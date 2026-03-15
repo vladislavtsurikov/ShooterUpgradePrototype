@@ -36,7 +36,11 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
                 Type type = element.GetType();
                 int index = _repeatTracker.GetAndIncrement(type, rawBindingId);
-                string finalId = UIToolkitBindingId.FromTypeAndIndex(_uiHandler.GetType(), rawBindingId, index);
+                string finalId = UIToolkitBindingId.FromTypeAndIndex(
+                    _uiHandler.GetType(),
+                    rawBindingId,
+                    index,
+                    _uiHandler.InstanceKey);
 
                 _container.Bind(type)
                     .WithId(finalId)

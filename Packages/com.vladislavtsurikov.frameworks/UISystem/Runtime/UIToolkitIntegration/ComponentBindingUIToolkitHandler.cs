@@ -21,7 +21,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         public virtual bool TryGetUIComponent<TElement>(string bindingId, out TElement element, int index = 0)
             where TElement : VisualElement
         {
-            string id = UIToolkitBindingId.FromTypeAndIndex(GetType(), bindingId, index);
+            string id = UIToolkitBindingId.FromTypeAndIndex(GetType(), bindingId, index, InstanceKey);
 
             try
             {
@@ -38,7 +38,14 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         protected TElement ResolveWithId<TElement>(string bindingId, Type handlerType, int index)
             where TElement : VisualElement
         {
-            string id = UIToolkitBindingId.FromTypeAndIndex(handlerType, bindingId, index);
+            string id = UIToolkitBindingId.FromTypeAndIndex(handlerType, bindingId, index, InstanceKey);
+            return _container.ResolveId<TElement>(id);
+        }
+
+        protected TElement ResolveWithId<TElement>(string bindingId, Type handlerType, string instanceKey, int index)
+            where TElement : VisualElement
+        {
+            string id = UIToolkitBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
             return _container.ResolveId<TElement>(id);
         }
 
