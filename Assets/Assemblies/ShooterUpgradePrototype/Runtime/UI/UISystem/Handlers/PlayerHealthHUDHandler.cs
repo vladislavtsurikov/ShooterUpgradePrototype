@@ -13,9 +13,11 @@ using Zenject;
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
-    [ParentUIHandler(typeof(BattleHUDRootHandler))]
+    [UIParent(typeof(BattleHUDRootHandler))]
     public sealed class PlayerHealthHUDHandler : ParentBoundUIToolkitHandler
     {
+        private const string HealthStatId = "HP";
+
         private readonly PlayerStatsService _playerStatsService;
         private PlayerHealthHUDView _view;
 
@@ -28,13 +30,13 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
         {
             _view = GetUIComponent<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
 
-            _playerStatsService.GetValueProperty("HP")
+            _playerStatsService.GetValueProperty(HealthStatId)
                 .CombineLatest(
-                    _playerStatsService.GetLevelProperty("HP"),
+                    _playerStatsService.GetLevelProperty(HealthStatId),
                     (currentValue, _) => currentValue)
                 .Subscribe(currentValue =>
                 {
-                    float maxValue = _playerStatsService.GetCurrentMaxValue("HP");
+                    float maxValue = _playerStatsService.GetCurrentMaxValue(HealthStatId);
                     _view.SetHealthText($"HP: {currentValue:0.##} / {maxValue:0.##}");
                 })
                 .AddTo(disposables);

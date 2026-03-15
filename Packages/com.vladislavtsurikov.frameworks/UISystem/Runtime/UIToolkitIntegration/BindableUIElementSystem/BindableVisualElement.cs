@@ -1,7 +1,6 @@
 using UnityEngine.UIElements;
-using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
-namespace ShooterUpgradePrototype.UI.UISystem.Views
+namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
     public abstract class BindableVisualElement : VisualElement, IBindableUIElement
     {

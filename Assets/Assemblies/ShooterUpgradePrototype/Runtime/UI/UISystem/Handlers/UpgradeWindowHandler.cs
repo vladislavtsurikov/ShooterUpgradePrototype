@@ -19,7 +19,7 @@ using Zenject;
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
-    [ParentUIHandler(typeof(Screens))]
+    [UIParent(typeof(Root), RootSlots.ScreensRoot)]
     public sealed class UpgradeWindowHandler : UIToolkitUIHandler
     {
         private readonly UpgradeStatRowLayoutLoader _rowLayoutLoader;
@@ -42,7 +42,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             _upgradeStatIds = _playerStatsService.GetUpgradeWindowStatIds();
         }
 
-        protected override string GetRootName() => "ShooterUpgradePrototypeUpgradeWindow";
+        protected override string SpawnedRootName => "ShooterUpgradePrototypeUpgradeWindow";
 
         protected override async UniTask BeforeShowUIHandler(
             CancellationToken cancellationToken,
@@ -84,7 +84,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             }
 
             _draftLevels.Clear();
-            await UINavigator.Hide<UpgradeWindowHandler, Screens>(CancellationToken.None);
+            await UINavigator.Hide<UpgradeWindowHandler, Root>(CancellationToken.None);
         }
 
         private void Render()

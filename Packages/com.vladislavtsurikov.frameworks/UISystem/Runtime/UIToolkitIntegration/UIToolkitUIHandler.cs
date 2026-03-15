@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UIElements;
+using VladislavTsurikov.UISystem.Runtime.Core;
 using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
@@ -20,9 +21,9 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         public event Action<VisualElement, UIToolkitUIHandler> OnAnyChildAdded;
 
-        protected virtual string GetParentContainerName() => null;
+        protected virtual string ParentContainerName => null;
 
-        protected virtual string GetRootName() => null;
+        protected virtual string SpawnedRootName => null;
 
         protected virtual VisualElement GetTopLevelRoot()
         {
@@ -100,7 +101,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             SpawnedRoot = await this.Spawn()
                 .WithParent(parent)
                 .Visible(true)
-                .WithName(GetRootName())
+                .WithName(SpawnedRootName)
                 .Execute(Loader, ElementBinder, cancellationToken);
 
             if (SpawnedRoot == null)
@@ -129,7 +130,12 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                     $"Invalid parent type: {Parent.GetType().Name}. Expected {nameof(UIToolkitUIHandler)}.");
             }
 
-            string parentContainerName = GetParentContainerName();
+            string parentContainerName = ParentContainerName;
+            if (string.IsNullOrEmpty(parentContainerName))
+            {
+                parentContainerName = GetParentContainerBindingId();
+            }
+
             if (string.IsNullOrEmpty(parentContainerName))
             {
                 return parentHandler.SpawnedRoot;
@@ -142,6 +148,15 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
             throw new InvalidOperationException(
                 $"[UIToolkitUIHandler] Parent container `{parentContainerName}` was not found in handler `{parentHandler.GetType().Name}`.");
+        }
+
+        private string GetParentContainerBindingId()
+        {
+            var attribute = (UIParentAttribute)Attribute.GetCustomAttribute(
+                GetType(),
+                typeof(UIParentAttribute));
+
+            return attribute?.ContainerId;
         }
     }
 }

@@ -55,9 +55,9 @@ namespace VladislavTsurikov.UISystem.Editor.Core.Graph
             {
                 Node node = map[type];
 
-                ParentUIHandlerAttribute parentAttr = type
-                    .GetCustomAttributes(typeof(ParentUIHandlerAttribute), true)
-                    .Cast<ParentUIHandlerAttribute>()
+                UIParentAttribute parentAttr = type
+                    .GetCustomAttributes(typeof(UIParentAttribute), true)
+                    .Cast<UIParentAttribute>()
                     .FirstOrDefault();
 
                 if (parentAttr != null)

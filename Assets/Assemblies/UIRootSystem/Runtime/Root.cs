@@ -22,7 +22,7 @@ namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
             CancellationToken cancellationToken,
             CompositeDisposable disposables) => await Show(cancellationToken);
 
-        protected override string GetRootName() => "UIRoot";
+        protected override string SpawnedRootName => "UIRoot";
     }
 }
 #endif

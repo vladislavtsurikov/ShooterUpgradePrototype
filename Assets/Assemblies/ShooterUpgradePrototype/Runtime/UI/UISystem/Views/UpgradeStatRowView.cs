@@ -7,14 +7,14 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
 {
     public sealed class UpgradeStatRowView : BindableVisualElement
     {
+        public new class UxmlFactory : UxmlFactory<UpgradeStatRowView, UxmlTraits>
+        {
+
+        }
         private Label _pendingDeltaLabel;
         private VisualElement _levelSegmentsContainer;
         private Label _statNameLabel;
         private Button _upgradeButton;
-
-        public new class UxmlFactory : UxmlFactory<UpgradeStatRowView, UxmlTraits>
-        {
-        }
 
         public IObservable<Unit> OnUpgradeClicked => _upgradeButton.OnClickAsObservable();
 
@@ -54,14 +54,10 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
 
         protected override void InitializeElements()
         {
-            _statNameLabel = this.Q<Label>("statNameLabel")
-                ?? throw new InvalidOperationException("UpgradeStatRowView is missing 'statNameLabel'.");
-            _pendingDeltaLabel = this.Q<Label>("pendingDeltaLabel")
-                ?? throw new InvalidOperationException("UpgradeStatRowView is missing 'pendingDeltaLabel'.");
-            _levelSegmentsContainer = this.Q<VisualElement>("levelSegmentsContainer")
-                ?? throw new InvalidOperationException("UpgradeStatRowView is missing 'levelSegmentsContainer'.");
-            _upgradeButton = this.Q<Button>("upgradeButton")
-                ?? throw new InvalidOperationException("UpgradeStatRowView is missing 'upgradeButton'.");
+            _statNameLabel = this.Q<Label>("statNameLabel");
+            _pendingDeltaLabel = this.Q<Label>("pendingDeltaLabel");
+            _levelSegmentsContainer = this.Q<VisualElement>("levelSegmentsContainer");
+            _upgradeButton = this.Q<Button>("upgradeButton");
         }
     }
 }

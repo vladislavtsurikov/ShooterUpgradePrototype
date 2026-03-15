@@ -8,6 +8,10 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
 {
     public sealed class UpgradeWindowView : BindableVisualElement
     {
+        public new class UxmlFactory : UxmlFactory<UpgradeWindowView, UxmlTraits>
+        {
+        }
+
         private readonly List<TemplateContainer> _rowContainers = new();
         private readonly List<UpgradeStatRowView> _rowViews = new();
 
@@ -17,10 +21,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         private VisualElement _backdrop;
         private VisualElement _modalPanel;
         private VisualElement _rowsContainer;
-
-        public new class UxmlFactory : UxmlFactory<UpgradeWindowView, UxmlTraits>
-        {
-        }
 
         public IObservable<Unit> OnApplyClicked => _applyButton.OnClickAsObservable();
         public IObservable<Unit> OnCloseClicked => _closeButton.OnClickAsObservable();
@@ -73,18 +73,12 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
 
         protected override void InitializeElements()
         {
-            _backdrop = this.Q<VisualElement>("backdrop")
-                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'backdrop'.");
-            _modalPanel = this.Q<VisualElement>("modalPanel")
-                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'modalPanel'.");
-            _availablePointsLabel = this.Q<Label>("availablePointsLabel")
-                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'availablePointsLabel'.");
-            _rowsContainer = this.Q<VisualElement>("rowsContainer")
-                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'rowsContainer'.");
-            _applyButton = this.Q<Button>("applyButton")
-                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'applyButton'.");
-            _closeButton = this.Q<Button>("closeButton")
-                ?? throw new InvalidOperationException("UpgradeWindowView is missing 'closeButton'.");
+            _backdrop = this.Q<VisualElement>("backdrop");
+            _modalPanel = this.Q<VisualElement>("modalPanel");
+            _availablePointsLabel = this.Q<Label>("availablePointsLabel");
+            _rowsContainer = this.Q<VisualElement>("rowsContainer");
+            _applyButton = this.Q<Button>("applyButton");
+            _closeButton = this.Q<Button>("closeButton");
 
             _modalPanel.RegisterCallback<ClickEvent>(HandleModalClicked);
         }

@@ -13,7 +13,7 @@ using Zenject;
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
-    [ParentUIHandler(typeof(BattleHUDRootHandler))]
+    [UIParent(typeof(BattleHUDRootHandler))]
     public sealed class OpenUpgradeHUDButtonHandler : ParentBoundUIToolkitHandler
     {
         private OpenUpgradeHUDButtonView _view;
@@ -37,14 +37,14 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
         private async UniTaskVoid ShowUpgradeWindow(CancellationToken cancellationToken)
         {
             UpgradeWindowHandler existingWindow =
-                UIHandlerUtility.FindHandler<UpgradeWindowHandler>(typeof(Screens));
+                UIHandlerUtility.FindHandler<UpgradeWindowHandler>(typeof(Root));
 
             if (existingWindow?.IsActive == true)
             {
                 return;
             }
 
-            await UINavigator.Show<UpgradeWindowHandler, Screens>(cancellationToken);
+            await UINavigator.Show<UpgradeWindowHandler, Root>(cancellationToken);
         }
     }
 }

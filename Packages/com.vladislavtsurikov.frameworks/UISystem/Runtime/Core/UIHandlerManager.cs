@@ -179,9 +179,9 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             foreach (Type type in allTypes)
             {
                 Node node = typeToNode[type];
-                ParentUIHandlerAttribute parentAttribute = type
-                    .GetCustomAttributes(typeof(ParentUIHandlerAttribute), true)
-                    .Cast<ParentUIHandlerAttribute>()
+                UIParentAttribute parentAttribute = type
+                    .GetCustomAttributes(typeof(UIParentAttribute), true)
+                    .Cast<UIParentAttribute>()
                     .FirstOrDefault();
 
                 if (parentAttribute != null && typeToNode.TryGetValue(parentAttribute.ParentType, out Node parentNode))

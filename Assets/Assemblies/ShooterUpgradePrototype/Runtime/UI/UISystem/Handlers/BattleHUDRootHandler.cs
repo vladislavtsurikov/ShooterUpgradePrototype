@@ -14,7 +14,7 @@ using Zenject;
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
-    [ParentUIHandler(typeof(HUD))]
+    [UIParent(typeof(Root), RootSlots.HudRoot)]
     public sealed class BattleHUDRootHandler : UIToolkitUIHandler
     {
         public BattleHUDRootHandler(DiContainer container, BattleHUDLayoutLoader loader)
@@ -26,7 +26,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             CancellationToken cancellationToken,
             CompositeDisposable disposables) => await Show(cancellationToken);
 
-        protected override string GetRootName() => "ShooterUpgradePrototypeBattleHUD";
+        protected override string SpawnedRootName => "ShooterUpgradePrototypeBattleHUD";
     }
 }
 #endif
