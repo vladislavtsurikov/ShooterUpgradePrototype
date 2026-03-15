@@ -1,5 +1,6 @@
 using AutoStrike.Input.Data;
 using AutoStrike.Input.Generated;
+using AutoStrike.Input.Services;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using UnityEngine.InputSystem;
@@ -13,6 +14,9 @@ namespace AutoStrike.Input.Actions
     {
         [Inject]
         private PlayerInputActions _playerInputActions;
+
+        [Inject]
+        private InputModeService _inputModeService;
 
         private FireInputData _fireInputData;
 
@@ -44,6 +48,7 @@ namespace AutoStrike.Input.Actions
 
         private void OnFireChanged(InputAction.CallbackContext context)
         {
+            _inputModeService.ReportDevice(context.control?.device);
             _fireInputData.IsFirePressed.Value = context.ReadValueAsButton();
         }
     }

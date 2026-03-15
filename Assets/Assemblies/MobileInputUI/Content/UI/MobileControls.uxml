@@ -1,0 +1,34 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:mobile="AutoStrike.MobileInputUI.Views" editor-extension-mode="False">
+    <Style src="project://database/Assets/Assemblies/MobileInputUI/Content/UI/MobileControls.uss" />
+    <mobile:MobileControlsView name="mobile-controls-root" class="mobile-controls-root">
+        <ui:VisualElement name="mobile-controls-safe-area" class="mobile-controls-safe-area">
+            <mobile:MobileMoveStickView name="mobile-stick-anchor" class="mobile-stick-anchor">
+                <ui:VisualElement name="mobile-stick-pad" class="mobile-stick-pad">
+                    <ui:VisualElement name="mobile-stick-ring" class="mobile-stick-ring" />
+                    <ui:VisualElement name="mobile-stick-core" class="mobile-stick-core">
+                        <ui:VisualElement name="mobile-stick-knob-shadow" class="mobile-stick-knob-shadow">
+                            <ui:VisualElement name="mobile-stick-knob" class="mobile-stick-knob" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </mobile:MobileMoveStickView>
+            <mobile:MobileFireButtonView name="mobile-fire-anchor" class="mobile-fire-anchor">
+                <ui:VisualElement name="mobile-fire-button-shadow" class="mobile-fire-button-shadow">
+                    <ui:Button name="mobile-fire-button" class="mobile-fire-button">
+                        <ui:VisualElement name="mobile-fire-button-face" class="mobile-fire-button-face">
+                            <ui:VisualElement name="mobile-fire-reticle" class="mobile-fire-reticle">
+                                <ui:VisualElement class="mobile-fire-reticle-ring" />
+                                <ui:VisualElement class="mobile-fire-reticle-line mobile-fire-reticle-line-top" />
+                                <ui:VisualElement class="mobile-fire-reticle-line mobile-fire-reticle-line-right" />
+                                <ui:VisualElement class="mobile-fire-reticle-line mobile-fire-reticle-line-bottom" />
+                                <ui:VisualElement class="mobile-fire-reticle-line mobile-fire-reticle-line-left" />
+                                <ui:VisualElement class="mobile-fire-reticle-dot" />
+                            </ui:VisualElement>
+                            <ui:Label name="mobile-fire-label" class="mobile-fire-label" text="FIRE" />
+                        </ui:VisualElement>
+                    </ui:Button>
+                </ui:VisualElement>
+            </mobile:MobileFireButtonView>
+        </ui:VisualElement>
+    </mobile:MobileControlsView>
+</ui:UXML>

@@ -1,5 +1,6 @@
 using AutoStrike.Input.Data;
 using AutoStrike.Input.Generated;
+using AutoStrike.Input.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
@@ -14,6 +15,9 @@ namespace AutoStrike.Input.Actions
     {
         [Inject]
         private PlayerInputActions _playerInputActions;
+
+        [Inject]
+        private InputModeService _inputModeService;
 
         private MoveInputData _moveInputData;
 
@@ -45,6 +49,7 @@ namespace AutoStrike.Input.Actions
 
         private void OnMoveChanged(InputAction.CallbackContext context)
         {
+            _inputModeService.ReportDevice(context.control?.device);
             _moveInputData.MoveDirection.Value = context.ReadValue<Vector2>();
         }
     }

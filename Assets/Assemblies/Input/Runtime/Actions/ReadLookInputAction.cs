@@ -1,5 +1,6 @@
 using AutoStrike.Input.Data;
 using AutoStrike.Input.Generated;
+using AutoStrike.Input.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
@@ -15,6 +16,12 @@ namespace AutoStrike.Input.Actions
         [Inject]
         private PlayerInputActions _playerInputActions;
 
+        [Inject]
+        private MobileInputVirtualGamepad _mobileInputVirtualGamepad;
+
+        [Inject]
+        private InputModeService _inputModeService;
+
         private LookInputData _lookInputData;
 
         protected override void OnEnable()
@@ -28,6 +35,18 @@ namespace AutoStrike.Input.Actions
         {
             InputAction lookAction = _playerInputActions.Player.Look;
             Vector2 look = lookAction.ReadValue<Vector2>();
+            if (look.sqrMagnitude > 0.0001f)
+            {
+                _inputModeService.ReportDevice(lookAction.activeControl?.device);
+            }
+
+            if ((_mobileInputVirtualGamepad.IsMoveStickActive || _mobileInputVirtualGamepad.IsFireButtonPressed)
+                && lookAction.activeControl?.device is Touchscreen)
+            {
+                _lookInputData.LookDelta.Value = Vector2.zero;
+                _lookInputData.LookRate.Value = Vector2.zero;
+                return;
+            }
 
             if (lookAction.activeControl?.device is Gamepad)
             {

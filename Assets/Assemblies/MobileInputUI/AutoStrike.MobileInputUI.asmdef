@@ -1,0 +1,23 @@
+{
+    "name": "AutoStrike.MobileInputUI",
+    "rootNamespace": "AutoStrike.MobileInputUI",
+    "references": [
+        "Zenject",
+        "VladislavTsurikov.AddressableLoaderSystem",
+        "UISystem",
+        "UIRootSystem",
+        "UniTask",
+        "UniRx",
+        "AutoStrike.Input",
+        "VladislavTsurikov.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

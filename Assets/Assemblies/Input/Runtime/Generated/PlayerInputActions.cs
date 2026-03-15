@@ -180,6 +180,17 @@ namespace AutoStrike.Input.Generated
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e7f37ae49c4047b3987cdea5f4bb1fa6"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""0adaeaff-5086-4ebf-88b6-db083eb50e6f"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
@@ -224,8 +235,8 @@ namespace AutoStrike.Input.Generated
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f03e3c00-c880-47ba-9a44-32bc7f922541"",
-                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""id"": ""468250cd752643e886116a977a8ffc4f"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mobile"",

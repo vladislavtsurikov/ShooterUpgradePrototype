@@ -9,7 +9,8 @@
         "OdinSerializer",
         "Unity.InputSystem",
         "VladislavTsurikov.ComponentStack",
-        "VladislavTsurikov.ActionFlow"
+        "VladislavTsurikov.ActionFlow",
+        "VladislavTsurikov.ScriptableObjectUtility"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
