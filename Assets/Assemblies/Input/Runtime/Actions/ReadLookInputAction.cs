@@ -17,7 +17,7 @@ namespace AutoStrike.Input.Actions
         private PlayerInputActions _playerInputActions;
 
         [Inject]
-        private MobileInputVirtualGamepad _mobileInputVirtualGamepad;
+        private MobileInputStateService _mobileInputStateService;
 
         [Inject]
         private InputModeService _inputModeService;
@@ -40,7 +40,7 @@ namespace AutoStrike.Input.Actions
                 _inputModeService.ReportDevice(lookAction.activeControl?.device);
             }
 
-            if ((_mobileInputVirtualGamepad.IsMoveStickActive || _mobileInputVirtualGamepad.IsFireButtonPressed)
+            if ((_mobileInputStateService.IsMoveStickActive.Value || _mobileInputStateService.IsFireButtonPressed.Value)
                 && lookAction.activeControl?.device is Touchscreen)
             {
                 _lookInputData.LookDelta.Value = Vector2.zero;

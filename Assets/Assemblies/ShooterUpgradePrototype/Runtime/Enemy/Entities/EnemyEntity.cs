@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AutoStrike.Actions;
 using ArmyClash.WaypointsSystem.Runtime.Movement;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace ShooterUpgradePrototype.Enemy.Entities
     public sealed class EnemyEntity : EntityMonoBehaviour
     {
         private const string HealthId = "HP";
+
         [SerializeField] private StatCollection _statsCollection;
 
         protected override Type[] ComponentDataTypesToCreate() =>
@@ -25,6 +27,7 @@ namespace ShooterUpgradePrototype.Enemy.Entities
         protected override Type[] ActionTypesToCreate() =>
             new[]
             {
+                typeof(ModifyStatRandomAction),
                 typeof(TakeDamageAction),
                 typeof(PatrolMoveAction),
                 typeof(PatrolRotateAction),
@@ -33,18 +36,9 @@ namespace ShooterUpgradePrototype.Enemy.Entities
 
         protected override void OnAfterCreateDataAndActions()
         {
-            base.OnAfterCreateDataAndActions();
-
-            StatsEntityData stats = GetData<StatsEntityData>();
-            if (stats == null)
-            {
-                return;
-            }
-
-            stats.SourceType = StatsEntitySourceType.Local;
-            stats.GlobalConfig = null;
-            stats.Collection = _statsCollection;
-            stats.RebuildFromCollection();
+            StatsEntityData statsEntityData = GetData<StatsEntityData>();
+            statsEntityData.Collection = _statsCollection;
+            statsEntityData.RebuildFromCollection();
         }
 
         public bool IsAlive
@@ -52,38 +46,38 @@ namespace ShooterUpgradePrototype.Enemy.Entities
             get
             {
                 EnemyRuntimeData runtimeData = GetData<EnemyRuntimeData>();
-                if (runtimeData.IsDead.Value)
-                {
-                    return false;
-                }
-
-                return GetHealthData().CurrentValue > 0f;
+                return runtimeData != null && !runtimeData.IsDead.Value && CurrentHealth > 0f;
             }
         }
 
-        public float CurrentHealth => GetHealthData().CurrentValue;
+        public float CurrentHealth => GetHealthData()?.CurrentValue ?? 0f;
 
-        public void InitializeSpawn(float startingHealth, int killRewardPoints)
+        public void InitializeSpawn(float minHealth, float maxHealth, int killRewardPoints)
         {
-            Setup();
+            ApplyRandomSpawnHealth(minHealth, maxHealth);
 
-            RuntimeStatValueData healthData = GetHealthData();
-            healthData.SetValue(Mathf.Max(0f, startingHealth));
-
-            EnemyRuntimeData runtimeData = GetData<EnemyRuntimeData>();
-            runtimeData.Initialize(healthData.CurrentValue, killRewardPoints);
-        }
-
-        public bool TryApplyDamage(float damage)
-        {
-            TakeDamageAction damageAction = GetAction<TakeDamageAction>();
-            return damageAction != null && damageAction.TryApplyDamage(damage);
+            float spawnedMaxHealth = Mathf.Max(0f, CurrentHealth);
+            GetData<EnemyRuntimeData>().Initialize(spawnedMaxHealth, killRewardPoints);
         }
 
         private RuntimeStatValueData GetHealthData()
         {
-            StatsEntityData stats = GetData<StatsEntityData>();
-            return stats.Stat(HealthId).RuntimeData<RuntimeStatValueData>();
+            StatsEntityData statsEntityData = GetData<StatsEntityData>();
+            return statsEntityData?.Stat(HealthId).RuntimeData<RuntimeStatValueData>();
+        }
+
+        private void ApplyRandomSpawnHealth(float minHealth, float maxHealth)
+        {
+            Stat healthStat = _statsCollection?.Stats?.FirstOrDefault(stat => stat != null && stat.Id == HealthId);
+            if (healthStat == null)
+            {
+                Debug.LogError($"Stat `{HealthId}` was not found in `{name}` stats collection.", this);
+                return;
+            }
+
+            ModifyStatRandomAction modifyHealthAction = GetAction<ModifyStatRandomAction>();
+            modifyHealthAction.Configure(healthStat, minHealth, maxHealth);
+            modifyHealthAction.ApplyNow();
         }
     }
 }

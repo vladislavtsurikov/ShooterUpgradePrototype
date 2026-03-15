@@ -1,12 +1,13 @@
 using ArmyClash.WaypointsSystem.Runtime;
 using ArmyClash.WaypointsSystem.Runtime.Movement;
+using ShooterUpgradePrototype.Enemy.Entities;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
 namespace AutoStrike.Actions
 {
-    [RequiresData(typeof(WaypointPathData), typeof(WaypointPathDirectionData))]
+    [RequiresData(typeof(WaypointPathData), typeof(WaypointPathDirectionData), typeof(EnemyRuntimeData))]
     [Name("AutoStrike/Actions/PatrolRotate")]
     public sealed class PatrolRotateAction : EntityMonoBehaviourAction
     {
@@ -15,15 +16,22 @@ namespace AutoStrike.Actions
 
         private WaypointPathData _waypointPathData;
         private WaypointPathDirectionData _directionData;
+        private EnemyRuntimeData _runtimeData;
 
         protected override void OnEnable()
         {
             _waypointPathData = Entity.GetData<WaypointPathData>();
             _directionData = Entity.GetData<WaypointPathDirectionData>();
+            _runtimeData = Entity.GetData<EnemyRuntimeData>();
         }
 
         protected override void Update()
         {
+            if (_runtimeData.IsDead.Value || _waypointPathData.Path == null)
+            {
+                return;
+            }
+
             if (!WaypointPathNormalizedPositionUtility.TryGetSegmentPointsByWorldPosition(
                     _waypointPathData.Path,
                     EntityMonoBehaviour.transform.position,

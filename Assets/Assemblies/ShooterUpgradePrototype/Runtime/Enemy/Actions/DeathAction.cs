@@ -1,3 +1,8 @@
+using System.Reflection;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using Nody.Runtime.Core;
+using OdinSerializer;
 using UniRx;
 using UnityEngine;
 using ShooterUpgradePrototype.Enemy.Entities;
@@ -10,10 +15,15 @@ using Zenject;
 namespace AutoStrike.Actions
 {
     [RequiresData(typeof(StatsEntityData), typeof(EnemyRuntimeData))]
-    [Name("AutoStrike/Actions/EnemyDeath")]
+    [Name("AutoStrike/Actions/Death")]
+    [Group("Death")]
     public sealed class DeathAction : EntityMonoBehaviourAction
     {
         private const string HealthId = "HP";
+
+        [OdinSerialize]
+        private EntityActionCollection _deathActionStack = new();
+
         private CompositeDisposable _subscriptions = new();
 
         [Inject]
@@ -21,6 +31,13 @@ namespace AutoStrike.Actions
 
         [Inject]
         private EnemyRewardService _rewardService;
+
+        protected override void SetupComponent(object[] setupData = null)
+        {
+            _deathActionStack ??= new EntityActionCollection();
+            _deathActionStack.SetAllowedGroupAttributes(new[] { "Death" });
+            _deathActionStack.Setup(true, setupData);
+        }
 
         protected override void OnEnable()
         {
@@ -35,13 +52,18 @@ namespace AutoStrike.Actions
                     spawnedMaxHealth > 0f && currentValue <= 0f)
                 .Where(shouldDie => shouldDie)
                 .Take(1)
-                .Subscribe(_ => HandleDeath())
+                .Subscribe(_ => HandleDeath().Forget())
                 .AddTo(_subscriptions);
         }
 
         protected override void OnDisable() => _subscriptions?.Clear();
 
-        private void HandleDeath()
+        protected override void OnDisableElement()
+        {
+            _deathActionStack?.OnDisable();
+        }
+
+        private async UniTaskVoid HandleDeath()
         {
             if (EntityMonoBehaviour == null)
             {
@@ -58,7 +80,10 @@ namespace AutoStrike.Actions
             _registry.Unregister(enemy);
             _rewardService.Grant(runtimeData.KillRewardPoints.Value);
 
-            Object.Destroy(EntityMonoBehaviour.gameObject);
+            CancellationToken cancellationToken = EntityMonoBehaviour.GetCancellationTokenOnDestroy();
+            await _deathActionStack.Run(cancellationToken);
+
+            Object.Destroy(enemy.gameObject);
         }
     }
 }

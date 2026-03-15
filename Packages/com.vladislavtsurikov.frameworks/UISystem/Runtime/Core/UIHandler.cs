@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -163,6 +164,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             await BeforeHide(cancellationToken);
             await OnHide(cancellationToken);
             await AfterHide(cancellationToken);
+            await HideChildren(cancellationToken);
 
             IsActive = false;
         }
@@ -204,6 +206,24 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             foreach (UIHandler child in Children)
             {
                 await child.Initialize(cancellationToken, child.Disposables);
+            }
+        }
+
+        private async Task HideChildren(CancellationToken cancellationToken)
+        {
+            List<UIHandler> childrenToHide = new();
+
+            foreach (UIHandler child in Children)
+            {
+                if (child.IsActive)
+                {
+                    childrenToHide.Add(child);
+                }
+            }
+
+            foreach (UIHandler child in childrenToHide)
+            {
+                await child.Hide(cancellationToken);
             }
         }
     }

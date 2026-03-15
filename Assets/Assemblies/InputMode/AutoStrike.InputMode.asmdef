@@ -1,16 +1,10 @@
 {
-    "name": "AutoStrike.Input",
+    "name": "AutoStrike.InputMode",
     "rootNamespace": "AutoStrike.Input",
     "references": [
-        "AutoStrike.InputMode",
-        "Zenject",
-        "VladislavTsurikov.EntityDataAction",
-        "VladislavTsurikov.ReflectionUtility",
         "UniRx",
-        "OdinSerializer",
         "Unity.InputSystem",
-        "VladislavTsurikov.ComponentStack",
-        "VladislavTsurikov.ActionFlow"
+        "VladislavTsurikov.ReflectionUtility"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

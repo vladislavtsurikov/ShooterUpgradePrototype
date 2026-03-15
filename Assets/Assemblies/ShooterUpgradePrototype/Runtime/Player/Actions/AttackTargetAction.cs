@@ -84,7 +84,8 @@ namespace AutoStrike.Actions
                 return;
             }
 
-            enemy.TryApplyDamage(attack);
+            TakeDamageAction takeDamageAction = enemy.GetAction<TakeDamageAction>();
+            takeDamageAction?.TryApplyDamage(attack);
         }
     }
 }

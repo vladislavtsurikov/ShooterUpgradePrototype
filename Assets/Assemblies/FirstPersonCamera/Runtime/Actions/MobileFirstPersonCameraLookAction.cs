@@ -1,4 +1,6 @@
 using AutoStrike.Input.Data;
+using AutoStrike.Input.Services;
+using AutoStrike.Input.Services.States;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
@@ -19,6 +21,9 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
         [SerializeField]
         private bool _useUnscaledDeltaTime;
+
+        protected override bool SupportsState(InputModeState state) =>
+            state is TouchscreenInputModeState or GamepadInputModeState;
 
         protected override void HandleLookDelta(Vector2 lookDelta)
         {

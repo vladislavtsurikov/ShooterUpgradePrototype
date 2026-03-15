@@ -19,16 +19,28 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         protected override UniTask<bool> Run(CancellationToken token)
         {
+            return UniTask.FromResult(ApplyNow());
+        }
+
+        public void Configure(Stat stat, float min, float max)
+        {
+            _stat = stat;
+            _min = min;
+            _max = max;
+        }
+
+        public bool ApplyNow()
+        {
             if (!TryGetValueData(out RuntimeStatValueData valueData))
             {
-                return UniTask.FromResult(false);
+                return false;
             }
 
             float min = Mathf.Min(_min, _max);
             float max = Mathf.Max(_min, _max);
             float value = Random.Range(min, max);
 
-            return UniTask.FromResult(valueData.SetValue(value));
+            return valueData.SetValue(value);
         }
 
         private bool TryGetValueData(out RuntimeStatValueData valueData)

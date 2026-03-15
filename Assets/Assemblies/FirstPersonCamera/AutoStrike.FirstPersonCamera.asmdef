@@ -3,6 +3,8 @@
     "rootNamespace": "AutoStrike.FirstPersonCamera",
     "references": [
         "AutoStrike.Input",
+        "AutoStrike.InputMode",
+        "Zenject",
         "VladislavTsurikov.EntityDataAction",
         "VladislavTsurikov.ReflectionUtility",
         "VladislavTsurikov.ActionFlow",

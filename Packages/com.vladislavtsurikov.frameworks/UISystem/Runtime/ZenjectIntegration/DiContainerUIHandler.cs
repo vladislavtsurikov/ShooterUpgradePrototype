@@ -15,6 +15,7 @@ namespace VladislavTsurikov.UISystem.Runtime
 
         protected async UniTask<THandler> CreateDynamicChild<THandler>(
             string instanceKey,
+            bool showAutomatically = false,
             CancellationToken cancellationToken = default)
             where THandler : DiContainerUIHandler
         {
@@ -23,6 +24,11 @@ namespace VladislavTsurikov.UISystem.Runtime
 
             if (TryGetDynamicChild(instanceKey, out THandler existingHandler))
             {
+                if (showAutomatically && !existingHandler.IsActive)
+                {
+                    await existingHandler.Show(cancellationToken);
+                }
+
                 return existingHandler;
             }
 
@@ -34,6 +40,11 @@ namespace VladislavTsurikov.UISystem.Runtime
             handler.SetInstanceKey(instanceKey);
             handler.BindDynamicInstance(bindingId);
             await handler.Initialize(cancellationToken, handler.Disposables);
+
+            if (showAutomatically)
+            {
+                await handler.Show(cancellationToken);
+            }
 
             return handler;
         }

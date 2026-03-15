@@ -1,5 +1,6 @@
 using AutoStrike.Input.Generated;
 using AutoStrike.Input.Services;
+using AutoStrike.Input.Services.States;
 using UnityEngine;
 using Zenject;
 
@@ -10,31 +11,28 @@ namespace AutoStrike.Input.Installers
     {
         private PlayerInputActions _playerInputActions;
         private InputModeService _inputModeService;
-        private MobileInputVirtualGamepad _mobileInputVirtualGamepad;
+        private MobileInputStateService _mobileInputStateService;
 
         public override void InstallBindings()
         {
             _playerInputActions = new PlayerInputActions();
-            _mobileInputVirtualGamepad = new MobileInputVirtualGamepad();
-            _inputModeService = new InputModeService(_mobileInputVirtualGamepad, InputModePreferences.CurrentPreference);
+            _inputModeService = new InputModeService(new InputModeStateRegistry());
+            _mobileInputStateService = new MobileInputStateService();
 
             _playerInputActions.Enable();
 
             Container.Bind<PlayerInputActions>().FromInstance(_playerInputActions).AsSingle();
             Container.Bind<InputModeService>().FromInstance(_inputModeService).AsSingle();
-            Container.Bind<MobileInputVirtualGamepad>().FromInstance(_mobileInputVirtualGamepad).AsSingle();
-
-            InputModePreferences.PreferenceChanged += HandlePreferenceChanged;
+            Container.Bind<MobileInputStateService>().FromInstance(_mobileInputStateService).AsSingle();
         }
 
         private void OnDestroy()
         {
-            InputModePreferences.PreferenceChanged -= HandlePreferenceChanged;
             _inputModeService?.Dispose();
             _inputModeService = null;
 
-            _mobileInputVirtualGamepad?.Dispose();
-            _mobileInputVirtualGamepad = null;
+            _mobileInputStateService?.Dispose();
+            _mobileInputStateService = null;
 
             if (_playerInputActions == null)
             {
@@ -45,8 +43,5 @@ namespace AutoStrike.Input.Installers
             _playerInputActions.Dispose();
             _playerInputActions = null;
         }
-
-        private void HandlePreferenceChanged(string preference) =>
-            _inputModeService?.SetPreferredMode(preference);
     }
 }

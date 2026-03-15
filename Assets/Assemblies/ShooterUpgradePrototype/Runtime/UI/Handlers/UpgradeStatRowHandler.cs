@@ -78,10 +78,10 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                 .Subscribe(_ => UpgradeRequested?.Invoke(InstanceKey))
                 .AddTo(disposables);
 
-            BindLocalizedTitle(disposables);
+            BindLocalizedTitle();
         }
 
-        private void BindLocalizedTitle(CompositeDisposable disposables)
+        private void BindLocalizedTitle()
         {
             string fallbackTitle = _playerStatsService.GetStatName(InstanceKey);
             _title = fallbackTitle;
@@ -91,20 +91,10 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                 return;
             }
 
-            void HandleStringChanged(string localizedValue)
-            {
-                _title = string.IsNullOrWhiteSpace(localizedValue)
-                    ? fallbackTitle
-                    : localizedValue;
-
-                ApplyViewState();
-            }
-
-            localizedString.StringChanged += HandleStringChanged;
-            localizedString.RefreshString();
-
-            Disposable.Create(() => localizedString.StringChanged -= HandleStringChanged)
-                .AddTo(disposables);
+            string localizedValue = localizedString.GetLocalizedString();
+            _title = string.IsNullOrWhiteSpace(localizedValue)
+                ? fallbackTitle
+                : localizedValue;
         }
 
         private void ApplyViewState()

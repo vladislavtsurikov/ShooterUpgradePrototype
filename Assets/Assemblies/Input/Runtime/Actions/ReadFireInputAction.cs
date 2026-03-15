@@ -1,6 +1,7 @@
 using AutoStrike.Input.Data;
 using AutoStrike.Input.Generated;
 using AutoStrike.Input.Services;
+using UniRx;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using UnityEngine.InputSystem;
@@ -18,7 +19,13 @@ namespace AutoStrike.Input.Actions
         [Inject]
         private InputModeService _inputModeService;
 
+        [Inject]
+        private MobileInputStateService _mobileInputStateService;
+
         private FireInputData _fireInputData;
+        private readonly CompositeDisposable _disposables = new();
+        private bool _actionFirePressed;
+        private bool _mobileFirePressed;
 
         protected override void OnEnable()
         {
@@ -29,7 +36,17 @@ namespace AutoStrike.Input.Actions
             fireAction.performed += OnFireChanged;
             fireAction.canceled += OnFireChanged;
 
-            _fireInputData.IsFirePressed.Value = fireAction.IsPressed();
+            _mobileInputStateService.IsFireButtonPressed
+                .Subscribe(isPressed =>
+                {
+                    _mobileFirePressed = isPressed;
+                    ApplyFirePressed();
+                })
+                .AddTo(_disposables);
+
+            _actionFirePressed = fireAction.IsPressed();
+            _mobileFirePressed = _mobileInputStateService.IsFireButtonPressed.Value;
+            ApplyFirePressed();
         }
 
         protected override void OnDisable()
@@ -39,6 +56,7 @@ namespace AutoStrike.Input.Actions
             fireAction.started -= OnFireChanged;
             fireAction.performed -= OnFireChanged;
             fireAction.canceled -= OnFireChanged;
+            _disposables.Clear();
 
             if (_fireInputData != null)
             {
@@ -49,7 +67,18 @@ namespace AutoStrike.Input.Actions
         private void OnFireChanged(InputAction.CallbackContext context)
         {
             _inputModeService.ReportDevice(context.control?.device);
-            _fireInputData.IsFirePressed.Value = context.ReadValueAsButton();
+            _actionFirePressed = context.ReadValueAsButton();
+            ApplyFirePressed();
+        }
+
+        private void ApplyFirePressed()
+        {
+            if (_fireInputData == null)
+            {
+                return;
+            }
+
+            _fireInputData.IsFirePressed.Value = _actionFirePressed || _mobileFirePressed;
         }
     }
 }

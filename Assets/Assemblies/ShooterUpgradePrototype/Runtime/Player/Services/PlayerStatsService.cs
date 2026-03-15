@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Localization;
-using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
 using VladislavTsurikov.ActionFlow.Runtime.Stats;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Common;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 
 namespace ShooterUpgradePrototype.Player.Services
@@ -31,17 +28,6 @@ namespace ShooterUpgradePrototype.Player.Services
         public IReadOnlyReactiveProperty<int> AvailableExp => _availableExp;
 
         public void Dispose() => _disposables.Dispose();
-
-        public string GetStatName(string statId) => GetRuntimeStat(statId).Stat != null
-            ? GetRuntimeStat(statId).Stat.name
-            : statId;
-
-        public bool TryGetLocalizedStatName(string statId, out LocalizedString localizedString)
-        {
-            RuntimeStat runtimeStat = GetRuntimeStat(statId);
-            localizedString = runtimeStat.Stat?.ComponentStack?.GetElement<NameComponent>()?.ItemName;
-            return localizedString != null;
-        }
 
         public IReadOnlyList<string> GetUpgradeWindowStatIds()
         {

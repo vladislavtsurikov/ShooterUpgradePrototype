@@ -14,24 +14,16 @@ namespace AutoStrike.Config
         public int MaxMobCount { get; private set; } = 10;
 
         [field: SerializeField]
-        [field: Min(1)]
-        public int MinStartingHealth { get; private set; } = 1;
+        [field: Min(1f)]
+        public float MinStartingHealth { get; private set; } = 75f;
 
         [field: SerializeField]
-        [field: Min(1)]
-        public int MaxStartingHealth { get; private set; } = 10;
+        [field: Min(1f)]
+        public float MaxStartingHealth { get; private set; } = 125f;
 
         [field: SerializeField]
         [field: Min(0)]
         public int KillRewardPoints { get; private set; } = 1;
-
-        public int GetRandomStartingHealth()
-        {
-            int minHealth = Mathf.Max(1, Mathf.Min(MinStartingHealth, MaxStartingHealth));
-            int maxHealth = Mathf.Max(minHealth, Mathf.Max(MinStartingHealth, MaxStartingHealth));
-
-            return Random.Range(minHealth, maxHealth + 1);
-        }
 
         public bool IsValid()
         {
@@ -47,9 +39,15 @@ namespace AutoStrike.Config
                 return false;
             }
 
-            if (MinStartingHealth <= 0 || MaxStartingHealth <= 0)
+            if (MinStartingHealth <= 0f)
             {
-                Debug.LogError("Enemy starting health must be greater than 0");
+                Debug.LogError("MinStartingHealth must be greater than 0");
+                return false;
+            }
+
+            if (MaxStartingHealth < MinStartingHealth)
+            {
+                Debug.LogError("MaxStartingHealth must be greater than or equal to MinStartingHealth");
                 return false;
             }
 

@@ -1,4 +1,6 @@
 using AutoStrike.Input.Data;
+using AutoStrike.Input.Services;
+using AutoStrike.Input.Services.States;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
@@ -11,6 +13,9 @@ namespace AutoStrike.FirstPersonCamera.Actions
     {
         [SerializeField]
         private Vector2 _sensitivity = new(0.15f, 0.15f);
+
+        protected override bool SupportsState(InputModeState state) =>
+            state is KeyboardMouseInputModeState;
 
         protected override void HandleLookDelta(Vector2 lookDelta)
         {

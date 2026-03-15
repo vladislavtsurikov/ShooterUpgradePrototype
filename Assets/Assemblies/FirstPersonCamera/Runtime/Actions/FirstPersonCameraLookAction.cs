@@ -1,8 +1,11 @@
 using AutoStrike.Input.Data;
+using AutoStrike.Input.Services;
+using AutoStrike.Input.Services.States;
 using AutoStrike.FirstPersonCamera.Data;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
+using Zenject;
 
 namespace AutoStrike.FirstPersonCamera.Actions
 {
@@ -21,6 +24,10 @@ namespace AutoStrike.FirstPersonCamera.Actions
         private readonly CompositeDisposable _subscriptions = new();
         private float _pitch;
         private CameraData _cameraData;
+        private bool _canProcessLook;
+
+        [Inject]
+        private InputModeService _inputModeService;
 
         protected LookInputData LookInputData { get; private set; }
 
@@ -42,10 +49,13 @@ namespace AutoStrike.FirstPersonCamera.Actions
             _pitch = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
 
             ApplyPitchRotation();
+            SubscribeToInputMode();
             SubscribeToLookInput();
         }
 
         protected override void OnDisable() => _subscriptions.Clear();
+
+        protected abstract bool SupportsState(InputModeState state);
 
         protected virtual void HandleLookDelta(Vector2 lookDelta) => ApplyLook(lookDelta);
 
@@ -53,6 +63,11 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
         protected void ApplyLook(Vector2 look)
         {
+            if (!_canProcessLook)
+            {
+                return;
+            }
+
             if (look.sqrMagnitude <= 0.0001f)
             {
                 return;
@@ -85,6 +100,13 @@ namespace AutoStrike.FirstPersonCamera.Actions
             pitchTransform.localEulerAngles = localEulerAngles;
         }
 
+        private void SubscribeToInputMode()
+        {
+            _inputModeService.CurrentState
+                .Subscribe(state => _canProcessLook = state != null && SupportsState(state))
+                .AddTo(_subscriptions);
+        }
+
         private void SubscribeToLookInput()
         {
             LookInputData.LookDelta
@@ -101,6 +123,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
                 .Subscribe(HandleLookRate)
                 .AddTo(_subscriptions);
         }
+
         private static float NormalizeAngle(float angle)
         {
             if (angle > 180f)

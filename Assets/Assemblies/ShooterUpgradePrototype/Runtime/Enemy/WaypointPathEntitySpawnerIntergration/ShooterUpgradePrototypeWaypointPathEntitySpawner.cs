@@ -30,7 +30,6 @@ namespace ShooterUpgradePrototype.Spawning
             WaypointPathData data = enemy.GetData<WaypointPathData>();
             data.Path = path;
 
-            enemy.InitializeSpawn(_config.GetRandomStartingHealth(), _config.KillRewardPoints);
             _registry.Register(enemy);
         }
     }

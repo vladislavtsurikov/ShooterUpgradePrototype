@@ -28,23 +28,10 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             _view = GetUIComponent<OpenUpgradeHUDButtonView>(nameof(OpenUpgradeHUDButtonView));
 
             _view.OnClicked
-                .Subscribe(_ => ShowUpgradeWindow(cancellationToken).Forget())
+                .Subscribe(_ => UINavigator.Show<UpgradeWindowHandler, Root>(cancellationToken).Forget())
                 .AddTo(disposables);
 
             return UniTask.CompletedTask;
-        }
-
-        private async UniTaskVoid ShowUpgradeWindow(CancellationToken cancellationToken)
-        {
-            UpgradeWindowHandler existingWindow =
-                UIHandlerUtility.FindHandler<UpgradeWindowHandler>(typeof(Root));
-
-            if (existingWindow?.IsActive == true)
-            {
-                return;
-            }
-
-            await UINavigator.Show<UpgradeWindowHandler, Root>(cancellationToken);
         }
     }
 }
