@@ -52,8 +52,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public static event Action<UIHandler> OnUIHandlerDestroyed;
 
-        internal Action<UIHandler> DestroyedCallback { get; set; }
-
         internal UniTask Initialize(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             if (_isInitialized)
@@ -178,7 +176,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             await DestroyUIHandler(unload, cancellationToken, Disposables);
 
-            DestroyedCallback?.Invoke(this);
             Dispose();
 
             OnUIHandlerDestroyed?.Invoke(this);

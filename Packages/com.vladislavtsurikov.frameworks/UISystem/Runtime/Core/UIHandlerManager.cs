@@ -14,8 +14,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public abstract class UIHandlerManager
     {
         private readonly Dictionary<Node, UIHandler> _activeUIHandlers = new();
-        private readonly Dictionary<DynamicUIHandlerKey, UIHandler> _dynamicUIHandlers = new();
-        private readonly Dictionary<UIHandler, DynamicUIHandlerKey> _dynamicKeysByHandler = new();
         private readonly List<Func<FilterAttribute, bool>> _filters = new();
 
         internal static UniTask CurrentAddFilterTask { get; private set; }
@@ -79,75 +77,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             _filters.AddRange(filtersToKeep);
         }
 
-        public async UniTask<THandler> CreateDynamicChild<THandler>(
-            UIHandler parent,
-            string instanceKey,
-            CancellationToken cancellationToken = default)
-            where THandler : UIHandler
-        {
-            await EnsureHandlersReady();
-
-            if (parent == null)
-            {
-                throw new ArgumentNullException(nameof(parent));
-            }
-
-            ValidateDynamicChildType(typeof(THandler));
-
-            var key = new DynamicUIHandlerKey(parent, typeof(THandler), instanceKey);
-            if (_dynamicUIHandlers.TryGetValue(key, out UIHandler existingHandler))
-            {
-                return (THandler)existingHandler;
-            }
-
-            THandler handler = (THandler)CreateUIHandler(typeof(THandler));
-            AttachHandler(handler, parent, instanceKey);
-
-            _dynamicUIHandlers[key] = handler;
-            _dynamicKeysByHandler[handler] = key;
-
-            await handler.Initialize(cancellationToken, handler.Disposables);
-            return handler;
-        }
-
-        public bool TryGetDynamicChild<THandler>(UIHandler parent, string instanceKey, out THandler handler)
-            where THandler : UIHandler
-        {
-            if (parent != null &&
-                _dynamicUIHandlers.TryGetValue(
-                    new DynamicUIHandlerKey(parent, typeof(THandler), instanceKey),
-                    out UIHandler existingHandler))
-            {
-                handler = (THandler)existingHandler;
-                return true;
-            }
-
-            handler = null;
-            return false;
-        }
-
-        public async UniTask DestroyDynamicChild<THandler>(
-            UIHandler parent,
-            string instanceKey,
-            bool unload,
-            CancellationToken cancellationToken = default)
-            where THandler : UIHandler
-        {
-            if (parent == null)
-            {
-                return;
-            }
-
-            var key = new DynamicUIHandlerKey(parent, typeof(THandler), instanceKey);
-            if (!_dynamicUIHandlers.TryGetValue(key, out UIHandler handler))
-            {
-                return;
-            }
-
-            await handler.Destroy(unload, cancellationToken);
-            parent.RemoveUIHandlerChild(handler);
-        }
-
         private void CleanupInactiveHandlers(List<Func<FilterAttribute, bool>> activeFilters)
         {
             var toRemove = new List<Node>();
@@ -207,14 +136,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
         }
 
-        private async UniTask EnsureHandlersReady()
-        {
-            if (CurrentAddFilterTask.Status == UniTaskStatus.Pending)
-            {
-                await CurrentAddFilterTask;
-            }
-        }
-
         private void AttachHandler(UIHandler handler, UIHandler parent, string instanceKey = null)
         {
             if (parent != null)
@@ -224,20 +145,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
 
             handler.SetInstanceKey(instanceKey);
-            handler.DestroyedCallback = HandleHandlerDestroyed;
-
             RegisterInContainer(handler);
-        }
-
-        private void HandleHandlerDestroyed(UIHandler handler)
-        {
-            BeforeRemoveHandler(handler);
-
-            if (_dynamicKeysByHandler.TryGetValue(handler, out DynamicUIHandlerKey key))
-            {
-                _dynamicKeysByHandler.Remove(handler);
-                _dynamicUIHandlers.Remove(key);
-            }
         }
 
         private static NodeTree GetNodeTree()
@@ -305,46 +213,5 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         private static bool IsDynamicChildType(Type type) =>
             Attribute.IsDefined(type, typeof(DynamicUIChildAttribute), inherit: true);
 
-        private static void ValidateDynamicChildType(Type type)
-        {
-            if (!IsDynamicChildType(type))
-            {
-                throw new InvalidOperationException(
-                    $"Dynamic child handler `{type.FullName}` must be marked with [{nameof(DynamicUIChildAttribute)}].");
-            }
-        }
-
-        private readonly struct DynamicUIHandlerKey : IEquatable<DynamicUIHandlerKey>
-        {
-            public DynamicUIHandlerKey(UIHandler parent, Type handlerType, string instanceKey)
-            {
-                Parent = parent;
-                HandlerType = handlerType;
-                InstanceKey = instanceKey ?? string.Empty;
-            }
-
-            public UIHandler Parent { get; }
-            public Type HandlerType { get; }
-            public string InstanceKey { get; }
-
-            public bool Equals(DynamicUIHandlerKey other) =>
-                ReferenceEquals(Parent, other.Parent) &&
-                HandlerType == other.HandlerType &&
-                InstanceKey == other.InstanceKey;
-
-            public override bool Equals(object obj) =>
-                obj is DynamicUIHandlerKey other && Equals(other);
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    int hashCode = Parent != null ? Parent.GetHashCode() : 0;
-                    hashCode = (hashCode * 397) ^ (HandlerType != null ? HandlerType.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ InstanceKey.GetHashCode();
-                    return hashCode;
-                }
-            }
-        }
     }
 }

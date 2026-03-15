@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
@@ -13,6 +14,13 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             return string.IsNullOrEmpty(instanceKey)
                 ? parentId
                 : $"{parentId}:{instanceKey}";
+        }
+
+        public static string FromDynamicParent(UIHandler parent, string instanceKey)
+        {
+            int parentId = parent != null ? RuntimeHelpers.GetHashCode(parent) : 0;
+            string key = instanceKey ?? string.Empty;
+            return $"{parentId}:{key}";
         }
     }
 }
