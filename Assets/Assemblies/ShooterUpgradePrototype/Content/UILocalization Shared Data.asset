@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: UILocalization Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: UILocalization
+  m_TableCollectionNameGuidString: 74c578505b9573140ac1b65e529768b0
+  m_Entries:
+  - m_Id: 2044126552064
+    m_Key: hud.health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2044126552065
+    m_Key: hud.open-upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2044126552066
+    m_Key: upgrade.window.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2044126552067
+    m_Key: upgrade.window.available-points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2044126552068
+    m_Key: upgrade.window.apply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2044126552069
+    m_Key: mobile.fire
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 9097878555193507865
+  references:
+    version: 2
+    RefIds:
+    - rid: 9097878555193507865
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1773678020398

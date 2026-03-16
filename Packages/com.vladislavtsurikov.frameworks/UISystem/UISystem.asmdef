@@ -16,7 +16,8 @@
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:5c9c0ef81e306bb4fb8182d62410223a",
         "GUID:c430e8b7a6a84f5b8d2181e23c5549c3",
-        "GUID:240564e1a67a416692a5feb6a022b54c"
+        "GUID:240564e1a67a416692a5feb6a022b54c",
+        "Unity.Localization"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

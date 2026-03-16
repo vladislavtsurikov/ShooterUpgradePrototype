@@ -45,6 +45,10 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 9d6752d8abbe06b4e88b8e13b277e211, type: 2}
+  - {fileID: 11400000, guid: 3c278a7758d8dcd408f4db5127a3a7d2, type: 2}
+  - {fileID: 11400000, guid: c079bb50a81ae884fb3295a65b1b6d94, type: 2}
+  - {fileID: 11400000, guid: 305128f34014d9447b079d0501f71853, type: 2}
+  - {fileID: 11400000, guid: 3acd64a972257a5419d7b56c3132ced2, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -86,6 +90,10 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Scene Manager
+    - Locale
+    - Locale-en
+    - Locale-ru-RU
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 249885a07c7d5f64e9f7edc0044a03a8, type: 2}
@@ -94,7 +102,11 @@ MonoBehaviour:
     m_AssemblyName: 
     m_ClassName: 
   m_ActivePlayerDataBuilderIndex: 3
-  m_DataBuilders: []
+  m_DataBuilders:
+  - {fileID: 11400000, guid: 47a78ce4a63030b409d5d19ca3a67a56, type: 2}
+  - {fileID: 11400000, guid: 3c0b3e7225efae64d997a840582fef0a, type: 2}
+  - {fileID: 11400000, guid: c14f2114d361250488e3fe6667bd3c04, type: 2}
+  - {fileID: 11400000, guid: c15be629da39f3c4982eaa7955aa7580, type: 2}
   m_ActiveProfileId: 69e7a726f62c2c54488fd58c8371aef9
   m_HostingServicesManager:
     m_HostingServiceInfos: []

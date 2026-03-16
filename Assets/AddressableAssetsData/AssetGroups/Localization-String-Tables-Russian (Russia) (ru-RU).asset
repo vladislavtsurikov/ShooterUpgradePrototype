@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Localization-String-Tables-Russian (Russia) (ru-RU)
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Localization-String-Tables-Russian (Russia) (ru-RU)
   m_Data:
     m_SerializedData: []
-  m_GUID: 1b100bf6fc64250408cff5cd92b0503d
+  m_GUID: 79a3e25354aed35419750755ac665f6f
   m_SerializeEntries:
-  - m_GUID: 7c0c949b06142fd429d0a7c6b4cad282
-    m_Address: Assets/Assemblies/ShooterUpgradePrototype/Content/Scenes/Battle.unity
-    m_ReadOnly: 0
+  - m_GUID: 607bef7dc9ad5034594f4ae0e72128b0
+    m_Address: UILocalization_ru-RU
+    m_ReadOnly: 1
     m_SerializedLabels:
-    - Scene Manager
+    - Locale-ru-RU
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e671668ad4d2abb408e3110c6c0d0d8d
-    m_Address: Assets/Resources/VladislavTsurikov/SceneManager/Scene Manager.unity
-    m_ReadOnly: 0
+  - m_GUID: 635b4dc69b708c94096d568f7697130f
+    m_Address: StatNameLocalization_ru-RU
+    m_ReadOnly: 1
     m_SerializedLabels:
-    - Scene Manager
+    - Locale-ru-RU
     FlaggedDuringContentUpdateRestriction: 0
-  m_ReadOnly: 0
+  m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: ea5d23eca78f55b489bc090c2157db77, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 2dbb32bed5428c648bd714101801a655, type: 2}
-    - {fileID: 11400000, guid: 11ca20aa244c71c409a68e97807e7e7b, type: 2}
+    - {fileID: 11400000, guid: 5fcf59705e6648448b8797e9fe29ec33, type: 2}
+    - {fileID: 11400000, guid: ea1c1982588071641ac67012b08fa998, type: 2}

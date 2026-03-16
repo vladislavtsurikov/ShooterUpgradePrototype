@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-Shared
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Assets-Shared
+  m_Data:
+    m_SerializedData: []
+  m_GUID: c9864165f71137443b0616c2be49abd0
+  m_SerializeEntries:
+  - m_GUID: 0a0d83b76bdb0854881834b2bae6b565
+    m_Address: Assets/Assemblies/ShooterUpgradePrototype/Content/StatNameLocalization
+      Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74c578505b9573140ac1b65e529768b0
+    m_Address: Assets/Assemblies/ShooterUpgradePrototype/Content/UILocalization Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: ea5d23eca78f55b489bc090c2157db77, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: f4cc014a80871a249aa7e49c35beeb84, type: 2}
+    - {fileID: 11400000, guid: d3fa4cb5449dec844af9374e1bdfc86c, type: 2}

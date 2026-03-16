@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: StatNameLocalization Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: StatNameLocalization
+  m_TableCollectionNameGuidString: 0a0d83b76bdb0854881834b2bae6b565
+  m_Entries:
+  - m_Id: 2584994635776
+    m_Key: name_atk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2585011412992
+    m_Key: name_exp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2585011412993
+    m_Key: name_hp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2585011412994
+    m_Key: name_speed
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 9097878555193507864
+  references:
+    version: 2
+    RefIds:
+    - rid: 9097878555193507864
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1773677913438
