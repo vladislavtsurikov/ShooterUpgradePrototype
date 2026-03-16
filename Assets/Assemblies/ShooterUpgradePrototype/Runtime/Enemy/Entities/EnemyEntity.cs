@@ -25,7 +25,6 @@ namespace ShooterUpgradePrototype.Enemy.Entities
             new[]
             {
                 typeof(ModifyStatRandomAction),
-                typeof(TakeDamageAction),
                 typeof(PatrolMoveAction),
                 typeof(PatrolRotateAction),
                 typeof(DeathAction)

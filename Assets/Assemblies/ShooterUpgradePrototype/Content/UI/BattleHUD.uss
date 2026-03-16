@@ -7,16 +7,189 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    padding-top: 4.5%;
-    padding-right: 3.75%;
-    padding-left: 3.75%;
+    padding-top: 2.5%;
+    padding-right: 2.5%;
+    padding-left: 2.5%;
+}
+
+.hud-health {
+    width: 36%;
+    min-width: 260px;
+    max-width: 420px;
+    align-items: center;
+}
+
+.hud-health-panel {
+    width: 100%;
+    min-height: 54px;
+    padding: 0 14px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 14px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: rgba(255, 255, 255, 0.16);
+    border-right-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: rgba(0, 0, 0, 0.46);
+    border-left-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(17, 27, 34, 0.92);
+}
+
+.hud-health-title {
+    width: 54px;
+    margin-right: 10px;
+    color: rgb(248, 250, 252);
+    font-size: 28px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+}
+
+.hud-health-bar-shell {
+    flex-grow: 1;
+    min-width: 0;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: rgba(7, 10, 13, 0.96);
+}
+
+.hud-health-bar-track {
+    height: 20px;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: rgba(19, 34, 40, 0.96);
+}
+
+.hud-health-bar-fill {
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    background-color: rgb(92, 197, 37);
+}
+
+.hud-health-value {
+    margin-top: 6px;
+    color: rgb(250, 251, 252);
+    font-size: 24px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.hud-crosshair-layer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+    margin-top: -20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.hud-crosshair {
+    width: 40px;
+    height: 40px;
+}
+
+.hud-crosshair-outline,
+.hud-crosshair-arm,
+.hud-crosshair-dot {
+    position: absolute;
+    background-color: rgba(9, 13, 18, 0.92);
+}
+
+.hud-crosshair-outline {
+    opacity: 0.88;
+}
+
+.hud-crosshair-outline-top {
+    left: 18px;
+    top: 2px;
+    width: 4px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.hud-crosshair-outline-right {
+    right: 2px;
+    top: 18px;
+    width: 12px;
+    height: 4px;
+    border-radius: 2px;
+}
+
+.hud-crosshair-outline-bottom {
+    left: 18px;
+    bottom: 2px;
+    width: 4px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.hud-crosshair-outline-left {
+    left: 2px;
+    top: 18px;
+    width: 12px;
+    height: 4px;
+    border-radius: 2px;
+}
+
+.hud-crosshair-outline-center {
+    left: 15px;
+    top: 15px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+}
+
+.hud-crosshair-arm,
+.hud-crosshair-dot {
+    background-color: rgba(240, 246, 252, 0.96);
+}
+
+.hud-crosshair-arm-top {
+    left: 19px;
+    top: 4px;
+    width: 2px;
+    height: 10px;
+}
+
+.hud-crosshair-arm-right {
+    right: 4px;
+    top: 19px;
+    width: 10px;
+    height: 2px;
+}
+
+.hud-crosshair-arm-bottom {
+    left: 19px;
+    bottom: 4px;
+    width: 2px;
+    height: 10px;
+}
+
+.hud-crosshair-arm-left {
+    left: 4px;
+    top: 19px;
+    width: 10px;
+    height: 2px;
+}
+
+.hud-crosshair-dot {
+    left: 17px;
+    top: 17px;
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
 }
 
 .hud-chip {
-    min-height: 64px;
-    padding: 0 20px;
+    min-height: 48px;
+    padding: 0 16px;
     min-width: 0;
-    border-radius: 14px;
+    border-radius: 12px;
     border-top-width: 2px;
     border-right-width: 2px;
     border-bottom-width: 2px;
@@ -27,22 +200,15 @@
     border-left-color: rgba(255, 255, 255, 0.08);
     background-color: rgba(27, 31, 38, 0.88);
     color: rgb(244, 246, 248);
-    font-size: 28px;
+    font-size: 18px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
 
-.hud-hp {
-    width: 18%;
-    min-width: 310px;
-    max-width: 380px;
-    justify-content: center;
-}
-
 .hud-upgrade-button {
-    width: 14%;
-    min-width: 250px;
-    max-width: 300px;
+    width: auto;
+    min-width: 128px;
+    max-width: 168px;
 }
 
 .hud-upgrade-button:hover {

@@ -1,7 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="uiRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;">
-        <ui:VisualElement name="hudRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
-        <ui:VisualElement name="screensRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
-        <ui:VisualElement name="popupsRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
+    <ui:VisualElement name="uiRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; justify-content: center; align-items: center;">
+        <ui:VisualElement name="uiCanvas" style="position: relative; width: 1920px; height: 1080px;">
+            <ui:VisualElement name="hudRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
+            <ui:VisualElement name="screensRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
+            <ui:VisualElement name="popupsRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

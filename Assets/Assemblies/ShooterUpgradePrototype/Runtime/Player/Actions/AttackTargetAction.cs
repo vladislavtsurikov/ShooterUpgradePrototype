@@ -14,10 +14,7 @@ namespace AutoStrike.Actions
     public sealed class AttackTargetAction : EntityMonoBehaviourAction
     {
         private const string AttackId = "ATK";
-
-        [SerializeField]
-        [Min(0f)]
-        private float _shotCooldown = 0.2f;
+        private const string HealthId = "HP";
 
         [SerializeField]
         private LayerMask _hitMask = ~0;
@@ -30,23 +27,18 @@ namespace AutoStrike.Actions
         private CameraData _cameraData;
         private StatsEntityData _attackerStats;
         private FireInputData _fireInputData;
-        private float _cooldownRemaining;
 
         protected override void OnEnable()
         {
             _attackerStats = Entity.GetData<StatsEntityData>();
             _fireInputData = Entity.GetData<FireInputData>();
             _cameraData = Entity.GetData<CameraData>();
-            _cooldownRemaining = 0f;
 
             _subscriptions ??= new CompositeDisposable();
             _subscriptions.Clear();
             _fireInputData.IsFirePressed
-                .Select(isPressed =>
-                    isPressed
-                        ? Observable.EveryUpdate()
-                        : Observable.Empty<long>())
-                .Switch()
+                .DistinctUntilChanged()
+                .Where(isPressed => isPressed)
                 .Subscribe(_ => AttackStep())
                 .AddTo(_subscriptions);
         }
@@ -56,16 +48,15 @@ namespace AutoStrike.Actions
             _subscriptions?.Clear();
         }
 
-        protected override void Update()
-        {
-            _cooldownRemaining = Mathf.Max(0f, _cooldownRemaining - Time.deltaTime);
-        }
-
         private void AttackStep()
         {
             Camera camera = _cameraData.Camera;
+            if (camera == null)
+            {
+                return;
+            }
+
             float attack = _attackerStats.Stat(AttackId).RuntimeData<RuntimeStatValueData>().CurrentValue;
-            _cooldownRemaining = Mathf.Max(0f, _shotCooldown);
 
             Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
             if (!Physics.Raycast(ray, out RaycastHit hit, _maxShootDistance, _hitMask, QueryTriggerInteraction.Ignore))
@@ -74,8 +65,21 @@ namespace AutoStrike.Actions
             }
 
             EnemyEntity enemy = hit.collider.GetComponentInParent<EnemyEntity>();
-            TakeDamageAction takeDamageAction = enemy.GetAction<TakeDamageAction>();
-            takeDamageAction.TryApplyDamage(attack);
+            if (enemy == null)
+            {
+                return;
+            }
+
+            RuntimeStatValueData healthData = enemy.GetData<StatsEntityData>()
+                .Stat(HealthId)
+                .RuntimeData<RuntimeStatValueData>();
+
+            if (healthData.CurrentValue <= 0f)
+            {
+                return;
+            }
+
+            healthData.AddValue(-attack);
         }
     }
 }

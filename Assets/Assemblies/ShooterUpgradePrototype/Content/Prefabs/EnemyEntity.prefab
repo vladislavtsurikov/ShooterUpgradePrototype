@@ -97,7 +97,7 @@ MonoBehaviour:
         VladislavTsurikov.ActionFlow]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
-      Data: 5
+      Data: 4
     - Name: 
       Entry: 7
       Data: 3|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.ModifyStatRandomAction,
@@ -134,43 +134,13 @@ MonoBehaviour:
       Data: 0
     - Name: _min
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: _max
       Entry: 4
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 4|AutoStrike.Actions.TakeDamageAction, ShooterUpgradePrototype
-    - Name: SelectSettingsFoldout
+      Data: 10
+    - Name: _integerValue
       Entry: 5
       Data: true
-    - Name: _active
-      Entry: 5
-      Data: true
-    - Name: _selected
-      Entry: 5
-      Data: false
-    - Name: _nodeId
-      Entry: 1
-      Data: 976b87d9-a0b5-4220-9c5b-96e63ce06ed9
-    - Name: _graphPosition
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: ShowGizmo
-      Entry: 5
-      Data: false
     - Name: 
       Entry: 8
       Data: 
@@ -283,7 +253,112 @@ MonoBehaviour:
         VladislavTsurikov.ActionFlow]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 10|AutoStrike.Actions.KillRewardAction, ShooterUpgradePrototype
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: true
+    - Name: _nodeId
+      Entry: 1
+      Data: 6b35b3a4-840b-4d1e-acd6-2661d641c872
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
       Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ShowGizmo
+      Entry: 5
+      Data: false
+    - Name: _killRewardPoints
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 11|AutoStrike.Actions.DisableDeathInteractionsAction, ShooterUpgradePrototype
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: 806bf25c-fa7a-42e1-9730-5207edf03e00
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ShowGizmo
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 12|AutoStrike.Actions.FadeOutAction, ShooterUpgradePrototype
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: e4d23dd8-2748-4a1b-b97b-c5bb472e39e0
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ShowGizmo
+      Entry: 5
+      Data: false
+    - Name: _fadeDuration
+      Entry: 4
+      Data: 0.45
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -307,18 +382,18 @@ MonoBehaviour:
       Data: 
     - Name: _data
       Entry: 7
-      Data: 10|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityDataCollection,
+      Data: 13|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityDataCollection,
         VladislavTsurikov.EntityDataAction
     - Name: _elementList
       Entry: 7
-      Data: 11|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
+      Data: 14|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
         VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
       Data: 3
     - Name: 
       Entry: 7
-      Data: 12|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityData,
+      Data: 15|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityData,
         VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
@@ -349,7 +424,7 @@ MonoBehaviour:
       Data: 0
     - Name: _localStats
       Entry: 7
-      Data: 13|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityState,
+      Data: 16|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityState,
         VladislavTsurikov.Stats
     - Name: _collection
       Entry: 10
@@ -365,7 +440,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 14|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathData, WaypointsSystem
+      Data: 17|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -398,7 +473,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 15|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathDirectionData,
+      Data: 18|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathDirectionData,
         WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5

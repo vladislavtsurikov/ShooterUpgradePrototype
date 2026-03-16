@@ -23,8 +23,7 @@ namespace AutoStrike.Actions
 
         protected override void SetupComponent(object[] setupData = null)
         {
-            _renderers = EntityMonoBehaviour.GetComponentsInChildren<Renderer>(true);
-            SetFade(0f);
+            _renderers = EntityMonoBehaviour?.GetComponentsInChildren<Renderer>(true);
         }
 
         protected override UniTask<bool> Run(CancellationToken token)
