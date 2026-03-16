@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 4757705335513618504}
   - component: {fileID: 2365359624075540700}
   - component: {fileID: 7090045123417782211}
+  - component: {fileID: 6165581184075436201}
+  - component: {fileID: 1346916720997097528}
+  - component: {fileID: 8345623412345678901}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -50,6 +53,9 @@ MonoBehaviour:
   _monoInstallers:
   - {fileID: 2365359624075540700}
   - {fileID: 7090045123417782211}
+  - {fileID: 6165581184075436201}
+  - {fileID: 1346916720997097528}
+  - {fileID: 8345623412345678901}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 1
   _editorReflectionBakingCoverageMode: 0
@@ -88,3 +94,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19979068e4a44a73a4d63f1b6123370e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: AutoStrike.Input::AutoStrike.Input.Installers.PlayerInputActionsInstaller
+--- !u!114 &6165581184075436201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7729178324486616852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 970315330294483f9377e1579c67344c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UISystem::VladislavTsurikov.UISystem.Runtime.UIHandlerManagerInstaller
+--- !u!114 &1346916720997097528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7729178324486616852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e14fb14d7f4b0b8d22b880fd4d0d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UISystem::VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration.SceneUICompositionInstaller
+--- !u!114 &8345623412345678901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7729178324486616852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c38cd3445c884b65b725bf823f96c6a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Infrastructure.Installers.ShooterUpgradePrototypePlayerStatsInstaller
+  _playerStatsConfig: {fileID: 11400000, guid: d3d7d4546660d194481d76ecfb693c78, type: 2}

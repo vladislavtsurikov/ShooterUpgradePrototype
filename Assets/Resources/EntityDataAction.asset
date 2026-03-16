@@ -23,5 +23,5 @@ MonoBehaviour:
     SerializationNodes:
     - Name: EditModeActive
       Entry: 5
-      Data: false
-  EditModeActive: 0
+      Data: true
+  EditModeActive: 1

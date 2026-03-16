@@ -21,11 +21,19 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         protected override UniTask<bool> Run(CancellationToken token)
         {
-            if (!TryGetValueData(out RuntimeStatValueData valueData))
+            return UniTask.FromResult(ApplyNow());
+        }
+
+        public bool ApplyNow()
+        {
+            StatsEntityData stats = Get<StatsEntityData>();
+            if (!stats.Stats.ContainsKey(_stat.Id))
             {
-                return UniTask.FromResult(false);
+                Debug.LogWarning($"Stat `{_stat.Id}` was not found on `{EntityMonoBehaviour.name}`.", EntityMonoBehaviour);
+                return false;
             }
 
+            RuntimeStatValueData valueData = stats.Stat(_stat.Id).RuntimeData<RuntimeStatValueData>();
             int rolls = Mathf.Max(1, _rolls);
             int sides = Mathf.Max(1, _sides);
             int total = 0;
@@ -35,27 +43,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                 total += Random.Range(1, sides + 1);
             }
 
-            return UniTask.FromResult(valueData.SetValue(total));
-        }
-
-        private bool TryGetValueData(out RuntimeStatValueData valueData)
-        {
-            valueData = null;
-
-            StatsEntityData statsEntityData = Get<StatsEntityData>();
-            if (!statsEntityData.Stats.TryGetValue(_stat.Id, out RuntimeStat runtimeStat))
-            {
-                Debug.LogWarning($"Stat `{_stat.Id}` was not found on `{EntityMonoBehaviour.name}`.", EntityMonoBehaviour);
-                return false;
-            }
-
-            if (!runtimeStat.Runtime().TryData(out valueData))
-            {
-                Debug.LogWarning($"Stat `{_stat.Id}` does not have {nameof(RuntimeStatValueData)}.", EntityMonoBehaviour);
-                return false;
-            }
-
-            return true;
+            return valueData.SetValue(total);
         }
     }
 }

@@ -20,37 +20,25 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         protected override UniTask<bool> Run(CancellationToken token)
         {
-            if (!TryGetValueData(out RuntimeStatValueData valueData))
-            {
-                return UniTask.FromResult(false);
-            }
-
-            if (Random.value > _chance)
-            {
-                return UniTask.FromResult(false);
-            }
-
-            return UniTask.FromResult(valueData.SetValue(_value));
+            return UniTask.FromResult(ApplyNow());
         }
 
-        private bool TryGetValueData(out RuntimeStatValueData valueData)
+        public bool ApplyNow()
         {
-            valueData = null;
-
-            StatsEntityData statsEntityData = Get<StatsEntityData>();
-            if (!statsEntityData.Stats.TryGetValue(_stat.Id, out RuntimeStat runtimeStat))
+            StatsEntityData stats = Get<StatsEntityData>();
+            if (!stats.Stats.ContainsKey(_stat.Id))
             {
                 Debug.LogWarning($"Stat `{_stat.Id}` was not found on `{EntityMonoBehaviour.name}`.", EntityMonoBehaviour);
                 return false;
             }
 
-            if (!runtimeStat.Runtime().TryData(out valueData))
+            if (Random.value > _chance)
             {
-                Debug.LogWarning($"Stat `{_stat.Id}` does not have {nameof(RuntimeStatValueData)}.", EntityMonoBehaviour);
                 return false;
             }
 
-            return true;
+            RuntimeStatValueData valueData = stats.Stat(_stat.Id).RuntimeData<RuntimeStatValueData>();
+            return valueData.SetValue(_value);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -16,51 +17,36 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         [SerializeField] private Stat _stat;
         [SerializeField] private float _min;
         [SerializeField] private float _max = 1;
+        [SerializeField] private bool _integerValue;
 
         protected override UniTask<bool> Run(CancellationToken token)
         {
             return UniTask.FromResult(ApplyNow());
         }
 
-        public void Configure(Stat stat, float min, float max)
-        {
-            _stat = stat;
-            _min = min;
-            _max = max;
-        }
-
         public bool ApplyNow()
         {
-            if (!TryGetValueData(out RuntimeStatValueData valueData))
-            {
-                return false;
-            }
-
-            float min = Mathf.Min(_min, _max);
-            float max = Mathf.Max(_min, _max);
-            float value = Random.Range(min, max);
-
-            return valueData.SetValue(value);
-        }
-
-        private bool TryGetValueData(out RuntimeStatValueData valueData)
-        {
-            valueData = null;
-
-            StatsEntityData statsEntityData = Get<StatsEntityData>();
-            if (!statsEntityData.Stats.TryGetValue(_stat.Id, out RuntimeStat runtimeStat))
+            StatsEntityData stats = Get<StatsEntityData>();
+            if (!stats.Stats.ContainsKey(_stat.Id))
             {
                 Debug.LogWarning($"Stat `{_stat.Id}` was not found on `{EntityMonoBehaviour.name}`.", EntityMonoBehaviour);
                 return false;
             }
 
-            if (!runtimeStat.Runtime().TryData(out valueData))
+            RuntimeStatValueData valueData = stats.Stat(_stat.Id).RuntimeData<RuntimeStatValueData>();
+
+            float min = Mathf.Min(_min, _max);
+            float max = Mathf.Max(_min, _max);
+
+            if (_integerValue)
             {
-                Debug.LogWarning($"Stat `{_stat.Id}` does not have {nameof(RuntimeStatValueData)}.", EntityMonoBehaviour);
-                return false;
+                int intMin = Mathf.CeilToInt(min);
+                int intMax = Mathf.FloorToInt(max);
+
+                return valueData.SetValue(Random.Range(intMin, intMax + 1));
             }
 
-            return true;
+            return valueData.SetValue(Random.Range(min, max));
         }
     }
 }
