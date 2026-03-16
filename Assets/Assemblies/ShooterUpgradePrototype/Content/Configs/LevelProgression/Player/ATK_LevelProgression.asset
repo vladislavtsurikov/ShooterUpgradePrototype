@@ -29,37 +29,37 @@ MonoBehaviour:
       Data: 11
     - Name: 
       Entry: 4
-      Data: 50
+      Data: 1
     - Name: 
       Entry: 4
-      Data: 60
+      Data: 2
     - Name: 
       Entry: 4
-      Data: 70
+      Data: 3
     - Name: 
       Entry: 4
-      Data: 80
+      Data: 4
     - Name: 
       Entry: 4
-      Data: 90
+      Data: 5
     - Name: 
       Entry: 4
-      Data: 100
+      Data: 6
     - Name: 
       Entry: 4
-      Data: 110
+      Data: 7
     - Name: 
       Entry: 4
-      Data: 120
+      Data: 8
     - Name: 
       Entry: 4
-      Data: 130
+      Data: 9
     - Name: 
       Entry: 4
-      Data: 140
+      Data: 10
     - Name: 
       Entry: 4
-      Data: 150
+      Data: 11
     - Name: 
       Entry: 13
       Data: 
@@ -75,10 +75,10 @@ MonoBehaviour:
       Data: 10
     - Name: _baseValue
       Entry: 4
-      Data: 50
+      Data: 1
     - Name: _incrementPerLevel
       Entry: 4
-      Data: 10
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
