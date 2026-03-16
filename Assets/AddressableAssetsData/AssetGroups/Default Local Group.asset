@@ -17,17 +17,47 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 1b100bf6fc64250408cff5cd92b0503d
   m_SerializeEntries:
+  - m_GUID: 007d1d29fe22bd0449226f85fec9c95e
+    m_Address: BattleHUD
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28997cb84cdd9824c8501d473d84ac74
+    m_Address: EnemySpawnConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3bfbe7513baa2df4cab7f90badcce5a4
+    m_Address: UpgradeWindow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c773600370e85e46ba38622b301d351
+    m_Address: UpgradeStatRow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7c0c949b06142fd429d0a7c6b4cad282
     m_Address: Assets/Assemblies/ShooterUpgradePrototype/Content/Scenes/Battle.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Scene Manager
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d6a18671e52474fbfcf72221b71d41c
+    m_Address: MobileControls
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e671668ad4d2abb408e3110c6c0d0d8d
     m_Address: Assets/Resources/VladislavTsurikov/SceneManager/Scene Manager.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - Scene Manager
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f99b8f730f314a34b94ec5401d0fc7cc
+    m_Address: UIRootSystem_UIToolkitRoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ea5d23eca78f55b489bc090c2157db77, type: 2}
