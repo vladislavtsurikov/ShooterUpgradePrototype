@@ -10,7 +10,8 @@
         "UniRx",
         "AutoStrike.Input",
         "AutoStrike.InputMode",
-        "VladislavTsurikov.Core"
+        "VladislavTsurikov.Core",
+        "Unity.Localization"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

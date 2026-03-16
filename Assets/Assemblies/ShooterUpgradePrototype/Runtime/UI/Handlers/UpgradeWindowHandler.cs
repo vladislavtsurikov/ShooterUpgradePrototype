@@ -79,7 +79,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             }
 
             int availableDraftPoints = GetAvailableDraftPoints();
-            _view.SetAvailablePointsText($"Available Points: {availableDraftPoints}");
+            _view.SetAvailablePoints(availableDraftPoints);
 
             for (int i = 0; i < _upgradeStatIds.Count; i++)
             {

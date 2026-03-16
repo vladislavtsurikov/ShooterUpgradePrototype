@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.Localization.Settings;
 using UniRx;
 using UnityEngine.UIElements;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
@@ -7,6 +8,8 @@ namespace AutoStrike.MobileInputUI.Views
 {
     public sealed class MobileFireButtonView : BindableVisualElement
     {
+        private const string UITableName = "UILocalization";
+
         public new class UxmlFactory : UxmlFactory<MobileFireButtonView, UxmlTraits>
         {
         }
@@ -14,6 +17,7 @@ namespace AutoStrike.MobileInputUI.Views
         private readonly Subject<bool> _pressedChanged = new();
 
         private Button _button;
+        private Label _fireLabel;
         private int _activePointerId = -1;
 
         public IObservable<bool> OnPressedChanged => _pressedChanged;
@@ -21,10 +25,15 @@ namespace AutoStrike.MobileInputUI.Views
         protected override void InitializeElements()
         {
             _button = this.Q<Button>("mobile-fire-button");
+            _fireLabel = this.Q<Label>("mobile-fire-label");
             if (_button == null)
             {
                 return;
             }
+
+            _fireLabel.text = LocalizationSettings.StringDatabase.GetLocalizedString(
+                UITableName,
+                "mobile.fire");
 
             _button.RegisterCallback<PointerDownEvent>(HandlePointerDown);
             _button.RegisterCallback<PointerUpEvent>(HandlePointerUp);

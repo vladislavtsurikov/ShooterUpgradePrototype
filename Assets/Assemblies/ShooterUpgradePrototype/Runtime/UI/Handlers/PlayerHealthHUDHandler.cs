@@ -37,7 +37,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                 .Subscribe(currentValue =>
                 {
                     float maxValue = _playerStatsService.GetCurrentMaxValue(HealthStatId);
-                    _view.SetHealthText($"HP: {currentValue:0.##} / {maxValue:0.##}");
+                    _view.SetHealthText(currentValue, maxValue);
                 })
                 .AddTo(disposables);
 
