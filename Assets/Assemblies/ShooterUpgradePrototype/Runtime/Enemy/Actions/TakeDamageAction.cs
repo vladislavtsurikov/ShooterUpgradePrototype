@@ -5,7 +5,7 @@ using VladislavTsurikov.ReflectionUtility;
 
 namespace AutoStrike.Actions
 {
-    [RequiresData(typeof(StatsEntityData), typeof(EnemyRuntimeData))]
+    [RequiresData(typeof(StatsEntityData))]
     [Name("ShooterUpgradePrototype/Actions/EnemyTakeDamage")]
     public sealed class TakeDamageAction : EntityMonoBehaviourAction
     {
@@ -14,12 +14,6 @@ namespace AutoStrike.Actions
         public bool TryApplyDamage(float damage)
         {
             if (damage <= 0f)
-            {
-                return false;
-            }
-
-            EnemyRuntimeData runtimeData = Entity.GetData<EnemyRuntimeData>();
-            if (runtimeData.IsDead.Value)
             {
                 return false;
             }

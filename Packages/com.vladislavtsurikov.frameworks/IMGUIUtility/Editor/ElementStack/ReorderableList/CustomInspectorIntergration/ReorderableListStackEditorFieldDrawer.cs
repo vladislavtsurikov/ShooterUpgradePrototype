@@ -53,12 +53,12 @@ namespace VladislavTsurikov.IMGUIUtility.Editor.ElementStack.ReorderableList
 
         public override float GetFieldsHeight(object target, FieldInfo field, object value)
         {
-            if (target == null)
+            if (target == null || value == null)
             {
                 return EditorGUIUtility.singleLineHeight;
             }
 
-            var collectionEditor = CreateEditor(target, target.GetType(), GUIContent.none);
+            var collectionEditor = CreateEditor(value, field.FieldType, GUIContent.none);
             if (collectionEditor == null ||
                 collectionEditor.GetType().GetMethod("GetElementStackHeight") is not { } getHeightMethod)
             {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8439131203533433296}
   - component: {fileID: 7629854408809314665}
   - component: {fileID: -7414178732494204041}
-  m_Layer: 8
+  m_Layer: 3
   m_Name: EnemyEntity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,10 +41,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600056529660574793}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 20
-  m_AngularDamping: 20
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -73,14 +73,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1523f6fe2fe416e88e00d6171cdf91b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Enemy.Entities.EnemyEntity
-  _statsCollection: {fileID: 11400000, guid: f6389f926fc14cb4bb0a9be923dda1d1, type: 2}
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 11400000, guid: f6389f926fc14cb4bb0a9be923dda1d1, type: 2}
     - {fileID: 11400000, guid: 24115c092e93794419ec6dc72799f4a8, type: 2}
-    - {fileID: 11400000, guid: 495f9a1bf90ec5e4d907afe060ae856c, type: 2}
+    - {fileID: 11400000, guid: f6389f926fc14cb4bb0a9be923dda1d1, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -99,10 +97,86 @@ MonoBehaviour:
         VladislavTsurikov.ActionFlow]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 5
     - Name: 
       Entry: 7
-      Data: 3|AutoStrike.Actions.PatrolMoveAction, ShooterUpgradePrototype
+      Data: 3|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.ModifyStatRandomAction,
+        VladislavTsurikov.Stats
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: 6d450e34-f1f1-4df9-adc8-0177f72e0b4c
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ShowGizmo
+      Entry: 5
+      Data: false
+    - Name: _stat
+      Entry: 10
+      Data: 0
+    - Name: _min
+      Entry: 4
+      Data: 0
+    - Name: _max
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|AutoStrike.Actions.TakeDamageAction, ShooterUpgradePrototype
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: 976b87d9-a0b5-4220-9c5b-96e63ce06ed9
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ShowGizmo
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|AutoStrike.Actions.PatrolMoveAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -135,7 +209,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|AutoStrike.Actions.PatrolRotateAction, ShooterUpgradePrototype
+      Data: 6|AutoStrike.Actions.PatrolRotateAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -147,7 +221,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 0f782c66-b868-4e5b-a039-97fcb9e8164a
+      Data: 99ded498-fa2c-4ec2-a303-37f6368a721f
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -171,7 +245,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 5|AutoStrike.Actions.DeathAction, ShooterUpgradePrototype
+      Data: 7|AutoStrike.Actions.DeathAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -183,7 +257,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: c56ce19f-e6df-4492-88a6-70fe9d6f2e71
+      Data: e8deee24-4304-4cdc-8112-f9bc7d1aa4f5
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -199,6 +273,26 @@ MonoBehaviour:
     - Name: ShowGizmo
       Entry: 5
       Data: false
+    - Name: _deathActionStack
+      Entry: 7
+      Data: 8|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityActionCollection,
+        VladislavTsurikov.EntityDataAction
+    - Name: _elementList
+      Entry: 7
+      Data: 9|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.ActionFlow.Runtime.Actions.Action,
+        VladislavTsurikov.ActionFlow]], VladislavTsurikov.Utility
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -213,19 +307,19 @@ MonoBehaviour:
       Data: 
     - Name: _data
       Entry: 7
-      Data: 6|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityDataCollection,
+      Data: 10|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityDataCollection,
         VladislavTsurikov.EntityDataAction
     - Name: _elementList
       Entry: 7
-      Data: 7|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
+      Data: 11|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
         VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
       Data: 3
     - Name: 
       Entry: 7
-      Data: 8|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityData,
-        VladislavTsurikov.EntityDataAction.Shared
+      Data: 12|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityData,
+        VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -250,91 +344,28 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: _sourceType
+      Entry: 3
+      Data: 0
+    - Name: _localStats
+      Entry: 7
+      Data: 13|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityState,
+        VladislavTsurikov.Stats
     - Name: _collection
       Entry: 10
-      Data: 0
-    - Name: _stats
-      Entry: 7
-      Data: 9|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.RuntimeStat,
-        VladislavTsurikov.EntityDataAction.Shared]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 10|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: HP
-    - Name: $v
-      Entry: 7
-      Data: 11|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.RuntimeStat,
-        VladislavTsurikov.EntityDataAction.Shared
-    - Name: _stat
-      Entry: 10
       Data: 1
-    - Name: _value
-      Entry: 7
-      Data: 12|UniRx.ReactiveProperty`1[[System.Single, mscorlib]], UniRx
-    - Name: value
-      Entry: 4
-      Data: 100
     - Name: 
       Entry: 8
       Data: 
-    - Name: 
-      Entry: 8
+    - Name: _globalConfig
+      Entry: 6
       Data: 
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: SPEED
-    - Name: $v
-      Entry: 7
-      Data: 13|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.RuntimeStat,
-        VladislavTsurikov.EntityDataAction.Shared
-    - Name: _stat
-      Entry: 10
-      Data: 2
-    - Name: _value
-      Entry: 7
-      Data: 14|UniRx.ReactiveProperty`1[[System.Single, mscorlib]], UniRx
-    - Name: value
-      Entry: 4
-      Data: 5
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 15|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathData, WaypointsSystem
+      Data: 14|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -367,7 +398,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 16|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathDirectionData,
+      Data: 15|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathDirectionData,
         WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
@@ -414,6 +445,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  _statsCollection: {fileID: 11400000, guid: f6389f926fc14cb4bb0a9be923dda1d1, type: 2}
 --- !u!1 &6238577902876923782
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4102631768968009116}
-  m_Layer: 8
+  m_Layer: 3
   m_Name: ShapeContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,52 +486,69 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4102631768968009116}
     m_Modifications:
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6721750613504127170, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+    - target: {fileID: 6721750613504127170, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
       propertyPath: m_Name
       value: Cube
       objectReference: {fileID: 0}
-    - target: {fileID: 7816382139713339651, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+    - target: {fileID: 6721750613504127170, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7816382139713339651, guid: c6927b9897b89a143bc581df7a0dcc8c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 453bfae679aed8b48babe8a9127093ae, type: 2}
     m_RemovedComponents: []
@@ -509,6 +558,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
 --- !u!4 &8999089216452334251 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c, type: 3}
+  m_CorrespondingSourceObject: {fileID: 440060311565443023, guid: c6927b9897b89a143bc581df7a0dcc8c,
+    type: 3}
   m_PrefabInstance: {fileID: 8860910826201779556}
   m_PrefabAsset: {fileID: 0}

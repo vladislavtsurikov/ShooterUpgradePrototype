@@ -14,6 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: AutoStrike::AutoStrike.Config.EnemySpawnConfig
   <RespawnDelay>k__BackingField: 7
   <MaxMobCount>k__BackingField: 5
-  <MinStartingHealth>k__BackingField: 75
-  <MaxStartingHealth>k__BackingField: 125
-  <KillRewardPoints>k__BackingField: 1

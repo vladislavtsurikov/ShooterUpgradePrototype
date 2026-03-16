@@ -17,7 +17,6 @@ namespace ShooterUpgradePrototype.Enemy.Entities
             new[]
             {
                 typeof(StatsEntityData),
-                typeof(EnemyRuntimeData),
                 typeof(WaypointPathData),
                 typeof(WaypointPathDirectionData),
             };

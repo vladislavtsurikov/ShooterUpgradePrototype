@@ -1,33 +1,36 @@
 using ArmyClash.WaypointsSystem.Runtime;
 using ArmyClash.WaypointsSystem.Runtime.Movement;
-using ShooterUpgradePrototype.Enemy.Entities;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
+using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 using VladislavTsurikov.ReflectionUtility;
 
 namespace AutoStrike.Actions
 {
-    [RequiresData(typeof(WaypointPathData), typeof(WaypointPathDirectionData), typeof(EnemyRuntimeData))]
+    [RequiresData(typeof(WaypointPathData), typeof(WaypointPathDirectionData), typeof(StatsEntityData))]
     [Name("AutoStrike/Actions/PatrolRotate")]
     public sealed class PatrolRotateAction : EntityMonoBehaviourAction
     {
+        private const string HealthId = "HP";
+
         [SerializeField]
         private float _interpolationSpeed = 12f;
 
+        private StatsEntityData _stats;
         private WaypointPathData _waypointPathData;
         private WaypointPathDirectionData _directionData;
-        private EnemyRuntimeData _runtimeData;
 
         protected override void OnEnable()
         {
+            _stats = Entity.GetData<StatsEntityData>();
             _waypointPathData = Entity.GetData<WaypointPathData>();
             _directionData = Entity.GetData<WaypointPathDirectionData>();
-            _runtimeData = Entity.GetData<EnemyRuntimeData>();
         }
 
         protected override void Update()
         {
-            if (_runtimeData.IsDead.Value)
+            float health = _stats.Stat(HealthId).RuntimeData<RuntimeStatValueData>().CurrentValue;
+            if (health <= 0f || _waypointPathData.Path == null)
             {
                 return;
             }

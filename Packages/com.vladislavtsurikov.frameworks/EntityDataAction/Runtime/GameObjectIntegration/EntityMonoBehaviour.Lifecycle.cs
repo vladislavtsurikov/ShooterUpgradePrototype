@@ -28,7 +28,10 @@ namespace VladislavTsurikov.EntityDataAction.Runtime.Core
                 Entity.Setup(true);
             }
 
-            ForEachLifecycleAction(action => action.InvokeOnEnable());
+            if (Application.isPlaying)
+            {
+                ForEachLifecycleAction(action => action.InvokeOnEnable());
+            }
         }
 
         protected void OnDisable()
@@ -48,6 +51,11 @@ namespace VladislavTsurikov.EntityDataAction.Runtime.Core
 
         private void ForEachLifecycleAction(Action<EntityMonoBehaviourAction> handler)
         {
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+            
             if (!Active || !Entity.IsSetup)
             {
                 return;
