@@ -1,70 +1,86 @@
 .upgrade-row {
-    min-height: 98px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    width: 100%;
+    min-height: 92px;
+    justify-content: center;
     border-bottom-width: 1px;
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
 }
 
-.upgrade-row:last-child {
+.upgrade-row--last {
     border-bottom-width: 0;
 }
 
+.upgrade-row-content {
+    min-height: 88px;
+    flex-direction: row;
+    align-items: center;
+}
+
 .upgrade-row-name {
-    width: 200px;
-    color: rgb(247, 248, 250);
-    font-size: 28px;
+    width: 220px;
+    margin-right: 18px;
+    color: rgb(240, 242, 246);
+    font-size: 27px;
     -unity-font-style: bold;
 }
 
+.upgrade-row-track {
+    width: 342px;
+    margin-right: 24px;
+}
+
 .upgrade-row-segments {
-    flex-grow: 1;
-    margin-right: 18px;
-    margin-left: 18px;
+    width: 342px;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
 }
 
 .level-segment {
-    width: 56px;
-    height: 28px;
-    margin-right: 4px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    background-color: rgba(24, 29, 36, 0.82);
+    width: 55px;
+    height: 30px;
+    margin-right: 2px;
+    border-radius: 2px;
+    background-color: rgba(35, 40, 49, 0.96);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
-    border-top-color: rgba(255, 255, 255, 0.08);
-    border-right-color: rgba(255, 255, 255, 0.08);
-    border-bottom-color: rgba(0, 0, 0, 0.34);
-    border-left-color: rgba(255, 255, 255, 0.08);
+    border-top-color: rgba(117, 126, 141, 0.28);
+    border-right-color: rgba(12, 15, 20, 0.42);
+    border-bottom-color: rgba(12, 15, 20, 0.52);
+    border-left-color: rgba(117, 126, 141, 0.18);
 }
 
 .level-segment--filled {
-    background-color: rgb(63, 149, 244);
+    background-color: rgb(72, 160, 246);
 }
 
 .upgrade-row-pending {
-    width: 96px;
+    width: 76px;
+    margin-right: 26px;
     color: rgb(190, 222, 140);
-    font-size: 28px;
+    font-size: 27px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
 
 .upgrade-row-button {
-    width: 108px;
-    height: 62px;
+    width: 104px;
+    height: 58px;
     color: rgb(243, 246, 248);
-    font-size: 34px;
+    font-size: 33px;
     -unity-font-style: bold;
-    background-color: rgba(55, 61, 71, 0.96);
+    border-radius: 8px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: rgba(255, 255, 255, 0.12);
+    border-right-color: rgba(255, 255, 255, 0.06);
+    border-bottom-color: rgba(0, 0, 0, 0.42);
+    border-left-color: rgba(255, 255, 255, 0.06);
+    background-color: rgba(56, 62, 72, 0.98);
 }
 
 .upgrade-row-button:disabled {

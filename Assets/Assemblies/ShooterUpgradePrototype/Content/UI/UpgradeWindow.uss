@@ -1,5 +1,5 @@
 .upgrade-backdrop {
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     right: 0;
@@ -7,16 +7,14 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(7, 12, 18, 0.46);
+    flex-grow: 1;
 }
 
 .upgrade-modal {
     width: 920px;
     max-width: 92%;
     padding-bottom: 32px;
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
+    border-radius: 18px;
     border-top-width: 2px;
     border-right-width: 2px;
     border-bottom-width: 2px;
@@ -30,8 +28,7 @@
 
 .upgrade-header {
     min-height: 86px;
-    padding-left: 28px;
-    padding-right: 20px;
+    padding: 0 20px 0 28px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -65,10 +62,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(23, 28, 35, 0.54);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+    border-radius: 8px;
 }
 
 .upgrade-points-label {
@@ -81,15 +75,9 @@
     margin-top: 22px;
     margin-right: 28px;
     margin-left: 28px;
-    padding-top: 8px;
-    padding-right: 20px;
-    padding-bottom: 8px;
-    padding-left: 20px;
+    padding: 8px 20px;
     background-color: rgba(67, 74, 85, 0.56);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-radius: 10px;
 }
 
 .upgrade-apply-button {

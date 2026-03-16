@@ -1,9 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:game="ShooterUpgradePrototype.UI.UISystem.Views" editor-extension-mode="False">
-    <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/AddressableLayouts/UpgradeStatRow.uss" />
+    <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/UpgradeStatRow.uss" />
     <game:UpgradeStatRowView class="upgrade-row">
-        <ui:Label name="statNameLabel" class="upgrade-row-name" text="Speed" />
-        <ui:VisualElement name="levelSegmentsContainer" class="upgrade-row-segments" />
-        <ui:Label name="pendingDeltaLabel" class="upgrade-row-pending" text="+ 0" />
-        <ui:Button name="upgradeButton" class="upgrade-row-button" text="+" />
+        <ui:VisualElement class="upgrade-row-content">
+            <ui:Label name="statNameLabel" class="upgrade-row-name" text="Speed" />
+            <ui:VisualElement class="upgrade-row-track">
+                <ui:VisualElement name="levelSegmentsContainer" class="upgrade-row-segments" />
+            </ui:VisualElement>
+            <ui:Label name="pendingDeltaLabel" class="upgrade-row-pending" text="+ 0" />
+            <ui:Button name="upgradeButton" class="upgrade-row-button" text="+" />
+        </ui:VisualElement>
     </game:UpgradeStatRowView>
 </ui:UXML>

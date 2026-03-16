@@ -4,16 +4,19 @@
     top: 0;
     right: 0;
     bottom: 0;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-top: 4.5%;
+    padding-right: 3.75%;
+    padding-left: 3.75%;
 }
 
 .hud-chip {
     min-height: 64px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
-    border-bottom-left-radius: 14px;
-    border-bottom-right-radius: 14px;
+    padding: 0 20px;
+    min-width: 0;
+    border-radius: 14px;
     border-top-width: 2px;
     border-right-width: 2px;
     border-bottom-width: 2px;
@@ -30,18 +33,16 @@
 }
 
 .hud-hp {
-    position: absolute;
-    left: 72px;
-    top: 48px;
+    width: 18%;
     min-width: 310px;
+    max-width: 380px;
     justify-content: center;
 }
 
 .hud-upgrade-button {
-    position: absolute;
-    right: 72px;
-    top: 48px;
+    width: 14%;
     min-width: 250px;
+    max-width: 300px;
 }
 
 .hud-upgrade-button:hover {

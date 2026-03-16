@@ -1,21 +1,18 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:game="ShooterUpgradePrototype.UI.UISystem.Views" editor-extension-mode="False">
-    <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/AddressableLayouts/UpgradeWindow.uss" />
-    <game:UpgradeWindowView>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" game="ShooterUpgradePrototype.UI.UISystem.Views" editor-extension-mode="False">
+    <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/UpgradeWindow.uss?fileID=7433441132597879392&amp;guid=fb2aa96f52fa9ae469d135ca0cb610af&amp;type=3#UpgradeWindow" />
+    <ShooterUpgradePrototype.UI.UISystem.Views.UpgradeWindowView style="flex-grow: 1;">
         <ui:VisualElement name="backdrop" class="upgrade-backdrop">
             <ui:VisualElement name="modalPanel" class="upgrade-modal">
                 <ui:VisualElement class="upgrade-header">
-                    <ui:Label name="titleLabel" class="upgrade-title" text="CHARACTER UPGRADES" />
-                    <ui:Button name="closeButton" class="upgrade-close-button" text="X" />
+                    <ui:Label name="titleLabel" text="CHARACTER UPGRADES" class="upgrade-title" />
+                    <ui:Button name="closeButton" text="X" class="upgrade-close-button" />
                 </ui:VisualElement>
-
                 <ui:VisualElement class="upgrade-points-panel">
-                    <ui:Label name="availablePointsLabel" class="upgrade-points-label" text="Available Points: 0" />
+                    <ui:Label name="availablePointsLabel" text="Available Points: 0" class="upgrade-points-label" />
                 </ui:VisualElement>
-
                 <ui:VisualElement name="rowsContainer" class="upgrade-rows-container" />
-
-                <ui:Button name="applyButton" class="upgrade-apply-button" text="APPLY" />
+                <ui:Button name="applyButton" text="APPLY" class="upgrade-apply-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-    </game:UpgradeWindowView>
+    </ShooterUpgradePrototype.UI.UISystem.Views.UpgradeWindowView>
 </ui:UXML>

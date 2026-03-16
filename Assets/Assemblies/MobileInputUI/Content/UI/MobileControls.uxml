@@ -1,8 +1,8 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:mobile="AutoStrike.MobileInputUI.Views" editor-extension-mode="False">
-    <Style src="project://database/Assets/Assemblies/MobileInputUI/Content/UI/MobileControls.uss" />
-    <mobile:MobileControlsView name="mobile-controls-root" class="mobile-controls-root">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" mobile="AutoStrike.MobileInputUI.Views" editor-extension-mode="False">
+    <Style src="project://database/Assets/Assemblies/MobileInputUI/Content/UI/MobileControls.uss?fileID=7433441132597879392&amp;guid=fd8bc29204b84b3582e0485ba081b5df&amp;type=3#MobileControls" />
+    <AutoStrike.MobileInputUI.Views.MobileControlsView name="mobile-controls-root" class="mobile-controls-root">
         <ui:VisualElement name="mobile-controls-safe-area" class="mobile-controls-safe-area">
-            <mobile:MobileMoveStickView name="mobile-stick-anchor" class="mobile-stick-anchor">
+            <AutoStrike.MobileInputUI.Views.MobileMoveStickView name="mobile-stick-anchor" class="mobile-stick-anchor" style="left: 8%; bottom: 8%; opacity: 1;">
                 <ui:VisualElement name="mobile-stick-pad" class="mobile-stick-pad">
                     <ui:VisualElement name="mobile-stick-ring" class="mobile-stick-ring" />
                     <ui:VisualElement name="mobile-stick-core" class="mobile-stick-core">
@@ -11,8 +11,8 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
-            </mobile:MobileMoveStickView>
-            <mobile:MobileFireButtonView name="mobile-fire-anchor" class="mobile-fire-anchor">
+            </AutoStrike.MobileInputUI.Views.MobileMoveStickView>
+            <AutoStrike.MobileInputUI.Views.MobileFireButtonView name="mobile-fire-anchor" class="mobile-fire-anchor" style="right: 12%; bottom: 22%;">
                 <ui:VisualElement name="mobile-fire-button-shadow" class="mobile-fire-button-shadow">
                     <ui:Button name="mobile-fire-button" class="mobile-fire-button">
                         <ui:VisualElement name="mobile-fire-button-face" class="mobile-fire-button-face">
@@ -24,11 +24,11 @@
                                 <ui:VisualElement class="mobile-fire-reticle-line mobile-fire-reticle-line-left" />
                                 <ui:VisualElement class="mobile-fire-reticle-dot" />
                             </ui:VisualElement>
-                            <ui:Label name="mobile-fire-label" class="mobile-fire-label" text="FIRE" />
+                            <ui:Label name="mobile-fire-label" text="FIRE" class="mobile-fire-label" />
                         </ui:VisualElement>
                     </ui:Button>
                 </ui:VisualElement>
-            </mobile:MobileFireButtonView>
+            </AutoStrike.MobileInputUI.Views.MobileFireButtonView>
         </ui:VisualElement>
-    </mobile:MobileControlsView>
+    </AutoStrike.MobileInputUI.Views.MobileControlsView>
 </ui:UXML>

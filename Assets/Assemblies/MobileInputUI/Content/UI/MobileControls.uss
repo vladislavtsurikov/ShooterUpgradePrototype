@@ -13,32 +13,25 @@
     right: 0;
     top: 0;
     bottom: 0;
-    padding-left: 42px;
-    padding-right: 42px;
-    padding-top: 34px;
-    padding-bottom: 34px;
+    padding: 3.5%;
 }
 
 .mobile-stick-anchor {
     position: absolute;
-    left: 18px;
-    bottom: 28px;
-    width: 252px;
-    height: 252px;
+    width: 220px;
+    height: 220px;
+    flex-shrink: 0;
     justify-content: center;
     align-items: center;
     pointer-events: auto;
 }
 
 .mobile-stick-pad {
-    width: 228px;
-    height: 228px;
+    width: 204px;
+    height: 204px;
     justify-content: center;
     align-items: center;
-    border-top-left-radius: 114px;
-    border-top-right-radius: 114px;
-    border-bottom-left-radius: 114px;
-    border-bottom-right-radius: 114px;
+    border-radius: 999px;
     border-top-width: 3px;
     border-right-width: 3px;
     border-bottom-width: 3px;
@@ -47,17 +40,14 @@
     border-right-color: rgba(255, 255, 255, 0.12);
     border-bottom-color: rgba(0, 0, 0, 0.45);
     border-left-color: rgba(255, 255, 255, 0.12);
-    background-color: rgba(29, 46, 40, 0.30);
+    background-color: rgba(29, 46, 40, 0.3);
 }
 
 .mobile-stick-ring {
     position: absolute;
-    width: 196px;
-    height: 196px;
-    border-top-left-radius: 98px;
-    border-top-right-radius: 98px;
-    border-bottom-left-radius: 98px;
-    border-bottom-right-radius: 98px;
+    width: 176px;
+    height: 176px;
+    border-radius: 999px;
     border-top-width: 3px;
     border-right-width: 3px;
     border-bottom-width: 3px;
@@ -73,31 +63,25 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 228px;
-    height: 228px;
+    width: 204px;
+    height: 204px;
     justify-content: center;
     align-items: center;
 }
 
 .mobile-stick-knob-shadow {
-    width: 112px;
-    height: 112px;
+    width: 92px;
+    height: 92px;
     justify-content: center;
     align-items: center;
-    border-top-left-radius: 56px;
-    border-top-right-radius: 56px;
-    border-bottom-left-radius: 56px;
-    border-bottom-right-radius: 56px;
+    border-radius: 999px;
     background-color: rgba(7, 13, 16, 0.32);
 }
 
 .mobile-stick-knob {
-    width: 92px;
-    height: 92px;
-    border-top-left-radius: 46px;
-    border-top-right-radius: 46px;
-    border-bottom-left-radius: 46px;
-    border-bottom-right-radius: 46px;
+    width: 76px;
+    height: 76px;
+    border-radius: 999px;
     border-top-width: 2px;
     border-right-width: 2px;
     border-bottom-width: 2px;
@@ -111,39 +95,33 @@
 
 .mobile-fire-anchor {
     position: absolute;
-    right: 22px;
-    bottom: 38px;
-    width: 228px;
-    height: 228px;
+    width: 184px;
+    height: 184px;
+    flex-shrink: 0;
     justify-content: center;
     align-items: center;
     pointer-events: auto;
 }
 
 .mobile-fire-button-shadow {
-    width: 184px;
-    height: 184px;
+    width: 140px;
+    height: 140px;
     justify-content: center;
     align-items: center;
-    border-top-left-radius: 92px;
-    border-top-right-radius: 92px;
-    border-bottom-left-radius: 92px;
-    border-bottom-right-radius: 92px;
+    border-radius: 999px;
     background-color: rgba(5, 10, 17, 0.54);
     pointer-events: none;
 }
 
 .mobile-fire-button {
-    width: 164px;
-    height: 164px;
+    width: 124px;
+    height: 124px;
+    flex-shrink: 0;
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    border-top-left-radius: 82px;
-    border-top-right-radius: 82px;
-    border-bottom-left-radius: 82px;
-    border-bottom-right-radius: 82px;
+    border-radius: 999px;
     border-top-width: 4px;
     border-right-width: 4px;
     border-bottom-width: 4px;
@@ -161,10 +139,7 @@
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    border-top-left-radius: 78px;
-    border-top-right-radius: 78px;
-    border-bottom-left-radius: 78px;
-    border-bottom-right-radius: 78px;
+    border-radius: 999px;
     background-color: rgba(208, 21, 27, 0.96);
 }
 
@@ -178,20 +153,17 @@
 
 .mobile-fire-reticle {
     position: absolute;
-    top: 28px;
-    width: 76px;
-    height: 76px;
+    top: 20px;
+    width: 58px;
+    height: 58px;
     justify-content: center;
     align-items: center;
 }
 
 .mobile-fire-reticle-ring {
-    width: 52px;
-    height: 52px;
-    border-top-left-radius: 26px;
-    border-top-right-radius: 26px;
-    border-bottom-left-radius: 26px;
-    border-bottom-right-radius: 26px;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
     border-top-width: 5px;
     border-right-width: 5px;
     border-bottom-width: 5px;
@@ -209,43 +181,40 @@
 
 .mobile-fire-reticle-line-top {
     top: 0;
-    width: 6px;
-    height: 18px;
+    width: 5px;
+    height: 14px;
 }
 
 .mobile-fire-reticle-line-right {
     right: 0;
-    width: 18px;
-    height: 6px;
+    width: 14px;
+    height: 5px;
 }
 
 .mobile-fire-reticle-line-bottom {
     bottom: 0;
-    width: 6px;
-    height: 18px;
+    width: 5px;
+    height: 14px;
 }
 
 .mobile-fire-reticle-line-left {
     left: 0;
-    width: 18px;
-    height: 6px;
+    width: 14px;
+    height: 5px;
 }
 
 .mobile-fire-reticle-dot {
     position: absolute;
-    width: 10px;
-    height: 10px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
     background-color: rgba(255, 255, 255, 0.96);
 }
 
 .mobile-fire-label {
     position: absolute;
-    bottom: 28px;
+    bottom: 20px;
     color: rgb(255, 241, 241);
-    font-size: 24px;
+    font-size: 18px;
     -unity-font-style: bold;
 }
