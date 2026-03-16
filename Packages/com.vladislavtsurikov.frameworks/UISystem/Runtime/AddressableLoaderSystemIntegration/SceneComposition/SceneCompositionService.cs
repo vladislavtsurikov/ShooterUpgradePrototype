@@ -14,18 +14,18 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
 {
     public class SceneCompositionService
     {
-        protected readonly UIHandlerManager _handlerManager;
         protected readonly ResourceLoaderManager _resourceLoaderManager;
+        protected readonly SceneUICompositionService _sceneUICompositionService;
         protected readonly ZenjectAddressableSceneLoader _sceneLoader;
 
         public SceneCompositionService(
-            UIHandlerManager handlerManager,
             ResourceLoaderManager resourceLoaderManager,
-            ZenjectAddressableSceneLoader sceneLoader)
+            ZenjectAddressableSceneLoader sceneLoader,
+            SceneUICompositionService sceneUICompositionService)
         {
-            _handlerManager = handlerManager;
             _resourceLoaderManager = resourceLoaderManager;
             _sceneLoader = sceneLoader;
+            _sceneUICompositionService = sceneUICompositionService;
         }
 
         protected virtual bool IsFilterMatch(FilterAttribute attr, string sceneName) =>
@@ -41,7 +41,7 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
             LoadSceneMode loadSceneMode = LoadSceneMode.Single,
             CancellationToken cancellationToken = default)
         {
-            _handlerManager.RemoveExceptGlobalHandlers();
+            _sceneUICompositionService.RemoveSceneHandlers();
 
             await _resourceLoaderManager.Load(Filter, cancellationToken);
 
@@ -59,7 +59,7 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
                 await eventAfterLoadScene();
             }
 
-            await _handlerManager.AddFilter(Filter, cancellationToken);
+            await _sceneUICompositionService.ComposeScene(sceneName, cancellationToken);
             return;
 
             bool Filter(FilterAttribute attr)
@@ -76,7 +76,7 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
             LoadSceneRelationship containerMode = LoadSceneRelationship.None,
             CancellationToken cancellationToken = default)
         {
-            _handlerManager.RemoveExceptGlobalHandlers();
+            _sceneUICompositionService.RemoveSceneHandlers();
 
             await _resourceLoaderManager.Load(Filter, cancellationToken);
 
@@ -93,7 +93,7 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
             }
 
             await handle.ActivateAsync().ToUniTask(cancellationToken: cancellationToken);
-            await _handlerManager.AddFilter(Filter, cancellationToken);
+            await _sceneUICompositionService.ComposeScene(sceneName, cancellationToken);
 
             return handle;
 

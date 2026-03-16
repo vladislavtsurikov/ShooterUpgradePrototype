@@ -17,7 +17,11 @@
         "GUID:5c9c0ef81e306bb4fb8182d62410223a",
         "GUID:c430e8b7a6a84f5b8d2181e23c5549c3",
         "GUID:240564e1a67a416692a5feb6a022b54c",
-        "Unity.Localization"
+        "Unity.Localization",
+        "VladislavTsurikov.ActionFlow",
+        "VladislavTsurikov.SceneManagerTool",
+        "VladislavTsurikov.SceneUtility",
+        "GUID:86afa44309ced704d99b18db08754600"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

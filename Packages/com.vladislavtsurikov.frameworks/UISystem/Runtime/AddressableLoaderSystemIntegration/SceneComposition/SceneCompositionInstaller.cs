@@ -5,7 +5,11 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
 {
     public class SceneCompositionInstaller : MonoInstaller
     {
-        public override void InstallBindings() => Container.Bind<SceneCompositionService>().AsSingle();
+        public override void InstallBindings()
+        {
+            Container.Bind<SceneUICompositionService>().AsSingle().IfNotBound();
+            Container.Bind<SceneCompositionService>().AsSingle().IfNotBound();
+        }
     }
 }
 
