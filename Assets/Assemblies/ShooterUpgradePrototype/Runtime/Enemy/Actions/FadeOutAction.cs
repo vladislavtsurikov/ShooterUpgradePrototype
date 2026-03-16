@@ -29,29 +29,14 @@ namespace AutoStrike.Actions
 
         protected override UniTask<bool> Run(CancellationToken token)
         {
-            if (EntityMonoBehaviour == null)
-            {
-                return UniTask.FromResult(false);
-            }
-
             return FadeAsync(token);
         }
 
         private void SetFade(float value)
         {
-            if (_renderers == null)
-            {
-                return;
-            }
-
             for (int index = 0; index < _renderers.Length; index++)
             {
                 Renderer renderer = _renderers[index];
-                if (renderer == null)
-                {
-                    continue;
-                }
-
                 renderer.GetPropertyBlock(_propertyBlock);
                 _propertyBlock.SetFloat(DitherFadeId, value);
                 renderer.SetPropertyBlock(_propertyBlock);

@@ -37,13 +37,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
             LookInputData = Entity.GetData<LookInputData>();
             _cameraData = Entity.GetData<CameraData>();
 
-            Transform pitchTransform = _cameraData?.Camera != null
-                ? _cameraData.Camera.transform
-                : null;
-            if (pitchTransform == null)
-            {
-                return;
-            }
+            Transform pitchTransform = _cameraData.Camera.transform;
 
             _pitch = NormalizeAngle(pitchTransform.localEulerAngles.x);
             _pitch = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
@@ -53,7 +47,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
             SubscribeToLookInput();
         }
 
-        protected override void OnDisable() => _subscriptions.Clear();
+        protected override void OnDisable() => _subscriptions?.Clear();
 
         protected abstract bool SupportsState(InputModeState state);
 
@@ -75,11 +69,6 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
             EntityMonoBehaviour.transform.Rotate(0f, look.x, 0f, Space.World);
 
-            if (_cameraData?.Camera == null)
-            {
-                return;
-            }
-
             float pitchDelta = _invertY ? look.y : -look.y;
             _pitch = Mathf.Clamp(_pitch + pitchDelta, _minPitch, _maxPitch);
             ApplyPitchRotation();
@@ -87,13 +76,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
         private void ApplyPitchRotation()
         {
-            Transform pitchTransform = _cameraData?.Camera != null
-                ? _cameraData.Camera.transform
-                : null;
-            if (pitchTransform == null)
-            {
-                return;
-            }
+            Transform pitchTransform = _cameraData.Camera.transform;
 
             Vector3 localEulerAngles = pitchTransform.localEulerAngles;
             localEulerAngles.x = _pitch;
@@ -103,7 +86,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
         private void SubscribeToInputMode()
         {
             _inputModeService.CurrentState
-                .Subscribe(state => _canProcessLook = state != null && SupportsState(state))
+                .Subscribe(state => _canProcessLook = SupportsState(state))
                 .AddTo(_subscriptions);
         }
 

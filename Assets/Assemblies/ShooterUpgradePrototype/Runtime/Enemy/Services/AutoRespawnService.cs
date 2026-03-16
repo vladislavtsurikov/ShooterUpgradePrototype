@@ -47,11 +47,6 @@ namespace ShooterUpgradePrototype.Enemy.Services
 
         public void Run()
         {
-            if (!_config.IsValid())
-            {
-                return;
-            }
-
             if (_registry.Enemies.Count >= _config.MaxMobCount)
             {
                 return;

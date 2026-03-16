@@ -65,11 +65,6 @@ namespace AutoStrike.Actions
 
         private async UniTaskVoid HandleDeath()
         {
-            if (EntityMonoBehaviour == null)
-            {
-                return;
-            }
-
             EnemyRuntimeData runtimeData = Entity.GetData<EnemyRuntimeData>();
             if (!runtimeData.TryMarkDead())
             {

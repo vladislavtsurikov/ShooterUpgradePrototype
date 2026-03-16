@@ -57,27 +57,18 @@ namespace AutoStrike.Input.Actions
             fireAction.performed -= OnFireChanged;
             fireAction.canceled -= OnFireChanged;
             _disposables.Clear();
-
-            if (_fireInputData != null)
-            {
-                _fireInputData.IsFirePressed.Value = false;
-            }
+            _fireInputData.IsFirePressed.Value = false;
         }
 
         private void OnFireChanged(InputAction.CallbackContext context)
         {
-            _inputModeService.ReportDevice(context.control?.device);
+            _inputModeService.ReportDevice(context.control.device);
             _actionFirePressed = context.ReadValueAsButton();
             ApplyFirePressed();
         }
 
         private void ApplyFirePressed()
         {
-            if (_fireInputData == null)
-            {
-                return;
-            }
-
             _fireInputData.IsFirePressed.Value = _actionFirePressed || _mobileFirePressed;
         }
     }

@@ -14,11 +14,6 @@ namespace AutoStrike.Actions
     {
         protected override UniTask<bool> Run(CancellationToken token)
         {
-            if (EntityMonoBehaviour == null)
-            {
-                return UniTask.FromResult(false);
-            }
-
             DisableColliders();
             DisableRigidbodies();
             DisableShadows();
@@ -31,11 +26,7 @@ namespace AutoStrike.Actions
             Collider[] colliders = EntityMonoBehaviour.GetComponentsInChildren<Collider>(true);
             for (int index = 0; index < colliders.Length; index++)
             {
-                Collider collider = colliders[index];
-                if (collider != null)
-                {
-                    collider.enabled = false;
-                }
+                colliders[index].enabled = false;
             }
         }
 
@@ -44,15 +35,9 @@ namespace AutoStrike.Actions
             Rigidbody[] rigidbodies = EntityMonoBehaviour.GetComponentsInChildren<Rigidbody>(true);
             for (int index = 0; index < rigidbodies.Length; index++)
             {
-                Rigidbody rigidbody = rigidbodies[index];
-                if (rigidbody == null)
-                {
-                    continue;
-                }
-
-                rigidbody.velocity = Vector3.zero;
-                rigidbody.angularVelocity = Vector3.zero;
-                rigidbody.isKinematic = true;
+                rigidbodies[index].velocity = Vector3.zero;
+                rigidbodies[index].angularVelocity = Vector3.zero;
+                rigidbodies[index].isKinematic = true;
             }
         }
 
@@ -61,11 +46,7 @@ namespace AutoStrike.Actions
             Renderer[] renderers = EntityMonoBehaviour.GetComponentsInChildren<Renderer>(true);
             for (int index = 0; index < renderers.Length; index++)
             {
-                Renderer renderer = renderers[index];
-                if (renderer != null)
-                {
-                    renderer.shadowCastingMode = ShadowCastingMode.Off;
-                }
+                renderers[index].shadowCastingMode = ShadowCastingMode.Off;
             }
         }
     }

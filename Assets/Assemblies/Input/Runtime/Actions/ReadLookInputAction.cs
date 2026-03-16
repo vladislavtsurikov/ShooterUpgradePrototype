@@ -37,18 +37,18 @@ namespace AutoStrike.Input.Actions
             Vector2 look = lookAction.ReadValue<Vector2>();
             if (look.sqrMagnitude > 0.0001f)
             {
-                _inputModeService.ReportDevice(lookAction.activeControl?.device);
+                _inputModeService.ReportDevice(lookAction.activeControl.device);
             }
 
             if ((_mobileInputStateService.IsMoveStickActive.Value || _mobileInputStateService.IsFireButtonPressed.Value)
-                && lookAction.activeControl?.device is Touchscreen)
+                && lookAction.activeControl.device is Touchscreen)
             {
                 _lookInputData.LookDelta.Value = Vector2.zero;
                 _lookInputData.LookRate.Value = Vector2.zero;
                 return;
             }
 
-            if (lookAction.activeControl?.device is Gamepad)
+            if (lookAction.activeControl.device is Gamepad)
             {
                 _lookInputData.LookRate.Value = look;
                 _lookInputData.LookDelta.Value = Vector2.zero;

@@ -20,16 +20,10 @@ namespace ShooterUpgradePrototype.Spawning
         protected override void OnAfterSpawn(GameObject instance, WaypointPath path, float normalizedPosition)
         {
             EnemyEntity enemy = instance.GetComponent<EnemyEntity>();
-            if (enemy == null)
-            {
-                return;
-            }
-
             enemy.Setup();
 
             WaypointPathData data = enemy.GetData<WaypointPathData>();
             data.Path = path;
-
             _registry.Register(enemy);
         }
     }

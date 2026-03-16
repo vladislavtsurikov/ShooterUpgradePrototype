@@ -25,11 +25,6 @@ namespace AutoStrike.Input.Services
 
         public void ReportDevice(InputDevice device)
         {
-            if (device == null)
-            {
-                return;
-            }
-
             _lastUsedDevice = device;
             RefreshCurrentState();
         }

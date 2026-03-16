@@ -55,36 +55,19 @@ namespace ShooterUpgradePrototype.Player.Services
 
         public int GetAppliedLevel(string statId)
         {
-            if (!TryGetLevelData(statId, out RuntimeStatLevelData levelData))
-            {
-                return 0;
-            }
-
-            return levelData.AppliedLevel.Value;
+            return GetLevelData(statId).AppliedLevel.Value;
         }
 
         public int GetMaxLevel(string statId)
         {
-            if (!TryGetLevelData(statId, out RuntimeStatLevelData levelData) ||
-                levelData.LevelProgressionTable == null)
-            {
-                return 0;
-            }
-
-            return levelData.LevelProgressionTable.MaxLevel;
+            return GetLevelData(statId).LevelProgressionTable.MaxLevel;
         }
 
         public float GetCurrentValue(string statId) => GetValueData(statId).CurrentValue;
 
         public float GetTargetValue(string statId, int level)
         {
-            if (!TryGetLevelData(statId, out RuntimeStatLevelData levelData) ||
-                levelData.LevelProgressionTable == null)
-            {
-                return GetValueData(statId).BaseValue;
-            }
-
-            return levelData.LevelProgressionTable.GetValue(level);
+            return GetLevelData(statId).LevelProgressionTable.GetValue(level);
         }
 
         public float GetCurrentMaxValue(string statId)
@@ -97,12 +80,7 @@ namespace ShooterUpgradePrototype.Player.Services
 
         public ReactiveProperty<int> GetLevelProperty(string statId)
         {
-            if (!TryGetLevelData(statId, out RuntimeStatLevelData levelData))
-            {
-                throw new InvalidOperationException($"Stat `{statId}` does not have level progression data.");
-            }
-
-            return levelData.AppliedLevel;
+            return GetLevelData(statId).AppliedLevel;
         }
 
         public bool AddExp(int amount)
@@ -142,12 +120,7 @@ namespace ShooterUpgradePrototype.Player.Services
                 return false;
             }
 
-            if (!TryGetLevelData(statId, out RuntimeStatLevelData levelData) ||
-                levelData.LevelProgressionTable == null)
-            {
-                return false;
-            }
-
+            RuntimeStatLevelData levelData = GetLevelData(statId);
             int targetLevel = levelData.AppliedLevel.Value + levelDelta;
             return targetLevel <= levelData.LevelProgressionTable.MaxLevel;
         }
@@ -217,12 +190,7 @@ namespace ShooterUpgradePrototype.Player.Services
                 return true;
             }
 
-            if (!TryGetLevelData(statId, out RuntimeStatLevelData levelData) ||
-                levelData.LevelProgressionTable == null)
-            {
-                return false;
-            }
-
+            RuntimeStatLevelData levelData = GetLevelData(statId);
             int targetLevel = levelData.AppliedLevel.Value + levelDelta;
             return targetLevel <= levelData.LevelProgressionTable.MaxLevel;
         }
@@ -234,7 +202,7 @@ namespace ShooterUpgradePrototype.Player.Services
                 throw new ArgumentException("Stat id is null or empty.", nameof(statId));
             }
 
-            if (Stats.Stats == null || !Stats.Stats.TryGetValue(statId, out RuntimeStat runtimeStat) || runtimeStat == null)
+            if (!Stats.Stats.TryGetValue(statId, out RuntimeStat runtimeStat))
             {
                 throw new KeyNotFoundException($"Player stat `{statId}` was not found.");
             }

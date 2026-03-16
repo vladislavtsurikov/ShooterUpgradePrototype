@@ -11,6 +11,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         {
 
         }
+
         private Label _pendingDeltaLabel;
         private VisualElement _levelSegmentsContainer;
         private Label _statNameLabel;
@@ -32,6 +33,11 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         public void SetUpgradeEnabled(bool enabled)
         {
             _upgradeButton.SetEnabled(enabled);
+        }
+
+        public void SetIsLast(bool isLast)
+        {
+            EnableInClassList("upgrade-row--last", isLast);
         }
 
         public void SetLevel(int currentLevel, int maxLevel)

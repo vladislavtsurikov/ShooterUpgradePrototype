@@ -15,12 +15,10 @@ namespace ShooterUpgradePrototype.Player.Services
                 : statId;
         }
 
-        public static bool TryGetLocalizedStatName(this PlayerStatsService playerStatsService, string statId,
-            out LocalizedString localizedString)
+        public static string GetLocalizedStatName(this PlayerStatsService playerStatsService, string statId)
         {
             RuntimeStat runtimeStat = GetRuntimeStat(playerStatsService, statId);
-            localizedString = runtimeStat.Stat?.ComponentStack?.GetElement<NameComponent>()?.ItemName;
-            return localizedString != null;
+            return runtimeStat.Stat?.ComponentStack?.GetElement<NameComponent>()?.ItemName.GetLocalizedString();
         }
 
         private static RuntimeStat GetRuntimeStat(PlayerStatsService playerStatsService, string statId)

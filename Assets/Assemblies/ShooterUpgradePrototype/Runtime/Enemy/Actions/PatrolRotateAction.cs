@@ -27,7 +27,7 @@ namespace AutoStrike.Actions
 
         protected override void Update()
         {
-            if (_runtimeData.IsDead.Value || _waypointPathData.Path == null)
+            if (_runtimeData.IsDead.Value)
             {
                 return;
             }

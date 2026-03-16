@@ -68,27 +68,18 @@ namespace AutoStrike.Input.Actions
             moveAction.performed -= OnMoveChanged;
             moveAction.canceled -= OnMoveChanged;
             _disposables.Clear();
-
-            if (_moveInputData != null)
-            {
-                _moveInputData.MoveDirection.Value = Vector2.zero;
-            }
+            _moveInputData.MoveDirection.Value = Vector2.zero;
         }
 
         private void OnMoveChanged(InputAction.CallbackContext context)
         {
-            _inputModeService.ReportDevice(context.control?.device);
+            _inputModeService.ReportDevice(context.control.device);
             _actionMoveDirection = context.ReadValue<Vector2>();
             ApplyMoveDirection();
         }
 
         private void ApplyMoveDirection()
         {
-            if (_moveInputData == null)
-            {
-                return;
-            }
-
             _moveInputData.MoveDirection.Value = _isMobileMoveActive
                 ? _mobileMoveDirection
                 : _actionMoveDirection;

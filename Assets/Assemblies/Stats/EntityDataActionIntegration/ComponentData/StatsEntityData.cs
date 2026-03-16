@@ -48,11 +48,11 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         public StatsEntityState Data => ResolveData();
 
-        public bool UsesGlobalConfig => _sourceType == StatsEntitySourceType.Global && _globalConfig != null;
+        public bool UsesGlobalConfig => _sourceType == StatsEntitySourceType.Global;
 
         public StatCollection Collection
         {
-            get => Data?.Collection;
+            get => Data.Collection;
             set
             {
                 ResolveWritableData().Collection = value;
@@ -60,11 +60,11 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             }
         }
 
-        public System.Collections.Generic.IReadOnlyDictionary<string, RuntimeStat> Stats => Data?.Stats;
+        public System.Collections.Generic.IReadOnlyDictionary<string, RuntimeStat> Stats => Data.Stats;
 
         protected override void SetupComponent(object[] setupData = null)
         {
-            Data?.EnsureInitialized();
+            Data.EnsureInitialized();
         }
 
         public void RebuildFromCollection() => ResolveWritableData().RebuildFromCollection();
@@ -73,7 +73,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         private StatsEntityState ResolveData()
         {
-            if (_sourceType == StatsEntitySourceType.Global && _globalConfig != null)
+            if (_sourceType == StatsEntitySourceType.Global)
             {
                 return _globalConfig.Stats;
             }
@@ -83,7 +83,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         private StatsEntityState ResolveWritableData()
         {
-            if (_sourceType == StatsEntitySourceType.Global && _globalConfig != null)
+            if (_sourceType == StatsEntitySourceType.Global)
             {
                 return _globalConfig.Stats;
             }

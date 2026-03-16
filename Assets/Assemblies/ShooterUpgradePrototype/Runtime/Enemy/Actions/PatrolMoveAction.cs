@@ -35,11 +35,6 @@ namespace AutoStrike.Actions
             }
 
             WaypointPath path = _data.Path;
-            if (path == null)
-            {
-                return;
-            }
-
             float speed = _stats.Stat(SpeedId).RuntimeData<RuntimeStatValueData>().CurrentValue;
             float pathLength = path.GetData<WaypointPathMetricsData>().GetTotalLength();
             if (pathLength <= Mathf.Epsilon)

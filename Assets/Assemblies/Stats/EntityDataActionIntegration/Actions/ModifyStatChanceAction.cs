@@ -37,16 +37,10 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         {
             valueData = null;
 
-            if (_stat == null)
-            {
-                Debug.LogWarning($"{nameof(ModifyStatChanceAction)} requires a Stat reference.", EntityMonoBehaviour);
-                return false;
-            }
-
             StatsEntityData statsEntityData = Get<StatsEntityData>();
-            if (statsEntityData?.Stats == null || !statsEntityData.Stats.TryGetValue(_stat.Id, out RuntimeStat runtimeStat))
+            if (!statsEntityData.Stats.TryGetValue(_stat.Id, out RuntimeStat runtimeStat))
             {
-                Debug.LogWarning($"Stat `{_stat.Id}` was not found on `{EntityMonoBehaviour?.name}`.", EntityMonoBehaviour);
+                Debug.LogWarning($"Stat `{_stat.Id}` was not found on `{EntityMonoBehaviour.name}`.", EntityMonoBehaviour);
                 return false;
             }
 

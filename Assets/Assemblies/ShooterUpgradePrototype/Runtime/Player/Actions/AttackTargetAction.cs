@@ -63,12 +63,7 @@ namespace AutoStrike.Actions
 
         private void AttackStep()
         {
-            Camera camera = _cameraData?.Camera;
-            if (camera == null)
-            {
-                return;
-            }
-
+            Camera camera = _cameraData.Camera;
             float attack = _attackerStats.Stat(AttackId).RuntimeData<RuntimeStatValueData>().CurrentValue;
             _cooldownRemaining = Mathf.Max(0f, _shotCooldown);
 
@@ -79,13 +74,8 @@ namespace AutoStrike.Actions
             }
 
             EnemyEntity enemy = hit.collider.GetComponentInParent<EnemyEntity>();
-            if (enemy == null)
-            {
-                return;
-            }
-
             TakeDamageAction takeDamageAction = enemy.GetAction<TakeDamageAction>();
-            takeDamageAction?.TryApplyDamage(attack);
+            takeDamageAction.TryApplyDamage(attack);
         }
     }
 }

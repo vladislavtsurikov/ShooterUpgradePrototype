@@ -51,30 +51,13 @@ namespace AutoStrike.Actions
 
         private void PlayShot()
         {
-            if (_audioSource == null)
-            {
-                _audioSource = ResolveAudioSource();
-                if (_audioSource == null)
-                {
-                    return;
-                }
-            }
-
-            AudioClip clip = _shotClip != null ? _shotClip : _fallbackClip ??= CreateFallbackClip();
-            _audioSource.PlayOneShot(clip, _volume);
+            _audioSource.PlayOneShot(_shotClip, _volume);
         }
 
         private AudioSource ResolveAudioSource()
         {
-            GameObject host = _cameraData?.Camera != null
-                ? _cameraData.Camera.gameObject
-                : EntityMonoBehaviour.gameObject;
-
+            GameObject host = _cameraData.Camera.gameObject;
             AudioSource audioSource = host.GetComponent<AudioSource>();
-            if (audioSource == null)
-            {
-                audioSource = host.AddComponent<AudioSource>();
-            }
 
             audioSource.playOnAwake = false;
             audioSource.loop = false;

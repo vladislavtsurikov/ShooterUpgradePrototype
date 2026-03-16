@@ -19,7 +19,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         protected override void OnDisable()
         {
-            _subscriptions.Clear();
+            _subscriptions?.Clear();
         }
 
         protected override UniTask<bool> Run(CancellationToken token)
@@ -33,11 +33,6 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             _subscriptions.Clear();
 
             StatsEntityData statsEntityData = Get<StatsEntityData>();
-            if (statsEntityData?.Stats == null)
-            {
-                return;
-            }
-
             foreach (RuntimeStat runtimeStat in statsEntityData.Stats.Values)
             {
                 if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelData))
@@ -55,15 +50,9 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         public void ApplyLevels()
         {
             StatsEntityData statsEntityData = Get<StatsEntityData>();
-            if (statsEntityData?.Stats == null)
-            {
-                return;
-            }
-
             foreach (RuntimeStat runtimeStat in statsEntityData.Stats.Values)
             {
-                if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelComponent) ||
-                    levelComponent.LevelProgressionTable == null)
+                if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelComponent))
                 {
                     continue;
                 }

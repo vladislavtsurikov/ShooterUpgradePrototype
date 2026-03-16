@@ -89,7 +89,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                     continue;
                 }
 
-                RenderRow(statId, rowHandler, availableDraftPoints);
+                RenderRow(statId, rowHandler, availableDraftPoints, i == _upgradeStatIds.Count - 1);
             }
 
             _view.SetApplyEnabled(_draftLevels.Count > 0);
@@ -171,13 +171,14 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             return delta >= 0f ? $"+{delta:0.##}" : delta.ToString("0.##");
         }
 
-        private void RenderRow(string statId, UpgradeStatRowHandler rowHandler, int availableDraftPoints)
+        private void RenderRow(string statId, UpgradeStatRowHandler rowHandler, int availableDraftPoints, bool isLast)
         {
             int draftLevels = GetDraftLevel(statId);
             int currentLevel = _playerStatsService.GetAppliedLevel(statId);
             int previewLevel = currentLevel + draftLevels;
             int maxLevel = _playerStatsService.GetMaxLevel(statId);
 
+            rowHandler.SetIsLast(isLast);
             rowHandler.Render(
                 previewLevel,
                 maxLevel,

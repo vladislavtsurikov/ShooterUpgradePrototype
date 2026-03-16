@@ -57,22 +57,11 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             }
 
             var sourceStats = _collection.Stats;
-            if (sourceStats == null)
-            {
-                _stats.Clear();
-                return;
-            }
-
             var rebuiltStats = new Dictionary<string, RuntimeStat>(sourceStats.Count);
 
             for (int i = 0; i < sourceStats.Count; i++)
             {
                 Stat stat = sourceStats[i];
-                if (stat == null)
-                {
-                    continue;
-                }
-
                 RuntimeStat runtimeStat = _stats.TryGetValue(stat.Id, out RuntimeStat existing)
                     ? existing
                     : new RuntimeStat();
@@ -97,11 +86,6 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         private static void BuildRuntimeComponents(Stat stat, RuntimeStat runtimeStat)
         {
             IList<ComponentData> components = stat.ComponentStack.List;
-            if (components == null)
-            {
-                return;
-            }
-
             for (int i = 0; i < components.Count; i++)
             {
                 if (components[i] is not StatComponentData statComponent)

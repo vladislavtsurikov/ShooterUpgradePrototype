@@ -8,7 +8,6 @@ using ShooterUpgradePrototype.Player.Services;
 using ShooterUpgradePrototype.UI.UISystem.Loaders;
 using ShooterUpgradePrototype.UI.UISystem.Views;
 using UniRx;
-using UnityEngine.Localization;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
@@ -22,7 +21,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
     {
         private readonly PlayerStatsService _playerStatsService;
         private UpgradeStatRowView _view;
-        private bool _isViewBound;
         private bool _showPendingDelta;
         private bool _upgradeEnabled;
         private int _maxLevel;
@@ -50,11 +48,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                 _view = GetUIComponent<UpgradeStatRowView>(nameof(UpgradeStatRowView));
             }
 
-            if (!_isViewBound)
-            {
-                BindViewOnce(disposables);
-                _isViewBound = true;
-            }
+            BindView(disposables);
 
             ApplyViewState();
             return UniTask.CompletedTask;
@@ -72,29 +66,18 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             ApplyViewState();
         }
 
-        private void BindViewOnce(CompositeDisposable disposables)
+        public void SetIsLast(bool isLast)
+        {
+            _view?.SetIsLast(isLast);
+        }
+
+        private void BindView(CompositeDisposable disposables)
         {
             _view.OnUpgradeClicked
                 .Subscribe(_ => UpgradeRequested?.Invoke(InstanceKey))
                 .AddTo(disposables);
 
-            BindLocalizedTitle();
-        }
-
-        private void BindLocalizedTitle()
-        {
-            string fallbackTitle = _playerStatsService.GetStatName(InstanceKey);
-            _title = fallbackTitle;
-
-            if (!_playerStatsService.TryGetLocalizedStatName(InstanceKey, out LocalizedString localizedString))
-            {
-                return;
-            }
-
-            string localizedValue = localizedString.GetLocalizedString();
-            _title = string.IsNullOrWhiteSpace(localizedValue)
-                ? fallbackTitle
-                : localizedValue;
+            _title = _playerStatsService.GetLocalizedStatName(InstanceKey);
         }
 
         private void ApplyViewState()
