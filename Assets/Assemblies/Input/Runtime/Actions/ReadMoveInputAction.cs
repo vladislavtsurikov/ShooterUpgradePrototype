@@ -24,13 +24,15 @@ namespace AutoStrike.Input.Actions
         private MobileInputStateService _mobileInputStateService;
 
         private MoveInputData _moveInputData;
-        private readonly CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new();
         private Vector2 _actionMoveDirection;
         private Vector2 _mobileMoveDirection;
         private bool _isMobileMoveActive;
 
         protected override void OnEnable()
         {
+            _disposables ??= new CompositeDisposable();
+
             _moveInputData = Entity.GetData<MoveInputData>();
             InputAction moveAction = _playerInputActions.Player.Move;
 
@@ -67,7 +69,7 @@ namespace AutoStrike.Input.Actions
             moveAction.started -= OnMoveChanged;
             moveAction.performed -= OnMoveChanged;
             moveAction.canceled -= OnMoveChanged;
-            _disposables.Clear();
+            _disposables?.Clear();
             _moveInputData.MoveDirection.Value = Vector2.zero;
         }
 

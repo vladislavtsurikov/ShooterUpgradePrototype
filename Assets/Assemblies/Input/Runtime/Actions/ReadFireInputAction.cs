@@ -23,12 +23,13 @@ namespace AutoStrike.Input.Actions
         private MobileInputStateService _mobileInputStateService;
 
         private FireInputData _fireInputData;
-        private readonly CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new();
         private bool _actionFirePressed;
         private bool _mobileFirePressed;
 
         protected override void OnEnable()
         {
+            _disposables ??= new CompositeDisposable();
             _fireInputData = Entity.GetData<FireInputData>();
             InputAction fireAction = _playerInputActions.Player.Fire;
 
@@ -56,7 +57,7 @@ namespace AutoStrike.Input.Actions
             fireAction.started -= OnFireChanged;
             fireAction.performed -= OnFireChanged;
             fireAction.canceled -= OnFireChanged;
-            _disposables.Clear();
+            _disposables?.Clear();
             _fireInputData.IsFirePressed.Value = false;
         }
 

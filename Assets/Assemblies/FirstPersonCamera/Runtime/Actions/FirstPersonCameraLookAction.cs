@@ -21,7 +21,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
         [SerializeField]
         private bool _invertY;
 
-        private readonly CompositeDisposable _subscriptions = new();
+        private CompositeDisposable _subscriptions = new();
         private float _pitch;
         private CameraData _cameraData;
         private bool _canProcessLook;
@@ -33,6 +33,7 @@ namespace AutoStrike.FirstPersonCamera.Actions
 
         protected override void OnEnable()
         {
+            _subscriptions ??= new CompositeDisposable();
             _subscriptions.Clear();
             LookInputData = Entity.GetData<LookInputData>();
             _cameraData = Entity.GetData<CameraData>();

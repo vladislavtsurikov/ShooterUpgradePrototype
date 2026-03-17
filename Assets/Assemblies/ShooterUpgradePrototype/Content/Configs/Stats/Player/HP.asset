@@ -64,19 +64,19 @@ MonoBehaviour:
       Data: false
     - Name: _baseValue
       Entry: 4
-      Data: 100
+      Data: 50
     - Name: _clampEnabled
       Entry: 5
       Data: true
     - Name: _maxValue
       Entry: 4
-      Data: 0
+      Data: 100
     - Name: _minValue
       Entry: 4
-      Data: 1
+      Data: 0
     - Name: _useMax
       Entry: 5
-      Data: false
+      Data: true
     - Name: _useMin
       Entry: 5
       Data: true

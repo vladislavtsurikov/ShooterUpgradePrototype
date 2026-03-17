@@ -25,22 +25,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected virtual string SpawnedRootName => null;
 
-        protected virtual VisualElement GetTopLevelRoot()
-        {
-            if (_container.TryResolve(typeof(IUIToolkitRootProvider)) is IUIToolkitRootProvider provider)
-            {
-                return provider.RootElement;
-            }
-
-            if (_container.TryResolve(typeof(UIDocument)) is UIDocument document)
-            {
-                return document.rootVisualElement;
-            }
-
-            UIDocument fallbackDocument = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
-            return fallbackDocument?.rootVisualElement;
-        }
-
         protected override async UniTask BeforeShowUIHandler(CancellationToken cancellationToken,
             CompositeDisposable disposables) => await SpawnLayoutIfNeeded(cancellationToken);
 
@@ -157,6 +141,17 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 typeof(UIParentAttribute));
 
             return attribute?.ContainerId;
+        }
+
+        private VisualElement GetTopLevelRoot()
+        {
+            if (_container.TryResolve(typeof(UIDocument)) is UIDocument document)
+            {
+                return document.rootVisualElement;
+            }
+
+            UIDocument fallbackDocument = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
+            return fallbackDocument?.rootVisualElement;
         }
     }
 }

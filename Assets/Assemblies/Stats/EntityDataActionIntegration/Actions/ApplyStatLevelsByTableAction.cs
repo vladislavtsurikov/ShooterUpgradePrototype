@@ -10,10 +10,11 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
     [Name("Stats/Apply Stat Levels By Table")]
     public sealed class ApplyStatLevelsByTableAction : EntityMonoBehaviourAction
     {
-        private readonly CompositeDisposable _subscriptions = new();
+        private CompositeDisposable _subscriptions = new();
 
         protected override void OnEnable()
         {
+            _subscriptions ??= new CompositeDisposable();
             RebindLevelSubscriptions();
         }
 
@@ -30,6 +31,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         private void RebindLevelSubscriptions()
         {
+            _subscriptions ??= new CompositeDisposable();
             _subscriptions.Clear();
 
             StatsEntityData statsEntityData = Get<StatsEntityData>();

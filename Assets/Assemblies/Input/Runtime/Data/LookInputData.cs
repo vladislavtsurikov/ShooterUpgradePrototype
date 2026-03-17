@@ -8,7 +8,25 @@ namespace AutoStrike.Input.Data
     [Name("AutoStrike.Input/Data/LookInput")]
     public sealed class LookInputData : ComponentData
     {
-        public ReactiveProperty<Vector2> LookDelta { get; } = new();
-        public ReactiveProperty<Vector2> LookRate { get; } = new();
+        private ReactiveProperty<Vector2> _lookDelta;
+        private ReactiveProperty<Vector2> _lookRate;
+
+        public ReactiveProperty<Vector2> LookDelta
+        {
+            get
+            {
+                _lookDelta ??= new ReactiveProperty<Vector2>();
+                return _lookDelta;
+            }
+        }
+
+        public ReactiveProperty<Vector2> LookRate
+        {
+            get
+            {
+                _lookRate ??= new ReactiveProperty<Vector2>();
+                return _lookRate;
+            }
+        }
     }
 }

@@ -50,11 +50,6 @@ namespace AutoStrike.Actions
 
         private async UniTaskVoid HandleDeath()
         {
-            if (EntityMonoBehaviour == null)
-            {
-                return;
-            }
-
             CancellationToken cancellationToken = EntityMonoBehaviour.GetCancellationTokenOnDestroy();
             await _deathActionStack.Run(cancellationToken);
 

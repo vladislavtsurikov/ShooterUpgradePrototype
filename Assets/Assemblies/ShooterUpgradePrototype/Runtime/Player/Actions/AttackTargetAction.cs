@@ -70,16 +70,9 @@ namespace AutoStrike.Actions
                 return;
             }
 
-            RuntimeStatValueData healthData = enemy.GetData<StatsEntityData>()
+            enemy.GetData<StatsEntityData>()
                 .Stat(HealthId)
-                .RuntimeData<RuntimeStatValueData>();
-
-            if (healthData.CurrentValue <= 0f)
-            {
-                return;
-            }
-
-            healthData.AddValue(-attack);
+                .RuntimeData<RuntimeStatValueData>().AddValue(-attack);
         }
     }
 }

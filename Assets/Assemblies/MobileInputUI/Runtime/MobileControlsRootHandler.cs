@@ -7,7 +7,6 @@ using AutoStrike.Input.Services.States;
 using AutoStrike.MobileInputUI.Loaders;
 using Cysharp.Threading.Tasks;
 using UniRx;
-using UnityEngine.UIElements;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration;
 using VladislavTsurikov.UISystem.Runtime.Core;
@@ -31,35 +30,30 @@ namespace AutoStrike.MobileInputUI.Handlers
             _inputModeService = inputModeService;
         }
 
-        protected override async UniTask InitializeUIHandler(
+        protected override UniTask InitializeUIHandler(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
-            await Show(cancellationToken);
-
             _inputModeService.CurrentState
                 .Select(state => state is TouchscreenInputModeState)
                 .DistinctUntilChanged()
-                .Subscribe(SetVisible)
+                .Subscribe(isTouchscreen => ToggleVisibilityAsync(isTouchscreen, cancellationToken).Forget())
                 .AddTo(disposables);
+
+            return UniTask.CompletedTask;
         }
 
         protected override string SpawnedRootName => "AutoStrikeMobileControlsHUD";
 
-        private void SetVisible(bool isVisible)
+        private async UniTaskVoid ToggleVisibilityAsync(bool isVisible, CancellationToken cancellationToken)
         {
-            if (SpawnedRoot == null)
-            {
-                return;
-            }
-
             if (isVisible)
             {
-                SpawnedRoot.style.display = StyleKeyword.Null;
+                await Show(cancellationToken);
                 return;
             }
 
-            SpawnedRoot.style.display = DisplayStyle.None;
+            await Hide(cancellationToken);
         }
     }
 }

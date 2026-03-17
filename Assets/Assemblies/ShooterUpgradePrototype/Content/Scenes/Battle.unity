@@ -2022,9 +2022,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 441a64f92661ac649a1bef941d00f460, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 3bfbe7513baa2df4cab7f90badcce5a4,
-    type: 3}
-  m_SortingOrder: 1
+  sourceAsset: {fileID: 0}
+  m_SortingOrder: 0
 --- !u!4 &2061899253
 Transform:
   m_ObjectHideFlags: 0

@@ -17,13 +17,14 @@ namespace AutoStrike.Actions
         [Min(0.05f)]
         private float _fadeDuration = 0.45f;
 
-        private readonly MaterialPropertyBlock _propertyBlock = new();
+        private MaterialPropertyBlock _propertyBlock = new();
 
         private Renderer[] _renderers;
 
         protected override void SetupComponent(object[] setupData = null)
         {
             _renderers = EntityMonoBehaviour?.GetComponentsInChildren<Renderer>(true);
+            _propertyBlock = new();
         }
 
         protected override UniTask<bool> Run(CancellationToken token)

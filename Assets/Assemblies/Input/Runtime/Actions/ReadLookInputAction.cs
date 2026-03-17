@@ -34,6 +34,12 @@ namespace AutoStrike.Input.Actions
         protected override void Update()
         {
             InputAction lookAction = _playerInputActions.Player.Look;
+
+            if (lookAction.activeControl == null)
+            {
+                return;
+            }
+
             Vector2 look = lookAction.ReadValue<Vector2>();
             if (look.sqrMagnitude > 0.0001f)
             {

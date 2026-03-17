@@ -64,7 +64,7 @@ MonoBehaviour:
       Data: false
     - Name: _baseValue
       Entry: 4
-      Data: 50
+      Data: 1
     - Name: _clampEnabled
       Entry: 5
       Data: true

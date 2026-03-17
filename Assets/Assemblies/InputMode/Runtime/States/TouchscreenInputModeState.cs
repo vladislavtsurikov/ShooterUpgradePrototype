@@ -15,7 +15,7 @@ namespace AutoStrike.Input.Services.States
         }
 
         private static bool HasTouchscreen() =>
-            UnityEngine.Application.isMobilePlatform || UnityEngine.InputSystem.Touchscreen.current != null;
+            UnityEngine.Application.isMobilePlatform;
 
         private static bool IsTouchDevice(UnityEngine.InputSystem.InputDevice device) =>
             device is UnityEngine.InputSystem.Touchscreen;
