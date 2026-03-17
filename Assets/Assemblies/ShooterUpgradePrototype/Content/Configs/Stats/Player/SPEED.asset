@@ -67,7 +67,7 @@ MonoBehaviour:
       Data: 1
     - Name: _clampEnabled
       Entry: 5
-      Data: false
+      Data: true
     - Name: _maxValue
       Entry: 4
       Data: 0
@@ -79,7 +79,7 @@ MonoBehaviour:
       Data: false
     - Name: _useMin
       Entry: 5
-      Data: false
+      Data: true
     - Name: 
       Entry: 8
       Data: 

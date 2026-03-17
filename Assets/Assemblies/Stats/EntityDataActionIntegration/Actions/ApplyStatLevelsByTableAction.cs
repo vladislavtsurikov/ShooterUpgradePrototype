@@ -65,7 +65,7 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
                 }
 
                 float targetValue = levelComponent.LevelProgressionTable.GetValue(levelComponent.AppliedLevel.Value);
-                valueComponent.SetValue(targetValue);
+                valueComponent.AddValue(targetValue);
             }
         }
     }
