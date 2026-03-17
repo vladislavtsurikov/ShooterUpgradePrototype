@@ -25,6 +25,10 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected virtual string SpawnedRootName => null;
 
+        protected virtual void DisposeUIToolkitUIHandler()
+        {
+        }
+
         protected override async UniTask BeforeShowUIHandler(CancellationToken cancellationToken,
             CompositeDisposable disposables) => await SpawnLayoutIfNeeded(cancellationToken);
 
@@ -65,6 +69,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         protected override void DisposeChildSpawningUIHandler()
         {
             SpawnedRoot = null;
+            DisposeUIToolkitUIHandler();
         }
 
         private async UniTask SpawnLayoutIfNeeded(CancellationToken cancellationToken)
@@ -94,6 +99,8 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                     $"[UIToolkitUIHandler] Failed to spawn root layout for handler `{GetType().Name}`.");
                 return;
             }
+
+            StretchToParent(SpawnedRoot);
 
             if (Parent is UIToolkitUIHandler parentHandler)
             {
@@ -152,6 +159,19 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
             UIDocument fallbackDocument = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
             return fallbackDocument?.rootVisualElement;
+        }
+
+        private static void StretchToParent(VisualElement element)
+        {
+            element.style.position = Position.Absolute;
+            element.style.left = 0;
+            element.style.top = 0;
+            element.style.right = 0;
+            element.style.bottom = 0;
+            element.style.width = StyleKeyword.Auto;
+            element.style.height = StyleKeyword.Auto;
+            element.style.flexGrow = 1;
+            element.style.flexShrink = 0;
         }
     }
 }

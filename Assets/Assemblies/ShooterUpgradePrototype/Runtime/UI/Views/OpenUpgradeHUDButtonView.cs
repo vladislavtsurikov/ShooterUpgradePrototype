@@ -12,12 +12,12 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
 
         public OpenUpgradeHUDButtonView()
         {
-            RegisterCallback<AttachToPanelEvent>(_ =>
-            {
-                text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                    UITableName,
-                    "hud.open-upgrade");
-            });
+            // RegisterCallback<AttachToPanelEvent>(_ =>
+            // {
+            //     text = LocalizationSettings.StringDatabase.GetLocalizedString(
+            //         UITableName,
+            //         "hud.open-upgrade");
+            // });
         }
 
         public new class UxmlFactory : UxmlFactory<OpenUpgradeHUDButtonView, UxmlTraits>

@@ -11,23 +11,39 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         {
         }
 
+        private float _currentValue;
         private Label _healthValueLabel;
         private VisualElement _healthFill;
+        private bool _isInitialized;
+        private float _maxValue;
 
         public void SetHealthText(float currentValue, float maxValue)
         {
-            float safeMaxValue = Mathf.Max(1f, maxValue);
-            float normalizedValue = Mathf.Clamp01(currentValue / safeMaxValue);
+            _currentValue = currentValue;
+            _maxValue = maxValue;
 
-            _healthFill.style.width = Length.Percent(normalizedValue * 100f);
-            _healthValueLabel.text =
-                $"{FormatValue(currentValue)}/{FormatValue(maxValue)}";
+            if (_isInitialized)
+            {
+                ApplyHealthState();
+            }
         }
 
         protected override void InitializeElements()
         {
             _healthFill = this.Q<VisualElement>("healthFill");
             _healthValueLabel = this.Q<Label>("healthValueLabel");
+            _isInitialized = true;
+
+            ApplyHealthState();
+        }
+
+        private void ApplyHealthState()
+        {
+            float safeMaxValue = Mathf.Max(1f, _maxValue);
+            float normalizedValue = Mathf.Clamp01(_currentValue / safeMaxValue);
+
+            _healthFill.style.width = Length.Percent(normalizedValue * 100f);
+            _healthValueLabel.text = $"{FormatValue(_currentValue)}/{FormatValue(_maxValue)}";
         }
 
         private static string FormatValue(float value)

@@ -16,6 +16,18 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         [OdinSerialize] private bool _useMin;
         [OdinSerialize] private ReactiveProperty<float> _value;
 
+        public float BaseValue => _baseValue;
+        public ReactiveProperty<float> Value => _value ??= new ReactiveProperty<float>();
+        public float CurrentValue
+        {
+            get => Value.Value;
+            set => SetValue(value);
+        }
+
+        public float MaxValue => _maxValue;
+
+        public float MinValue => _minValue;
+
         public RuntimeStatValueData()
         {
         }
@@ -30,14 +42,6 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             _maxValue = maxValue;
             _baseValue = ApplyClamp(baseValue);
             Value.Value = _baseValue;
-        }
-
-        public float BaseValue => _baseValue;
-        public ReactiveProperty<float> Value => _value ??= new ReactiveProperty<float>();
-        public float CurrentValue
-        {
-            get => Value.Value;
-            set => SetValue(value);
         }
 
         public bool SetValue(float value)

@@ -31,17 +31,24 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             _view = GetUIComponent<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
 
             _playerStatsService.GetValueProperty(HealthStatId)
-                .CombineLatest(
-                    _playerStatsService.GetLevelProperty(HealthStatId),
-                    (currentValue, _) => currentValue)
-                .Subscribe(currentValue =>
-                {
-                    float maxValue = _playerStatsService.GetCurrentMaxValue(HealthStatId);
-                    _view.SetHealthText(currentValue, maxValue);
-                })
+                .Subscribe(_ => RenderHealth())
                 .AddTo(disposables);
 
+            _playerStatsService.GetLevelProperty(HealthStatId)
+                .Subscribe(_ => RenderHealth())
+                .AddTo(disposables);
+
+            RenderHealth();
+
             return UniTask.CompletedTask;
+        }
+
+        private void RenderHealth()
+        {
+            float currentValue = _playerStatsService.GetCurrentValue(HealthStatId);
+            float maxValue = _playerStatsService.GetCurrentMaxValue(HealthStatId);
+
+            _view.SetHealthText(currentValue, maxValue);
         }
     }
 }

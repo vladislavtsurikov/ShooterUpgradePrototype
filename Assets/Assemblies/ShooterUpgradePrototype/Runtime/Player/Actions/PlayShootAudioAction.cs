@@ -40,18 +40,13 @@ namespace AutoStrike.Actions
             _fireInputData.IsFirePressed
                 .DistinctUntilChanged()
                 .Where(isPressed => isPressed)
-                .Subscribe(_ => PlayShot())
+                .Subscribe(_ => _audioSource.PlayOneShot(_shotClip, _volume))
                 .AddTo(_subscriptions);
         }
 
         protected override void OnDisable()
         {
             _subscriptions?.Clear();
-        }
-
-        private void PlayShot()
-        {
-            _audioSource.PlayOneShot(_shotClip, _volume);
         }
 
         private AudioSource ResolveAudioSource()
@@ -64,32 +59,6 @@ namespace AutoStrike.Actions
             audioSource.spatialBlend = _spatialBlend;
 
             return audioSource;
-        }
-
-        private static AudioClip CreateFallbackClip()
-        {
-            const int sampleRate = 44100;
-            const float duration = 0.09f;
-            int sampleCount = Mathf.CeilToInt(sampleRate * duration);
-            float[] samples = new float[sampleCount];
-
-            float phase = 0f;
-            for (int index = 0; index < sampleCount; index++)
-            {
-                float t = index / (float)sampleRate;
-                float normalized = t / duration;
-                float frequency = Mathf.Lerp(1800f, 180f, normalized);
-                phase += 2f * Mathf.PI * frequency / sampleRate;
-
-                float envelope = Mathf.Exp(-18f * normalized);
-                float tone = Mathf.Sin(phase) * 0.22f;
-                float noise = (Random.value * 2f - 1f) * 0.08f;
-                samples[index] = (tone + noise) * envelope;
-            }
-
-            AudioClip clip = AudioClip.Create("PlayerShootFallback", sampleCount, 1, sampleRate, false);
-            clip.SetData(samples, 0);
-            return clip;
         }
     }
 }

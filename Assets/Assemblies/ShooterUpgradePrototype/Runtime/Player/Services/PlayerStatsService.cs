@@ -72,8 +72,8 @@ namespace ShooterUpgradePrototype.Player.Services
 
         public float GetCurrentMaxValue(string statId)
         {
-            int currentLevel = GetAppliedLevel(statId);
-            return GetTargetValue(statId, currentLevel);
+            RuntimeStat runtimeStat = GetRuntimeStat(statId);
+            return runtimeStat.Runtime().Data<RuntimeStatValueData>().MaxValue;
         }
 
         public ReactiveProperty<float> GetValueProperty(string statId) => GetValueData(statId).Value;

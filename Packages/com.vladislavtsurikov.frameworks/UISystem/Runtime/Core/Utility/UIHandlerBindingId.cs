@@ -6,7 +6,9 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     internal static class UIHandlerBindingId
     {
         public static string FromHandler(UIHandler handler) =>
-            FromParentType(handler.Parent?.GetType(), handler.InstanceKey);
+            IsDynamicChild(handler)
+                ? FromDynamicParent(handler.Parent, handler.InstanceKey)
+                : FromParentType(handler.Parent?.GetType(), handler.InstanceKey);
 
         public static string FromParentType(Type parentType, string instanceKey = null)
         {
@@ -22,5 +24,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             string key = instanceKey ?? string.Empty;
             return $"{parentId}:{key}";
         }
+
+        private static bool IsDynamicChild(UIHandler handler) =>
+            handler != null && Attribute.IsDefined(handler.GetType(), typeof(DynamicUIChildAttribute), inherit: true);
     }
 }

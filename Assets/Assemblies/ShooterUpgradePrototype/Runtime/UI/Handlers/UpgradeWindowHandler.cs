@@ -3,8 +3,10 @@
 #if UI_SYSTEM_ZENJECT
 using System.Threading;
 using System.Collections.Generic;
+using AutoStrike.Input.Generated;
 using Cysharp.Threading.Tasks;
 using ShooterUpgradePrototype.Player.Services;
+using ShooterUpgradePrototype.UI.Utility;
 using UniRx;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration;
@@ -20,6 +22,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
     [UIParent(typeof(Root), RootSlots.ScreensRoot)]
     public sealed class UpgradeWindowHandler : UIToolkitUIHandler
     {
+        private readonly GameplayInputBlocker _gameplayInputBlocker;
         private readonly PlayerStatsService _playerStatsService;
         private readonly IReadOnlyList<string> _upgradeStatIds;
         private readonly Dictionary<string, int> _draftLevels = new();
@@ -29,8 +32,10 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
         public UpgradeWindowHandler(
             DiContainer container,
             UpgradeWindowLayoutLoader loader,
+            PlayerInputActions playerInputActions,
             PlayerStatsService playerStatsService) : base(container, loader)
         {
+            _gameplayInputBlocker = new GameplayInputBlocker(playerInputActions);
             _playerStatsService = playerStatsService;
             _upgradeStatIds = _playerStatsService.GetUpgradeWindowStatIds();
         }
@@ -41,6 +46,7 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
+            _gameplayInputBlocker.DisableGameplayInput();
             _view = GetUIComponent<UpgradeWindowView>(nameof(UpgradeWindowView));
             BindView();
 
@@ -53,20 +59,12 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
         protected override UniTask AfterHideUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             _showBindings.Disposable = Disposable.Empty;
+            _gameplayInputBlocker.EnableGameplayInput();
             return UniTask.CompletedTask;
         }
 
-        private async UniTaskVoid CloseAsync(bool applyChanges)
+        private async UniTaskVoid CloseAsync()
         {
-            if (applyChanges)
-            {
-                if (_draftLevels.Count > 0 && !_playerStatsService.TryApplyUpgrades(_draftLevels))
-                {
-                    Render();
-                    return;
-                }
-            }
-
             _draftLevels.Clear();
             await UINavigator.Hide<UpgradeWindowHandler, Root>(CancellationToken.None);
         }
@@ -111,16 +109,8 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                     .AddTo(showDisposables);
             }
 
-            _view.OnApplyClicked
-                .Subscribe(_ => CloseAsync(applyChanges: true).Forget())
-                .AddTo(showDisposables);
-
             _view.OnCloseClicked
-                .Subscribe(_ => CloseAsync(applyChanges: false).Forget())
-                .AddTo(showDisposables);
-
-            _view.OnBackdropClicked
-                .Subscribe(_ => CloseAsync(applyChanges: false).Forget())
+                .Subscribe(_ => CloseAsync().Forget())
                 .AddTo(showDisposables);
         }
 
@@ -191,24 +181,24 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
         {
             foreach (string statId in _upgradeStatIds)
             {
-                bool rowAlreadyExists = TryGetDynamicChild(statId, out UpgradeStatRowHandler _);
+                UpgradeStatRowHandler rowHandler = GetDynamicChild<UpgradeStatRowHandler>(statId);
 
-                UpgradeStatRowHandler rowHandler =
-                    await CreateDynamicChild<UpgradeStatRowHandler>(
-                        statId,
-                        showAutomatically: true,
-                        cancellationToken);
-
-                if (!rowAlreadyExists)
+                if (rowHandler == null)
                 {
-                    rowHandler.UpgradeRequested += HandleUpgradeRequested;
+                    rowHandler =
+                        await CreateDynamicChild<UpgradeStatRowHandler>(
+                            statId,
+                            showAutomatically: true,
+                            cancellationToken);
                 }
+
+                rowHandler.UpgradeRequested += HandleUpgradeRequested;
             }
         }
 
         private void HandleUpgradeRequested(string statId) => AddDraftLevel(statId);
 
-        public override void DisposeUIHandler()
+        protected override void DisposeUIToolkitUIHandler()
         {
             foreach (string statId in _upgradeStatIds)
             {
@@ -219,8 +209,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
             }
 
             _showBindings.Dispose();
-
-            base.DisposeUIHandler();
         }
     }
 }

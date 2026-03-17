@@ -15,17 +15,13 @@
             </ShooterUpgradePrototype.UI.UISystem.Views.PlayerHealthHUDView>
             <ShooterUpgradePrototype.UI.UISystem.Views.OpenUpgradeHUDButtonView text="Upgrade" class="hud-chip hud-upgrade-button" />
         </ui:VisualElement>
-        <ui:VisualElement class="hud-crosshair" style="left: 50%; position: relative; top: 50%;">
+        <ui:VisualElement class="hud-crosshair" style="left: 50%; position: relative; top: 50%; flex-grow: 0;">
             <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-top" />
             <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-right" />
-            <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-bottom" />
             <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-left" />
             <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-center" />
-            <ui:VisualElement class="hud-crosshair-arm hud-crosshair-arm-top" />
-            <ui:VisualElement class="hud-crosshair-arm hud-crosshair-arm-right" />
-            <ui:VisualElement class="hud-crosshair-arm hud-crosshair-arm-bottom" />
-            <ui:VisualElement class="hud-crosshair-arm hud-crosshair-arm-left" />
             <ui:VisualElement class="hud-crosshair-dot" />
+            <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-top" style="top: 26px;" />
         </ui:VisualElement>
     </ShooterUpgradePrototype.UI.UISystem.Views.BattleHUDView>
 </ui:UXML>

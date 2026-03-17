@@ -10,6 +10,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public abstract class UIHandler
     {
         private ChildActivityTracker _childTracker;
+        private readonly Dictionary<string, UIHandler> _dynamicChildren = new();
         private bool _isActive;
         private bool _isInitialized;
         private SingleActiveUIChildSwitcher _switcher;
@@ -19,6 +20,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public UIHandler Parent { get; private set; }
         public string InstanceKey { get; private set; }
+        internal UIHandlerManager UIHandlerManager { get; private set; }
 
         public bool IsActive
         {
@@ -101,6 +103,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             Disposables.Dispose();
             _childTracker?.Dispose();
             _switcher?.Dispose();
+            _dynamicChildren.Clear();
 
             IsActive = false;
             _isInitialized = false;
@@ -184,10 +187,78 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         }
 
         protected internal void AddUIHandlerChild(UIHandler child) => Children.Add(child);
-        protected internal void RemoveUIHandlerChild(UIHandler child) => Children.Remove(child);
+        protected internal void RemoveUIHandlerChild(UIHandler child)
+        {
+            Children.Remove(child);
+
+            if (!string.IsNullOrEmpty(child.InstanceKey))
+            {
+                _dynamicChildren.Remove(child.InstanceKey);
+            }
+        }
 
         internal void SetParent(UIHandler parent) => Parent = parent;
         internal void SetInstanceKey(string instanceKey) => InstanceKey = instanceKey;
+        internal void SetUIHandlerManager(UIHandlerManager uiHandlerManager) => UIHandlerManager = uiHandlerManager;
+
+        internal void RegisterDynamicChild(UIHandler child)
+        {
+            if (string.IsNullOrEmpty(child.InstanceKey))
+            {
+                throw new InvalidOperationException(
+                    $"Dynamic child `{child.GetType().FullName}` must have a non-empty instance key.");
+            }
+
+            _dynamicChildren.Add(child.InstanceKey, child);
+        }
+
+        internal bool TryGetRegisteredDynamicChild(string instanceKey, out UIHandler child) =>
+            _dynamicChildren.TryGetValue(instanceKey, out child);
+
+        internal void UnregisterDynamicChild(string instanceKey)
+        {
+            if (string.IsNullOrEmpty(instanceKey))
+            {
+                return;
+            }
+
+            _dynamicChildren.Remove(instanceKey);
+        }
+
+        protected UniTask<THandler> CreateDynamicChild<THandler>(
+            string instanceKey,
+            bool showAutomatically = false,
+            CancellationToken cancellationToken = default)
+            where THandler : UIHandler
+        {
+            EnsureUIHandlerManager();
+            return UIHandlerManager.CreateDynamicChild<THandler>(this, instanceKey, showAutomatically,
+                cancellationToken);
+        }
+
+        protected THandler GetDynamicChild<THandler>(string instanceKey)
+            where THandler : UIHandler
+        {
+            EnsureUIHandlerManager();
+            return UIHandlerManager.GetDynamicChild<THandler>(this, instanceKey);
+        }
+
+        protected bool TryGetDynamicChild<THandler>(string instanceKey, out THandler handler)
+            where THandler : UIHandler
+        {
+            EnsureUIHandlerManager();
+            return UIHandlerManager.TryGetDynamicChild(this, instanceKey, out handler);
+        }
+
+        protected UniTask DestroyDynamicChild<THandler>(
+            string instanceKey,
+            bool unload,
+            CancellationToken cancellationToken = default)
+            where THandler : UIHandler
+        {
+            EnsureUIHandlerManager();
+            return UIHandlerManager.DestroyDynamicChild<THandler>(this, instanceKey, unload, cancellationToken);
+        }
 
         private void TrackChildActivation()
         {
@@ -224,6 +295,15 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             foreach (UIHandler child in childrenToHide)
             {
                 await child.Hide(cancellationToken);
+            }
+        }
+
+        private void EnsureUIHandlerManager()
+        {
+            if (UIHandlerManager == null)
+            {
+                throw new InvalidOperationException(
+                    $"UIHandlerManager is not assigned for `{GetType().FullName}`.");
             }
         }
     }

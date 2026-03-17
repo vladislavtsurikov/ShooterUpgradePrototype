@@ -24,6 +24,13 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         {
         }
 
+        protected virtual bool TryResolveInContainer<THandler>(string bindingId, out THandler handler)
+            where THandler : UIHandler
+        {
+            handler = null;
+            return false;
+        }
+
         protected virtual void BeforeRemoveHandler(UIHandler handler)
         {
         }
@@ -100,6 +107,83 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
         }
 
+        internal async UniTask<THandler> CreateDynamicChild<THandler>(
+            UIHandler parent,
+            string instanceKey,
+            bool showAutomatically,
+            CancellationToken cancellationToken)
+            where THandler : UIHandler
+        {
+            await UIHandlerUtility.EnsureHandlersReady();
+            ValidateDynamicChildType(typeof(THandler));
+
+            if (TryGetDynamicChild(parent, instanceKey, out THandler existingHandler))
+            {
+                if (showAutomatically && !existingHandler.IsActive)
+                {
+                    await existingHandler.Show(cancellationToken);
+                }
+
+                return existingHandler;
+            }
+
+            THandler handler = (THandler)CreateUIHandler(typeof(THandler));
+            AttachHandler(handler, parent, instanceKey);
+            await handler.Initialize(cancellationToken, handler.Disposables);
+
+            if (showAutomatically)
+            {
+                await handler.Show(cancellationToken);
+            }
+
+            return handler;
+        }
+
+        internal THandler GetDynamicChild<THandler>(UIHandler parent, string instanceKey)
+            where THandler : UIHandler
+        {
+            TryGetDynamicChild(parent, instanceKey, out THandler handler);
+            return handler;
+        }
+
+        internal bool TryGetDynamicChild<THandler>(UIHandler parent, string instanceKey, out THandler handler)
+            where THandler : UIHandler
+        {
+            if (parent == null || string.IsNullOrEmpty(instanceKey))
+            {
+                handler = null;
+                return false;
+            }
+
+            if (!parent.TryGetRegisteredDynamicChild(instanceKey, out UIHandler registeredHandler) ||
+                registeredHandler is not THandler)
+            {
+                handler = null;
+                return false;
+            }
+
+            string bindingId = UIHandlerBindingId.FromDynamicParent(parent, instanceKey);
+            return TryResolveInContainer(bindingId, out handler);
+        }
+
+        internal async UniTask DestroyDynamicChild<THandler>(
+            UIHandler parent,
+            string instanceKey,
+            bool unload,
+            CancellationToken cancellationToken)
+            where THandler : UIHandler
+        {
+            if (!TryGetDynamicChild(parent, instanceKey, out THandler handler))
+            {
+                return;
+            }
+
+            parent.UnregisterDynamicChild(instanceKey);
+            await handler.Destroy(unload, cancellationToken);
+            BeforeRemoveHandler(handler);
+            parent.RemoveUIHandlerChild(handler);
+        }
+
         private async UniTask TraverseMissingUIHandler(Node node, UIHandler parent, CancellationToken cancellationToken)
         {
             if (_activeUIHandlers.ContainsKey(node))
@@ -138,6 +222,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         private void AttachHandler(UIHandler handler, UIHandler parent, string instanceKey = null)
         {
+            handler.SetUIHandlerManager(this);
+
             if (parent != null)
             {
                 parent.AddUIHandlerChild(handler);
@@ -145,6 +231,12 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
 
             handler.SetInstanceKey(instanceKey);
+
+            if (parent != null && IsDynamicChildType(handler.GetType()))
+            {
+                parent.RegisterDynamicChild(handler);
+            }
+
             RegisterInContainer(handler);
         }
 
@@ -212,6 +304,15 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         private static bool IsDynamicChildType(Type type) =>
             Attribute.IsDefined(type, typeof(DynamicUIChildAttribute), inherit: true);
+
+        private static void ValidateDynamicChildType(Type type)
+        {
+            if (!IsDynamicChildType(type))
+            {
+                throw new InvalidOperationException(
+                    $"Dynamic child handler `{type.FullName}` must be marked with [{nameof(DynamicUIChildAttribute)}].");
+            }
+        }
 
     }
 }

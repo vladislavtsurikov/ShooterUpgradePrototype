@@ -19,7 +19,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
         private Label _availablePointsLabel;
         private VisualElement _backdrop;
         private VisualElement _modalPanel;
-        private VisualElement _rowsContainer;
         private Label _titleLabel;
 
         public IObservable<Unit> OnApplyClicked => _applyButton.OnClickAsObservable();
@@ -48,7 +47,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
             _modalPanel = this.Q<VisualElement>("modalPanel");
             _titleLabel = this.Q<Label>("titleLabel");
             _availablePointsLabel = this.Q<Label>("availablePointsLabel");
-            _rowsContainer = this.Q<VisualElement>("rowsContainer");
             _applyButton = this.Q<Button>("applyButton");
             _closeButton = this.Q<Button>("closeButton");
 

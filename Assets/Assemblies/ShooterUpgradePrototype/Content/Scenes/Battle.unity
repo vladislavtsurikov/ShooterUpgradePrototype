@@ -236,6 +236,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerEntity
       objectReference: {fileID: 0}
+    - target: {fileID: 600056529660574793, guid: 796f41d1698464840bbd12ccc3f2300b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8439131203533433296, guid: 796f41d1698464840bbd12ccc3f2300b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2022,7 +2027,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 441a64f92661ac649a1bef941d00f460, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: f99b8f730f314a34b94ec5401d0fc7cc,
+    type: 3}
   m_SortingOrder: 0
 --- !u!4 &2061899253
 Transform:

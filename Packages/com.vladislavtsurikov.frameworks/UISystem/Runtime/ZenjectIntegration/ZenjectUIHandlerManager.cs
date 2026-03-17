@@ -20,6 +20,20 @@ namespace VladislavTsurikov.UISystem.Runtime
             _container.Bind(handler.GetType()).WithId(bindingId).FromInstance(handler).AsCached();
         }
 
+        protected override bool TryResolveInContainer<THandler>(string bindingId, out THandler handler)
+        {
+            try
+            {
+                handler = _container.ResolveId<THandler>(bindingId);
+                return true;
+            }
+            catch
+            {
+                handler = null;
+                return false;
+            }
+        }
+
         protected override void BeforeRemoveHandler(UIHandler handler)
         {
             Type type = handler.GetType();
