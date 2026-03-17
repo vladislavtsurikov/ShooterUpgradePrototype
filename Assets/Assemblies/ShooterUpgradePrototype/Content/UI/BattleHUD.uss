@@ -4,6 +4,13 @@
     top: 0;
     right: 0;
     bottom: 0;
+}
+
+.hud-top-row {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
@@ -15,8 +22,7 @@
 .hud-health {
     width: 36%;
     min-width: 260px;
-    max-width: 420px;
-    align-items: center;
+    max-width: 460px;
 }
 
 .hud-health-panel {
@@ -50,6 +56,7 @@
     flex-grow: 1;
     min-width: 0;
     padding: 5px;
+    margin-right: 14px;
     border-radius: 10px;
     background-color: rgba(7, 10, 13, 0.96);
 }
@@ -58,7 +65,7 @@
     height: 20px;
     border-radius: 6px;
     overflow: hidden;
-    background-color: rgba(19, 34, 40, 0.96);
+    background-color: rgba(112, 23, 23, 0.94);
 }
 
 .hud-health-bar-fill {
@@ -69,21 +76,19 @@
 }
 
 .hud-health-value {
-    margin-top: 6px;
+    width: 94px;
     color: rgb(250, 251, 252);
-    font-size: 24px;
+    font-size: 26px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
 
 .hud-crosshair-layer {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 40px;
-    height: 40px;
-    margin-left: -20px;
-    margin-top: -20px;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     justify-content: center;
     align-items: center;
 }
@@ -93,8 +98,16 @@
     height: 40px;
 }
 
-.hud-crosshair-outline,
-.hud-crosshair-arm,
+.hud-crosshair-outline {
+    position: absolute;
+    background-color: rgba(9, 13, 18, 0.92);
+}
+
+.hud-crosshair-arm {
+    position: absolute;
+    background-color: rgba(9, 13, 18, 0.92);
+}
+
 .hud-crosshair-dot {
     position: absolute;
     background-color: rgba(9, 13, 18, 0.92);
@@ -144,7 +157,10 @@
     border-radius: 5px;
 }
 
-.hud-crosshair-arm,
+.hud-crosshair-arm {
+    background-color: rgba(240, 246, 252, 0.96);
+}
+
 .hud-crosshair-dot {
     background-color: rgba(240, 246, 252, 0.96);
 }
@@ -207,10 +223,18 @@
 
 .hud-upgrade-button {
     width: auto;
-    min-width: 128px;
-    max-width: 168px;
+    min-width: 156px;
+    max-width: 210px;
+    min-height: 56px;
+    padding: 0 22px;
+    border-top-color: rgba(208, 229, 255, 0.22);
+    border-right-color: rgba(208, 229, 255, 0.12);
+    border-bottom-color: rgba(10, 31, 78, 0.56);
+    border-left-color: rgba(208, 229, 255, 0.12);
+    background-color: rgba(47, 105, 214, 0.96);
+    font-size: 20px;
 }
 
 .hud-upgrade-button:hover {
-    background-color: rgba(45, 52, 63, 0.96);
+    background-color: rgba(63, 122, 234, 0.98);
 }
