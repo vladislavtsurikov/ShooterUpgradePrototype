@@ -50,7 +50,8 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return null;
             }
 
-            TemplateContainer instance = layout.CloneTree();
+            TemplateContainer templateContainer = layout.CloneTree();
+            VisualElement instance = ExtractRootElement(templateContainer, layoutLoader);
 
             if (!string.IsNullOrEmpty(_name))
             {
@@ -63,6 +64,30 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             elementBinder.BindElementsFrom(instance);
 
             return instance;
+        }
+
+        private static VisualElement ExtractRootElement(
+            TemplateContainer templateContainer,
+            UIToolkitLayoutLoader layoutLoader)
+        {
+
+            if (templateContainer.childCount != 1)
+            {
+                Debug.LogError(
+                    $"[UIToolkitSpawnOperation] Layout `{layoutLoader.LayoutAddress}` must contain exactly one root element.");
+                return null;
+            }
+
+            VisualElement rootElement = templateContainer.ElementAt(0);
+            rootElement.RemoveFromHierarchy();
+
+            for (int i = 0; i < templateContainer.styleSheets.count; i++)
+            {
+                StyleSheet styleSheet = templateContainer.styleSheets[i];
+                rootElement.styleSheets.Add(styleSheet);
+            }
+
+            return rootElement;
         }
     }
 }

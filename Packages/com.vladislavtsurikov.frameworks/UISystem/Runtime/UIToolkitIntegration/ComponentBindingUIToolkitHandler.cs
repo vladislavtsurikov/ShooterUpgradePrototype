@@ -12,10 +12,10 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             : base(container) =>
             ElementBinder = new UIToolkitElementBinder(container, this);
 
-        public TElement GetUIComponent<TElement>(string bindingId, Type handlerType, int index = 0)
+        public TElement GetView<TElement>(string bindingId, Type handlerType, int index = 0)
             where TElement : VisualElement => ResolveWithId<TElement>(bindingId, handlerType, index);
 
-        public virtual TElement GetUIComponent<TElement>(string bindingId, int index = 0)
+        public virtual TElement GetView<TElement>(string bindingId, int index = 0)
             where TElement : VisualElement => ResolveWithId<TElement>(bindingId, GetType(), index);
 
         public virtual bool TryGetUIComponent<TElement>(string bindingId, out TElement element, int index = 0)

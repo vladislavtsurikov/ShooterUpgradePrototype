@@ -158,6 +158,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             IsActive = true;
 
             await InitializeChildren(cancellationToken);
+
+            await ShowDynamicChildren(cancellationToken);
         }
 
         public async UniTask Hide(CancellationToken cancellationToken)
@@ -231,7 +233,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             CancellationToken cancellationToken = default)
             where THandler : UIHandler
         {
-            EnsureUIHandlerManager();
             return UIHandlerManager.CreateDynamicChild<THandler>(this, instanceKey, showAutomatically,
                 cancellationToken);
         }
@@ -239,24 +240,21 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         protected THandler GetDynamicChild<THandler>(string instanceKey)
             where THandler : UIHandler
         {
-            EnsureUIHandlerManager();
             return UIHandlerManager.GetDynamicChild<THandler>(this, instanceKey);
         }
 
         protected bool TryGetDynamicChild<THandler>(string instanceKey, out THandler handler)
             where THandler : UIHandler
         {
-            EnsureUIHandlerManager();
             return UIHandlerManager.TryGetDynamicChild(this, instanceKey, out handler);
         }
 
-        protected UniTask DestroyDynamicChild<THandler>(
+        protected UniTask DestroyChild<THandler>(
             string instanceKey,
             bool unload,
             CancellationToken cancellationToken = default)
             where THandler : UIHandler
         {
-            EnsureUIHandlerManager();
             return UIHandlerManager.DestroyDynamicChild<THandler>(this, instanceKey, unload, cancellationToken);
         }
 
@@ -298,12 +296,11 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
         }
 
-        private void EnsureUIHandlerManager()
+        private async Task ShowDynamicChildren(CancellationToken cancellationToken)
         {
-            if (UIHandlerManager == null)
+            foreach (UIHandler child in _dynamicChildren.Values)
             {
-                throw new InvalidOperationException(
-                    $"UIHandlerManager is not assigned for `{GetType().FullName}`.");
+                await child.Show(cancellationToken);
             }
         }
     }

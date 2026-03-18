@@ -12,7 +12,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         {
         }
 
-        public override TElement GetUIComponent<TElement>(string bindingId, int index = 0)
+        public override TElement GetView<TElement>(string bindingId, int index = 0)
         {
             Type handlerType = Parent?.GetType() ?? GetType();
             string instanceKey = Parent?.InstanceKey;
