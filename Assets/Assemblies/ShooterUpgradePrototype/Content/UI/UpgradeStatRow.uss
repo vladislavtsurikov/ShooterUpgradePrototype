@@ -14,30 +14,52 @@
     min-height: 88px;
     flex-direction: row;
     align-items: center;
+    flex-grow: 1;
+    width: 100%;
 }
 
 .upgrade-row-name {
-    width: 220px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    min-width: 120px;
+    max-width: 220px;
+    width: auto;
     margin-right: 18px;
     color: rgb(240, 242, 246);
     font-size: 27px;
     -unity-font-style: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .upgrade-row-track {
-    width: 342px;
+    flex-grow: 3;
+    flex-shrink: 1;
+    flex-basis: 0;
+    min-width: 140px;
+    width: auto;
     margin-right: 24px;
 }
 
 .upgrade-row-segments {
-    width: 342px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    width: auto;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
 }
 
 .level-segment {
-    width: 55px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    min-width: 18px;
+    max-width: 55px;
+    width: auto;
     height: 30px;
     margin-right: 2px;
     border-radius: 2px;
@@ -57,15 +79,19 @@
 }
 
 .upgrade-row-pending {
+    flex-shrink: 0;
     width: 76px;
     margin-right: 26px;
     color: rgb(190, 222, 140);
     font-size: 27px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
+    white-space: nowrap;
 }
 
 .upgrade-row-button {
+    flex-shrink: 0;
+    min-width: 72px;
     width: 104px;
     height: 58px;
     color: rgb(243, 246, 248);
@@ -85,4 +111,35 @@
 
 .upgrade-row-button:disabled {
     opacity: 0.35;
+}
+
+@media (max-width: 520px) {
+    .upgrade-row-name {
+        min-width: 96px;
+        margin-right: 12px;
+        font-size: 22px;
+    }
+
+    .upgrade-row-track {
+        margin-right: 14px;
+        min-width: 120px;
+    }
+
+    .level-segment {
+        min-width: 14px;
+        height: 26px;
+    }
+
+    .upgrade-row-pending {
+        width: 64px;
+        margin-right: 14px;
+        font-size: 22px;
+    }
+
+    .upgrade-row-button {
+        min-width: 64px;
+        width: 84px;
+        height: 52px;
+        font-size: 30px;
+    }
 }

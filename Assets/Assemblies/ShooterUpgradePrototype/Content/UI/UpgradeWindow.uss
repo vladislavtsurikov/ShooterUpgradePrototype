@@ -39,13 +39,19 @@
 
 .upgrade-title {
     flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
     color: rgb(205, 216, 230);
     font-size: 34px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .upgrade-close-button {
+    flex-shrink: 0;
     width: 72px;
     height: 58px;
     color: rgb(234, 237, 240);
@@ -69,6 +75,9 @@
     color: rgb(245, 246, 247);
     font-size: 28px;
     -unity-font-style: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .upgrade-rows-container {
@@ -84,6 +93,7 @@
     align-self: center;
     margin-top: 30px;
     width: 340px;
+    max-width: 92%;
     height: 78px;
     color: rgb(245, 249, 255);
     font-size: 32px;
@@ -93,4 +103,45 @@
 
 .upgrade-apply-button:disabled {
     opacity: 0.45;
+}
+
+@media (max-width: 520px) {
+    .upgrade-header {
+        min-height: 72px;
+        padding: 0 14px 0 18px;
+    }
+
+    .upgrade-title {
+        font-size: 22px;
+        -unity-text-align: middle-left;
+    }
+
+    .upgrade-close-button {
+        width: 58px;
+        height: 52px;
+        font-size: 24px;
+    }
+
+    .upgrade-points-panel {
+        margin-top: 18px;
+        margin-right: 18px;
+        margin-left: 18px;
+        min-height: 56px;
+    }
+
+    .upgrade-points-label {
+        font-size: 22px;
+    }
+
+    .upgrade-rows-container {
+        margin-right: 18px;
+        margin-left: 18px;
+        padding: 6px 14px;
+    }
+
+    .upgrade-apply-button {
+        margin-top: 22px;
+        height: 68px;
+        font-size: 26px;
+    }
 }

@@ -210,3 +210,46 @@
 
 - `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/StatsCollections/PlayerEntityCollection.asset` — набор статов игрока.
 - `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/StatsCollections/EnemyEntityCollection.asset` — набор статов врага.
+
+## 6. UI: логика, масштабирование и локализация
+
+### 6.1 Логика UI (UISystem + MVP)
+
+UI в проекте построен на связке **UISystem** + **UI Toolkit** и следует MVP-подходу:
+
+- **Presenter (Handler)**: класс, который управляет жизненным циклом UI, подписками и данными. Примеры:
+  - `BattleHUDRootPresenter` — поднимает HUD и встраивает его в `RootSlots.HudRoot`.
+  - `UpgradeWindowPresenter` — открывает окно апгрейдов, блокирует gameplay-ввод, создаёт динамические строки статов и применяет черновые апгрейды.
+- **View**: `BindableVisualElement` (или наследник `Button`), который хранит ссылки на элементы из UXML, прокидывает события кликов и обновляет визуальное состояние. Примеры:
+  - `UpgradeWindowView` — кнопки `Apply/Close`, бэкдроп, заголовок, локализованный текст.
+  - `UpgradeStatRowView` — строка стата: название, сегменты уровня, дельта и кнопка `+`.
+- **LayoutLoader**: адресуемая загрузка UXML/USS по адресу (например, `BattleHUD`, `UpgradeWindow`).
+
+Ключевая идея: **Presenter — “умный”, View — “тонкий”**. Presenter держит бизнес-состояние (черновые очки, максимальные уровни, доступность апгрейда), а View занимается только отображением и событиями.
+
+### 6.2 Масштабирование/адаптивность UI Toolkit
+
+В отличие от `Unity UI Canvas` (где часто решают через `HorizontalLayoutGroup`/`ContentSizeFitter`), в UI Toolkit адаптивность делается через **flexbox** в USS:
+
+- **Flex-сжатие и перераспределение ширины**: `flex-grow / flex-shrink / flex-basis`, `min-width/max-width`.
+- **Правильное сжатие текста**: важно задавать `min-width: 0` у flex-элементов с текстом, иначе лейбл будет “выталкивать” соседей (например, кнопку закрытия).
+- **Узкие экраны**: используются `@media`-правила в USS, чтобы уменьшать шрифты/высоты/минимальные размеры на малой ширине.
+- **Safe Area (notch / вырез камеры)**: для HUD добавлено применение `Screen.safeArea` в рантайме (через `RuntimePanelUtils.ScreenToPanel`) и увеличение `padding` у верхней строки, чтобы интерфейс не залезал под вырез.
+
+Скриншоты адаптивности (разные варианты узких экранов):
+
+<p align="center">
+  <a href="Docs/Images/upgrade-window-responsive-wide.png"><img src="Docs/Images/upgrade-window-responsive-wide.png" alt="UpgradeWindow responsive (wide)" width="230"></a>
+  <a href="Docs/Images/upgrade-window-responsive-holepunch.png"><img src="Docs/Images/upgrade-window-responsive-holepunch.png" alt="UpgradeWindow responsive (hole-punch)" width="230"></a>
+  <a href="Docs/Images/upgrade-window-responsive-notch.png"><img src="Docs/Images/upgrade-window-responsive-notch.png" alt="UpgradeWindow responsive (notch)" width="230"></a>
+</p>
+
+### 6.3 Локализация (Unity 2022.3 + UI Toolkit)
+
+В Unity 2022.3 нет полноценной “из коробки” поддержки Unity Localization для привязки текстов в **UI Toolkit** так же удобно, как для `Unity UI`.
+Поэтому в этом проекте локализация сделана **кодом во View**:
+
+- даже **статические** элементы (заголовки, кнопки) выставляются из `LocalizationSettings.StringDatabase` при инициализации View;
+- используется таблица `UILocalization` и ключи вида `upgrade.window.title`, `upgrade.window.apply`, `hud.open-upgrade`.
+
+Это решение **не идеальное** (хотелось бы декларативную привязку на уровне UXML/локализованных компонентов), но в рамках ограничений версии и UI Toolkit — рабочее и предсказуемое.

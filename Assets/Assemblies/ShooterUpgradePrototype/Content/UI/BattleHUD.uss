@@ -14,14 +14,17 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    padding-top: 2.5%;
-    padding-right: 2.5%;
-    padding-left: 2.5%;
+    padding-top: 18px;
+    padding-right: 18px;
+    padding-left: 18px;
+    column-gap: 14px;
 }
 
 .hud-health {
-    width: 36%;
-    min-width: 260px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    min-width: 220px;
     max-width: 460px;
 }
 
@@ -227,6 +230,7 @@
     max-width: 210px;
     min-height: 56px;
     padding: 0 22px;
+    flex-shrink: 0;
     border-top-color: rgba(208, 229, 255, 0.22);
     border-right-color: rgba(208, 229, 255, 0.12);
     border-bottom-color: rgba(10, 31, 78, 0.56);
@@ -237,4 +241,34 @@
 
 .hud-upgrade-button:hover {
     background-color: rgba(63, 122, 234, 0.98);
+}
+
+@media (max-width: 520px) {
+    .hud-top-row {
+        padding-top: 14px;
+        padding-right: 14px;
+        padding-left: 14px;
+        column-gap: 10px;
+    }
+
+    .hud-health {
+        min-width: 190px;
+    }
+
+    .hud-health-title {
+        width: 46px;
+        font-size: 24px;
+    }
+
+    .hud-health-value {
+        width: 84px;
+        font-size: 22px;
+    }
+
+    .hud-upgrade-button {
+        min-width: 128px;
+        min-height: 52px;
+        padding: 0 16px;
+        font-size: 18px;
+    }
 }
