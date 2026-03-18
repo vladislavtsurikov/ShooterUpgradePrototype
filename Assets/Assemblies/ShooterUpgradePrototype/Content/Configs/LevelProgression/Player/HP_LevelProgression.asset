@@ -35,16 +35,16 @@ MonoBehaviour:
       Data: 10
     - Name: 
       Entry: 4
-      Data: 20
+      Data: 10
     - Name: 
       Entry: 4
-      Data: 30
+      Data: 10
     - Name: 
       Entry: 4
-      Data: 40
+      Data: 10
     - Name: 
       Entry: 4
-      Data: 50
+      Data: 10
     - Name: 
       Entry: 13
       Data: 
@@ -53,17 +53,8 @@ MonoBehaviour:
       Data: 
     - Name: _progression
       Entry: 7
-      Data: 1|VladislavTsurikov.ActionFlow.Runtime.LevelProgression.LinearProgressionTable,
+      Data: 1|VladislavTsurikov.ActionFlow.Runtime.LevelProgression.ManualProgressionTable,
         VladislavTsurikov.LevelProgression
-    - Name: _maxLevel
-      Entry: 3
-      Data: 5
-    - Name: _baseValue
-      Entry: 4
-      Data: 0
-    - Name: _incrementPerLevel
-      Entry: 4
-      Data: 10
     - Name: 
       Entry: 8
       Data: 

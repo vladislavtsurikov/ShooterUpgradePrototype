@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.2721, y: 0, z: -7.5764}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.8, y: 2, z: 1.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4102631768968009116}
@@ -146,7 +146,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 5|AutoStrike.Actions.PatrolMoveAction, ShooterUpgradePrototype
+      Data: 4|AutoStrike.Actions.PatrolMoveAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -179,7 +179,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 6|AutoStrike.Actions.PatrolRotateAction, ShooterUpgradePrototype
+      Data: 5|AutoStrike.Actions.PatrolRotateAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -215,7 +215,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 7|AutoStrike.Actions.DeathAction, ShooterUpgradePrototype
+      Data: 6|AutoStrike.Actions.DeathAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -245,18 +245,18 @@ MonoBehaviour:
       Data: false
     - Name: _deathActionStack
       Entry: 7
-      Data: 8|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityActionCollection,
+      Data: 7|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityActionCollection,
         VladislavTsurikov.EntityDataAction
     - Name: _elementList
       Entry: 7
-      Data: 9|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.ActionFlow.Runtime.Actions.Action,
+      Data: 8|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.ActionFlow.Runtime.Actions.Action,
         VladislavTsurikov.ActionFlow]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
       Data: 3
     - Name: 
       Entry: 7
-      Data: 10|AutoStrike.Actions.KillRewardAction, ShooterUpgradePrototype
+      Data: 9|AutoStrike.Actions.KillRewardAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -292,7 +292,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 11|AutoStrike.Actions.DisableDeathInteractionsAction, ShooterUpgradePrototype
+      Data: 10|AutoStrike.Actions.DisableDeathInteractionsAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -325,7 +325,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 12|AutoStrike.Actions.FadeOutAction, ShooterUpgradePrototype
+      Data: 11|AutoStrike.Actions.FadeOutAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -382,18 +382,18 @@ MonoBehaviour:
       Data: 
     - Name: _data
       Entry: 7
-      Data: 13|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityDataCollection,
+      Data: 12|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityDataCollection,
         VladislavTsurikov.EntityDataAction
     - Name: _elementList
       Entry: 7
-      Data: 14|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
+      Data: 13|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
         VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
       Data: 3
     - Name: 
       Entry: 7
-      Data: 15|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityData,
+      Data: 14|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityData,
         VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
@@ -424,7 +424,7 @@ MonoBehaviour:
       Data: 0
     - Name: _localStats
       Entry: 7
-      Data: 16|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityState,
+      Data: 15|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityState,
         VladislavTsurikov.Stats
     - Name: _collection
       Entry: 10
@@ -440,7 +440,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 17|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathData, WaypointsSystem
+      Data: 16|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -473,7 +473,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 18|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathDirectionData,
+      Data: 17|ArmyClash.WaypointsSystem.Runtime.Movement.WaypointPathDirectionData,
         WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5

@@ -34,11 +34,13 @@ namespace AutoStrike.Actions
 
         private void SetFade(float value)
         {
+            float inverted = 1f - value;
+
             for (int index = 0; index < _renderers.Length; index++)
             {
                 Renderer renderer = _renderers[index];
                 renderer.GetPropertyBlock(_propertyBlock);
-                _propertyBlock.SetFloat(DitherFadeId, value);
+                _propertyBlock.SetFloat(DitherFadeId, inverted);
                 renderer.SetPropertyBlock(_propertyBlock);
                 _propertyBlock.Clear();
             }

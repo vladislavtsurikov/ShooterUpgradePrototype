@@ -16,6 +16,8 @@ namespace ShooterUpgradePrototype.Player.Services
         private readonly ReactiveProperty<int> _availableExp = new(0);
         private readonly CompositeDisposable _disposables = new();
 
+        [NonSerialized] private int _previousLevel;
+
         public PlayerStatsService(StatsEntityConfig statsConfig)
         {
             _statsConfig = statsConfig ?? throw new ArgumentNullException(nameof(statsConfig));
@@ -65,9 +67,9 @@ namespace ShooterUpgradePrototype.Player.Services
 
         public float GetCurrentValue(string statId) => GetValueData(statId).CurrentValue;
 
-        public float GetTargetValue(string statId, int level)
+        public float GetCumulativeValue(string statId, int level)
         {
-            return GetLevelData(statId).LevelProgressionTable.GetValue(level);
+            return GetLevelData(statId).LevelProgressionTable.GetCumulativeValue(level);
         }
 
         public float GetCurrentMaxValue(string statId)

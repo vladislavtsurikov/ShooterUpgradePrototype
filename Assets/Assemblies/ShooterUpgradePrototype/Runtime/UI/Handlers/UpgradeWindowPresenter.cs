@@ -135,8 +135,8 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
                 int draftLevel = GetDraftLevel(statId);
                 int maxLevel = _playerStatsService.GetMaxLevel(statId);
 
-                float currentValue = _playerStatsService.GetTargetValue(statId, currentLevel);
-                float previewValue = _playerStatsService.GetTargetValue(statId, currentLevel + draftLevel);
+                float currentValue = _playerStatsService.GetCumulativeValue(statId, currentLevel);
+                float previewValue = _playerStatsService.GetCumulativeValue(statId, currentLevel + draftLevel);
 
                 rowHandler.UpdateState(
                     statId,

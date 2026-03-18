@@ -87,6 +87,27 @@ namespace VladislavTsurikov.ActionFlow.Runtime.LevelProgression
             return _values[clampedLevel];
         }
 
+        public float GetCumulativeValue(int level)
+        {
+            EnsureProgression();
+
+            int clampedLevel = ClampLevel(level);
+
+            if (_values.Count == 0)
+            {
+                return 0f;
+            }
+
+            float total = 0f;
+
+            for (int i = 1; i <= clampedLevel; i++)
+            {
+                total += _values[i];
+            }
+
+            return total;
+        }
+
         public float GetDelta(int level)
         {
             int clampedLevel = ClampLevel(level);

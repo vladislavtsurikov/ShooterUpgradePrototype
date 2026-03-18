@@ -193,7 +193,7 @@ MonoBehaviour:
       Data: StatNameLocalization
     - Name: _key
       Entry: 1
-      Data: name_hp
+      Data: name_speed
     - Name: 
       Entry: 8
       Data: 

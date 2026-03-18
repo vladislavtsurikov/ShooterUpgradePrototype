@@ -63,7 +63,7 @@ MonoBehaviour:
       Data: 
     - Name: _name
       Entry: 1
-      Data: Desktop
+      Data: Game
     - Name: SceneCollectionStack
       Entry: 7
       Data: 3|VladislavTsurikov.SceneManagerTool.Runtime.SceneCollectionSystem.SceneCollectionStack,

@@ -52,19 +52,40 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         private void ApplyLevels()
         {
             StatsEntityData statsEntityData = Get<StatsEntityData>();
+
             foreach (RuntimeStat runtimeStat in statsEntityData.Stats.Values)
             {
-                if (runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelData))
+                if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelData))
                 {
-                    ApplyLevel(runtimeStat, levelData);
+                    continue;
                 }
+
+                RuntimeStatValueData valueData = runtimeStat.Runtime().Data<RuntimeStatValueData>();
+
+                int level = levelData.AppliedLevel.Value;
+
+                float total = 0f;
+
+                for (int i = 1; i <= level; i++)
+                {
+                    total += levelData.LevelProgressionTable.GetValue(i);
+                }
+
+                valueData.AddValue(total);
             }
         }
 
         private void ApplyLevel(RuntimeStat runtimeStat, RuntimeStatLevelData levelData)
         {
-            float targetValue = levelData.LevelProgressionTable.GetValue(levelData.AppliedLevel.Value);
-            runtimeStat.Runtime().Data<RuntimeStatValueData>().AddValue(targetValue);
+            int previousLevel = levelData.PreviousLevel;
+            int currentLevel = levelData.AppliedLevel.Value;
+
+            float previousValue = levelData.LevelProgressionTable.GetCumulativeValue(previousLevel);
+            float currentValue = levelData.LevelProgressionTable.GetCumulativeValue(currentLevel);
+
+            float delta = currentValue - previousValue;
+
+            runtimeStat.Runtime().Data<RuntimeStatValueData>().AddValue(delta);
         }
     }
 }

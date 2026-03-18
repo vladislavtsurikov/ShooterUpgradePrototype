@@ -13,8 +13,11 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         [OdinSerialize] private int _initialLevel;
         [OdinSerialize] private ReactiveProperty<int> _appliedLevel;
 
+        [NonSerialized] private int _previousLevel;
+
         public LevelProgressionTable LevelProgressionTable => _levelProgressionTable;
         public ReactiveProperty<int> AppliedLevel => _appliedLevel ??= new ReactiveProperty<int>();
+        public int PreviousLevel => _previousLevel;
 
         public RuntimeStatLevelData()
         {
@@ -31,10 +34,13 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
         public bool SetLevel(int level)
         {
             int clampedLevel = _levelProgressionTable != null ? _levelProgressionTable.ClampLevel(level) : level;
+
             if (AppliedLevel.Value == clampedLevel)
             {
                 return false;
             }
+
+            _previousLevel = AppliedLevel.Value;
 
             AppliedLevel.Value = clampedLevel;
             Save();
@@ -43,9 +49,12 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
         protected override void RestoreDefaultsValue()
         {
-            AppliedLevel.Value = _levelProgressionTable != null
+            int value = _levelProgressionTable != null
                 ? _levelProgressionTable.ClampLevel(_initialLevel)
                 : _initialLevel;
+
+            _previousLevel = value;
+            AppliedLevel.Value = value;
         }
 
         protected override void RestoreValue()
@@ -56,7 +65,10 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
             }
 
             int level = PlayerPrefs.GetInt(GetLevelKey(StatId), _initialLevel);
-            AppliedLevel.Value = _levelProgressionTable != null ? _levelProgressionTable.ClampLevel(level) : level;
+            int clamped = _levelProgressionTable != null ? _levelProgressionTable.ClampLevel(level) : level;
+
+            _previousLevel = clamped;
+            AppliedLevel.Value = clamped;
         }
 
         protected override void SaveValue()
