@@ -44,29 +44,27 @@ namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 
                 levelData.AppliedLevel
                     .Skip(1)
-                    .Subscribe(_ => ApplyLevels())
+                    .Subscribe(_ => ApplyLevel(runtimeStat,  levelData))
                     .AddTo(_subscriptions);
             }
         }
 
-        public void ApplyLevels()
+        private void ApplyLevels()
         {
             StatsEntityData statsEntityData = Get<StatsEntityData>();
             foreach (RuntimeStat runtimeStat in statsEntityData.Stats.Values)
             {
-                if (!runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelComponent))
+                if (runtimeStat.Runtime().TryData(out RuntimeStatLevelData levelData))
                 {
-                    continue;
+                    ApplyLevel(runtimeStat, levelData);
                 }
-
-                if (!runtimeStat.Runtime().TryData(out RuntimeStatValueData valueComponent))
-                {
-                    continue;
-                }
-
-                float targetValue = levelComponent.LevelProgressionTable.GetValue(levelComponent.AppliedLevel.Value);
-                valueComponent.AddValue(targetValue);
             }
+        }
+
+        private void ApplyLevel(RuntimeStat runtimeStat, RuntimeStatLevelData levelData)
+        {
+            float targetValue = levelData.LevelProgressionTable.GetValue(levelData.AppliedLevel.Value);
+            runtimeStat.Runtime().Data<RuntimeStatValueData>().AddValue(targetValue);
         }
     }
 }
