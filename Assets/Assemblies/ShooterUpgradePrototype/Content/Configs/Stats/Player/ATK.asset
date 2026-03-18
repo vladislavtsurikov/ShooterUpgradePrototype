@@ -30,7 +30,7 @@ MonoBehaviour:
         VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 2|VladislavTsurikov.ActionFlow.Runtime.Stats.StatValueComponent, VladislavTsurikov.Stats
@@ -45,7 +45,7 @@ MonoBehaviour:
       Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 0af612d2-1001-4a7c-ac0f-186d57c06022
+      Data: 53282599-7172-4453-bc7e-b8514330a839
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -79,6 +79,43 @@ MonoBehaviour:
     - Name: _useMin
       Entry: 5
       Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|VladislavTsurikov.EntityDataAction.Shared.Runtime.Common.NameComponent,
+        VladislavTsurikov.EntityDataAction.Shared
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: a0ebe102-825a-4ffd-a247-420bdb67f0a5
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _tableName
+      Entry: 1
+      Data: StatNameLocalization
+    - Name: _key
+      Entry: 1
+      Data: name_atk
     - Name: 
       Entry: 8
       Data: 

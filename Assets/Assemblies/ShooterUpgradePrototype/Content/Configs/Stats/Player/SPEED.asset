@@ -188,18 +188,12 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: _itemName
-      Entry: 7
-      Data: 6|UnityEngine.Localization.LocalizedString, Unity.Localization
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    - Name: _tableName
+      Entry: 1
+      Data: StatNameLocalization
+    - Name: _key
+      Entry: 1
+      Data: name_speed
     - Name: 
       Entry: 8
       Data: 
