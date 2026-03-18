@@ -15,8 +15,7 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 11400000, guid: 0ef6b1cd53823c64d86b08e237255eb7, type: 2}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -31,7 +30,7 @@ MonoBehaviour:
         VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 1
     - Name: 
       Entry: 7
       Data: 2|VladislavTsurikov.ActionFlow.Runtime.Stats.StatValueComponent, VladislavTsurikov.Stats
@@ -43,10 +42,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: false
+      Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 6dd9e69e-1938-471f-9e56-d3c7e41a1cdb
+      Data: 0af612d2-1001-4a7c-ac0f-186d57c06022
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -67,96 +66,19 @@ MonoBehaviour:
       Data: 1
     - Name: _clampEnabled
       Entry: 5
-      Data: true
+      Data: false
     - Name: _maxValue
       Entry: 4
       Data: 0
     - Name: _minValue
       Entry: 4
-      Data: 1
+      Data: 0
     - Name: _useMax
       Entry: 5
       Data: false
     - Name: _useMin
       Entry: 5
-      Data: true
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 3|VladislavTsurikov.ActionFlow.Runtime.Stats.StatLevelTableComponent,
-        VladislavTsurikov.Stats
-    - Name: SelectSettingsFoldout
-      Entry: 5
-      Data: true
-    - Name: _active
-      Entry: 5
-      Data: true
-    - Name: _selected
-      Entry: 5
       Data: false
-    - Name: _nodeId
-      Entry: 1
-      Data: c886680c-3e91-416a-9b4b-dc85dc809026
-    - Name: _graphPosition
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _save
-      Entry: 5
-      Data: true
-    - Name: _levelProgressionTable
-      Entry: 10
-      Data: 0
-    - Name: _initialLevel
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 4|VladislavTsurikov.ActionFlow.Runtime.Stats.UpgradeWindowStatComponent,
-        VladislavTsurikov.Stats
-    - Name: SelectSettingsFoldout
-      Entry: 5
-      Data: true
-    - Name: _active
-      Entry: 5
-      Data: true
-    - Name: _selected
-      Entry: 5
-      Data: false
-    - Name: _nodeId
-      Entry: 1
-      Data: c8d8d0fb-c889-4f98-bda5-248f852c3915
-    - Name: _graphPosition
-      Entry: 7
-      Data: UnityEngine.Vector2, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _save
-      Entry: 5
-      Data: false
-    - Name: _order
-      Entry: 3
-      Data: 2
     - Name: 
       Entry: 8
       Data: 
