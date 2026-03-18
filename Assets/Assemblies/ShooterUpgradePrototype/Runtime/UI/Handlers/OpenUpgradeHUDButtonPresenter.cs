@@ -13,22 +13,22 @@ using Zenject;
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
-    [UIParent(typeof(BattleHUDRootHandler))]
-    public sealed class OpenUpgradeHUDButtonHandler : ParentBoundUIToolkitHandler
+    [UIParent(typeof(BattleHUDRootPresenter))]
+    public sealed class OpenUpgradeHUDButtonPresenter : ParentBoundUIToolkitHandler
     {
         private OpenUpgradeHUDButtonView _view;
 
-        public OpenUpgradeHUDButtonHandler(DiContainer container)
+        public OpenUpgradeHUDButtonPresenter(DiContainer container)
             : base(container)
         {
         }
 
         protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            _view = GetUIComponent<OpenUpgradeHUDButtonView>(nameof(OpenUpgradeHUDButtonView));
+            _view = GetView<OpenUpgradeHUDButtonView>(nameof(OpenUpgradeHUDButtonView));
 
             _view.OnClicked
-                .Subscribe(_ => UINavigator.Show<UpgradeWindowHandler, Root>(cancellationToken).Forget())
+                .Subscribe(_ => UINavigator.Show<UpgradeWindowPresenter, Root>(cancellationToken).Forget())
                 .AddTo(disposables);
 
             return UniTask.CompletedTask;

@@ -15,7 +15,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 0ef6b1cd53823c64d86b08e237255eb7, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -30,7 +31,7 @@ MonoBehaviour:
         VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 4
     - Name: 
       Entry: 7
       Data: 2|VladislavTsurikov.ActionFlow.Runtime.Stats.StatValueComponent, VladislavTsurikov.Stats
@@ -84,7 +85,84 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|VladislavTsurikov.EntityDataAction.Shared.Runtime.Common.NameComponent,
+      Data: 3|VladislavTsurikov.ActionFlow.Runtime.Stats.StatLevelTableComponent,
+        VladislavTsurikov.Stats
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: 00bb7536-3821-475d-92ce-560946d48bbc
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _save
+      Entry: 5
+      Data: true
+    - Name: _levelProgressionTable
+      Entry: 10
+      Data: 0
+    - Name: _initialLevel
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|VladislavTsurikov.ActionFlow.Runtime.Stats.UpgradeWindowStatComponent,
+        VladislavTsurikov.Stats
+    - Name: SelectSettingsFoldout
+      Entry: 5
+      Data: true
+    - Name: _active
+      Entry: 5
+      Data: true
+    - Name: _selected
+      Entry: 5
+      Data: false
+    - Name: _nodeId
+      Entry: 1
+      Data: 0830a40b-16c9-4337-be11-c812cb42b269
+    - Name: _graphPosition
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _save
+      Entry: 5
+      Data: false
+    - Name: _order
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|VladislavTsurikov.EntityDataAction.Shared.Runtime.Common.NameComponent,
         VladislavTsurikov.EntityDataAction.Shared
     - Name: SelectSettingsFoldout
       Entry: 5

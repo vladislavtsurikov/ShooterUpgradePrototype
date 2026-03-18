@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Common;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 
@@ -18,7 +19,12 @@ namespace ShooterUpgradePrototype.Player.Services
         public static string GetLocalizedStatName(this PlayerStatsService playerStatsService, string statId)
         {
             RuntimeStat runtimeStat = GetRuntimeStat(playerStatsService, statId);
-            return runtimeStat.Stat?.ComponentStack?.GetElement<NameComponent>()?.ItemName.GetLocalizedString();
+            NameComponent nameComponent = runtimeStat.Stat?.ComponentStack?.GetElement<NameComponent>();
+
+            return LocalizationSettings.StringDatabase.GetLocalizedString(
+                nameComponent.TableName,
+                nameComponent.Key
+            );
         }
 
         private static RuntimeStat GetRuntimeStat(PlayerStatsService playerStatsService, string statId)

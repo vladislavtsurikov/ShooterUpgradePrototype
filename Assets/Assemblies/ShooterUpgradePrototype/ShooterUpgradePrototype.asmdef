@@ -25,7 +25,8 @@
         "AutoStrike.Input",
         "AutoStrike.FirstPersonCamera",
         "Unity.Localization",
-        "VladislavTsurikov.IMGUIUtility"
+        "VladislavTsurikov.IMGUIUtility",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

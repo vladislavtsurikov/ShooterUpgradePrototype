@@ -30,7 +30,7 @@ namespace AutoStrike.MobileInputUI.Handlers
 
         protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            MobileFireButtonView view = GetUIComponent<MobileFireButtonView>(nameof(MobileFireButtonView));
+            MobileFireButtonView view = GetView<MobileFireButtonView>(nameof(MobileFireButtonView));
 
             view.OnPressedChanged
                 .DistinctUntilChanged()

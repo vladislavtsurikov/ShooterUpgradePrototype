@@ -15,9 +15,9 @@ namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(Root), RootSlots.HudRoot)]
-    public sealed class BattleHUDRootHandler : UIToolkitUIHandler
+    public sealed class BattleHUDRootPresenter : UIToolkitUIHandler
     {
-        public BattleHUDRootHandler(DiContainer container, BattleHUDLayoutLoader loader)
+        public BattleHUDRootPresenter(DiContainer container, BattleHUDLayoutLoader loader)
             : base(container, loader)
         {
         }

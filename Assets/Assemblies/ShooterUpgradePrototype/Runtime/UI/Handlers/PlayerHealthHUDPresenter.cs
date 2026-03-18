@@ -13,22 +13,22 @@ using Zenject;
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
-    [UIParent(typeof(BattleHUDRootHandler))]
-    public sealed class PlayerHealthHUDHandler : ParentBoundUIToolkitHandler
+    [UIParent(typeof(BattleHUDRootPresenter))]
+    public sealed class PlayerHealthHUDPresenter : ParentBoundUIToolkitHandler
     {
         private const string HealthStatId = "HP";
 
         private readonly PlayerStatsService _playerStatsService;
         private PlayerHealthHUDView _view;
 
-        public PlayerHealthHUDHandler(DiContainer container, PlayerStatsService playerStatsService) : base(container)
+        public PlayerHealthHUDPresenter(DiContainer container, PlayerStatsService playerStatsService) : base(container)
         {
             _playerStatsService = playerStatsService;
         }
 
         protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            _view = GetUIComponent<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
+            _view = GetView<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
 
             _playerStatsService.GetValueProperty(HealthStatId)
                 .Subscribe(_ => RenderHealth())

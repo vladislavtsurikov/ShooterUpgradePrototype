@@ -30,7 +30,7 @@ namespace AutoStrike.MobileInputUI.Handlers
 
         protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            MobileMoveStickView view = GetUIComponent<MobileMoveStickView>(nameof(MobileMoveStickView));
+            MobileMoveStickView view = GetView<MobileMoveStickView>(nameof(MobileMoveStickView));
 
             view.OnInputChanged
                 .Subscribe(direction =>

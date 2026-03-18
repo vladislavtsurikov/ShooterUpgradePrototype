@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: name_speed
     m_Metadata:
       m_Items: []
+  - m_Id: 463907863912448
+    m_Key: New Entry
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

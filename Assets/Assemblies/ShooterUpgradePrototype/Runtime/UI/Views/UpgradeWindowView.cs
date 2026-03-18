@@ -8,11 +8,11 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
 {
     public sealed class UpgradeWindowView : BindableVisualElement
     {
-        private const string UITableName = "UILocalization";
-
         public new class UxmlFactory : UxmlFactory<UpgradeWindowView, UxmlTraits>
         {
         }
+
+        private const string UITableName = "UILocalization";
 
         private Button _applyButton;
         private Button _closeButton;

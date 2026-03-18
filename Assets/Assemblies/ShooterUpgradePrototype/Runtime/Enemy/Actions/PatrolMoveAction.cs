@@ -4,7 +4,6 @@ using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 using VladislavTsurikov.ReflectionUtility;
-using VladislavTsurikov.StateMachine.Runtime.Data;
 using UnityEngine;
 
 namespace AutoStrike.Actions

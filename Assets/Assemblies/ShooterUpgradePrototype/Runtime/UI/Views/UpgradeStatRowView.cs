@@ -9,7 +9,6 @@ namespace ShooterUpgradePrototype.UI.UISystem.Views
     {
         public new class UxmlFactory : UxmlFactory<UpgradeStatRowView, UxmlTraits>
         {
-
         }
 
         private Label _pendingDeltaLabel;
