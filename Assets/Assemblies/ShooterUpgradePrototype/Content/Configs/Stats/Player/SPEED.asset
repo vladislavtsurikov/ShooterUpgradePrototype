@@ -46,7 +46,7 @@ MonoBehaviour:
       Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 95e9b41a-0c35-49bc-9d6e-2d97f410d3d7
+      Data: 617e44df-d3bd-484d-90b2-884b7d0ba0f2
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -67,7 +67,7 @@ MonoBehaviour:
       Data: 1
     - Name: _clampEnabled
       Entry: 5
-      Data: true
+      Data: false
     - Name: _maxValue
       Entry: 4
       Data: 0
@@ -79,7 +79,7 @@ MonoBehaviour:
       Data: false
     - Name: _useMin
       Entry: 5
-      Data: true
+      Data: false
     - Name: 
       Entry: 8
       Data: 
@@ -98,7 +98,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 0cb7e4fd-150e-472e-a0b5-2c74d41cfd19
+      Data: a4cac4a9-d956-4401-a3c4-57b7e90fe20d
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -138,7 +138,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: fef10a98-c013-4c15-9cb7-b0fc86129933
+      Data: 9f955d27-ff7b-4c52-a57d-ceec04329642
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -156,7 +156,7 @@ MonoBehaviour:
       Data: false
     - Name: _order
       Entry: 3
-      Data: 2
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -175,7 +175,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 7dee63ff-8a70-450e-be00-b70d48c376a5
+      Data: 3dcc7f1a-a4ff-429c-b9f5-63b3133b6ef5
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -193,7 +193,7 @@ MonoBehaviour:
       Data: StatNameLocalization
     - Name: _key
       Entry: 1
-      Data: name_speed
+      Data: name_hp
     - Name: 
       Entry: 8
       Data: 
