@@ -10,7 +10,7 @@ using VladislavTsurikov.ReflectionUtility;
 namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
 {
     [RequiresData(typeof(StatsEntityData))]
-    [Name("Stats/Modify/Random")]
+    [Name("Stats/Modify/Modify Stat Random")]
     public sealed class ModifyStatRandomAction : EntityMonoBehaviourAction
     {
         [InfoBox("Sets the stat value to a random number in the [Min, Max] range.")]
