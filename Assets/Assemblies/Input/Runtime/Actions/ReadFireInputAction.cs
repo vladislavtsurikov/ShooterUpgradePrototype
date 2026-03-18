@@ -1,7 +1,6 @@
 using AutoStrike.Input.Data;
 using AutoStrike.Input.Generated;
 using AutoStrike.Input.Services;
-using UniRx;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using UnityEngine.InputSystem;
@@ -19,17 +18,11 @@ namespace AutoStrike.Input.Actions
         [Inject]
         private InputModeService _inputModeService;
 
-        [Inject]
-        private MobileInputStateService _mobileInputStateService;
-
         private FireInputData _fireInputData;
-        private CompositeDisposable _disposables = new();
         private bool _actionFirePressed;
-        private bool _mobileFirePressed;
 
         protected override void OnEnable()
         {
-            _disposables ??= new CompositeDisposable();
             _fireInputData = Entity.GetData<FireInputData>();
             InputAction fireAction = _playerInputActions.Player.Fire;
 
@@ -37,17 +30,8 @@ namespace AutoStrike.Input.Actions
             fireAction.performed += OnFireChanged;
             fireAction.canceled += OnFireChanged;
 
-            _mobileInputStateService.IsFireButtonPressed
-                .Subscribe(isPressed =>
-                {
-                    _mobileFirePressed = isPressed;
-                    ApplyFirePressed();
-                })
-                .AddTo(_disposables);
-
             _actionFirePressed = fireAction.IsPressed();
-            _mobileFirePressed = _mobileInputStateService.IsFireButtonPressed.Value;
-            ApplyFirePressed();
+            _fireInputData.IsFirePressed.Value = _actionFirePressed;
         }
 
         protected override void OnDisable()
@@ -57,7 +41,6 @@ namespace AutoStrike.Input.Actions
             fireAction.started -= OnFireChanged;
             fireAction.performed -= OnFireChanged;
             fireAction.canceled -= OnFireChanged;
-            _disposables?.Clear();
             _fireInputData.IsFirePressed.Value = false;
         }
 
@@ -65,12 +48,7 @@ namespace AutoStrike.Input.Actions
         {
             _inputModeService.ReportDevice(context.control.device);
             _actionFirePressed = context.ReadValueAsButton();
-            ApplyFirePressed();
-        }
-
-        private void ApplyFirePressed()
-        {
-            _fireInputData.IsFirePressed.Value = _actionFirePressed || _mobileFirePressed;
+            _fireInputData.IsFirePressed.Value = _actionFirePressed;
         }
     }
 }

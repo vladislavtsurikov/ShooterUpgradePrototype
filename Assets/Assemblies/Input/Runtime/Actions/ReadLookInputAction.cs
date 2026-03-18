@@ -17,7 +17,7 @@ namespace AutoStrike.Input.Actions
         private PlayerInputActions _playerInputActions;
 
         [Inject]
-        private MobileInputStateService _mobileInputStateService;
+        private MobileVirtualInputService _mobileVirtualInputService;
 
         [Inject]
         private InputModeService _inputModeService;
@@ -46,7 +46,7 @@ namespace AutoStrike.Input.Actions
                 _inputModeService.ReportDevice(lookAction.activeControl.device);
             }
 
-            if ((_mobileInputStateService.IsMoveStickActive.Value || _mobileInputStateService.IsFireButtonPressed.Value)
+            if ((_mobileVirtualInputService.IsMoveStickActive || _mobileVirtualInputService.IsFireButtonPressed)
                 && lookAction.activeControl.device is Touchscreen)
             {
                 _lookInputData.LookDelta.Value = Vector2.zero;

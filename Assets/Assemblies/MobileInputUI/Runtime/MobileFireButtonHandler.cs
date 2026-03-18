@@ -16,15 +16,15 @@ namespace AutoStrike.MobileInputUI.Handlers
     [UIParent(typeof(MobileControlsRootHandler))]
     public sealed class MobileFireButtonHandler : ParentBoundUIToolkitHandler
     {
-        private readonly MobileInputStateService _mobileInputStateService;
+        private readonly MobileVirtualInputService _mobileVirtualInputService;
         private readonly InputModeService _inputModeService;
 
         public MobileFireButtonHandler(
             DiContainer container,
-            MobileInputStateService mobileInputStateService,
+            MobileVirtualInputService mobileVirtualInputService,
             InputModeService inputModeService) : base(container)
         {
-            _mobileInputStateService = mobileInputStateService;
+            _mobileVirtualInputService = mobileVirtualInputService;
             _inputModeService = inputModeService;
         }
 
@@ -36,7 +36,7 @@ namespace AutoStrike.MobileInputUI.Handlers
                 .DistinctUntilChanged()
                 .Subscribe(isPressed =>
                 {
-                    _mobileInputStateService.SetFirePressed(isPressed);
+                    _mobileVirtualInputService.SetFirePressed(isPressed);
                     if (isPressed)
                     {
                         _inputModeService.ReportTouchInput();
@@ -44,7 +44,7 @@ namespace AutoStrike.MobileInputUI.Handlers
                 })
                 .AddTo(disposables);
 
-            Disposable.Create(() => _mobileInputStateService.SetFirePressed(false))
+            Disposable.Create(() => _mobileVirtualInputService.SetFirePressed(false))
                 .AddTo(disposables);
 
             return UniTask.CompletedTask;

@@ -1,7 +1,6 @@
 using AutoStrike.Input.Data;
 using AutoStrike.Input.Generated;
 using AutoStrike.Input.Services;
-using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
@@ -20,19 +19,11 @@ namespace AutoStrike.Input.Actions
         [Inject]
         private InputModeService _inputModeService;
 
-        [Inject]
-        private MobileInputStateService _mobileInputStateService;
-
         private MoveInputData _moveInputData;
-        private CompositeDisposable _disposables = new();
         private Vector2 _actionMoveDirection;
-        private Vector2 _mobileMoveDirection;
-        private bool _isMobileMoveActive;
 
         protected override void OnEnable()
         {
-            _disposables ??= new CompositeDisposable();
-
             _moveInputData = Entity.GetData<MoveInputData>();
             InputAction moveAction = _playerInputActions.Player.Move;
 
@@ -40,26 +31,8 @@ namespace AutoStrike.Input.Actions
             moveAction.performed += OnMoveChanged;
             moveAction.canceled += OnMoveChanged;
 
-            _mobileInputStateService.MoveDirection
-                .Subscribe(direction =>
-                {
-                    _mobileMoveDirection = direction;
-                    ApplyMoveDirection();
-                })
-                .AddTo(_disposables);
-
-            _mobileInputStateService.IsMoveStickActive
-                .Subscribe(isActive =>
-                {
-                    _isMobileMoveActive = isActive;
-                    ApplyMoveDirection();
-                })
-                .AddTo(_disposables);
-
             _actionMoveDirection = moveAction.ReadValue<Vector2>();
-            _mobileMoveDirection = _mobileInputStateService.MoveDirection.Value;
-            _isMobileMoveActive = _mobileInputStateService.IsMoveStickActive.Value;
-            ApplyMoveDirection();
+            _moveInputData.MoveDirection.Value = _actionMoveDirection;
         }
 
         protected override void OnDisable()
@@ -69,7 +42,6 @@ namespace AutoStrike.Input.Actions
             moveAction.started -= OnMoveChanged;
             moveAction.performed -= OnMoveChanged;
             moveAction.canceled -= OnMoveChanged;
-            _disposables?.Clear();
             _moveInputData.MoveDirection.Value = Vector2.zero;
         }
 
@@ -77,14 +49,7 @@ namespace AutoStrike.Input.Actions
         {
             _inputModeService.ReportDevice(context.control.device);
             _actionMoveDirection = context.ReadValue<Vector2>();
-            ApplyMoveDirection();
-        }
-
-        private void ApplyMoveDirection()
-        {
-            _moveInputData.MoveDirection.Value = _isMobileMoveActive
-                ? _mobileMoveDirection
-                : _actionMoveDirection;
+            _moveInputData.MoveDirection.Value = _actionMoveDirection;
         }
     }
 }

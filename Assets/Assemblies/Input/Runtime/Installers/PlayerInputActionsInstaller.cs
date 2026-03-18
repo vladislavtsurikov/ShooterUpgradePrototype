@@ -11,19 +11,19 @@ namespace AutoStrike.Input.Installers
     {
         private PlayerInputActions _playerInputActions;
         private InputModeService _inputModeService;
-        private MobileInputStateService _mobileInputStateService;
+        private MobileVirtualInputService _mobileVirtualInputService;
 
         public override void InstallBindings()
         {
             _playerInputActions = new PlayerInputActions();
             _inputModeService = new InputModeService(new InputModeStateRegistry());
-            _mobileInputStateService = new MobileInputStateService();
+            _mobileVirtualInputService = new MobileVirtualInputService();
 
             _playerInputActions.Enable();
 
             Container.Bind<PlayerInputActions>().FromInstance(_playerInputActions).AsSingle();
             Container.Bind<InputModeService>().FromInstance(_inputModeService).AsSingle();
-            Container.Bind<MobileInputStateService>().FromInstance(_mobileInputStateService).AsSingle();
+            Container.Bind<MobileVirtualInputService>().FromInstance(_mobileVirtualInputService).AsSingle();
         }
 
         private void OnDestroy()
@@ -31,8 +31,8 @@ namespace AutoStrike.Input.Installers
             _inputModeService?.Dispose();
             _inputModeService = null;
 
-            _mobileInputStateService?.Dispose();
-            _mobileInputStateService = null;
+            _mobileVirtualInputService?.Dispose();
+            _mobileVirtualInputService = null;
 
             if (_playerInputActions == null)
             {

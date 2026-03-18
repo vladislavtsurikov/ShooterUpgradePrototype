@@ -16,15 +16,15 @@ namespace AutoStrike.MobileInputUI.Handlers
     [UIParent(typeof(MobileControlsRootHandler))]
     public sealed class MobileMoveStickHandler : ParentBoundUIToolkitHandler
     {
-        private readonly MobileInputStateService _mobileInputStateService;
+        private readonly MobileVirtualInputService _mobileVirtualInputService;
         private readonly InputModeService _inputModeService;
 
         public MobileMoveStickHandler(
             DiContainer container,
-            MobileInputStateService mobileInputStateService,
+            MobileVirtualInputService mobileVirtualInputService,
             InputModeService inputModeService) : base(container)
         {
-            _mobileInputStateService = mobileInputStateService;
+            _mobileVirtualInputService = mobileVirtualInputService;
             _inputModeService = inputModeService;
         }
 
@@ -35,16 +35,16 @@ namespace AutoStrike.MobileInputUI.Handlers
             view.OnInputChanged
                 .Subscribe(direction =>
                 {
-                    _mobileInputStateService.SetMove(direction, true);
+                    _mobileVirtualInputService.SetMove(direction, true);
                     _inputModeService.ReportTouchInput();
                 })
                 .AddTo(disposables);
 
             view.OnReleased
-                .Subscribe(_ => _mobileInputStateService.ResetMove())
+                .Subscribe(_ => _mobileVirtualInputService.ResetMove())
                 .AddTo(disposables);
 
-            Disposable.Create(() => _mobileInputStateService.ResetMove())
+            Disposable.Create(() => _mobileVirtualInputService.ResetMove())
                 .AddTo(disposables);
 
             return UniTask.CompletedTask;
