@@ -5,7 +5,7 @@ using VladislavTsurikov.Nody.Runtime.AdvancedNodeStack;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace ArmyClash.WaypointsSystem.Runtime.Spawning
+namespace WaypointsSystem.Runtime
 {
     [Persistent]
     [Name("Waypoints/Spawning/Metrics Cache Data")]

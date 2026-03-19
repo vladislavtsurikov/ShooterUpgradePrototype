@@ -1,13 +1,12 @@
-using AutoStrike.Input.Data;
 using AutoStrike.FirstPersonCamera.Data;
-using ShooterUpgradePrototype.Enemy.Entities;
+using AutoStrike.Input.FPSInput.Runtime;
+using Stats.EntityDataActionIntegration;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace AutoStrike.Actions
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [RequiresData(typeof(StatsEntityData), typeof(FireInputData), typeof(CameraData))]
     [Name("AutoStrike/Actions/AttackTarget")]

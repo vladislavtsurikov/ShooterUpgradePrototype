@@ -4,9 +4,6 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using ShooterUpgradePrototype.Player.Services;
-using ShooterUpgradePrototype.UI.UISystem.Loaders;
-using ShooterUpgradePrototype.UI.UISystem.Views;
 using UniRx;
 using UnityEngine.UIElements;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
@@ -14,7 +11,7 @@ using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 using Zenject;
 
-namespace ShooterUpgradePrototype.UI.UISystem.Handlers
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     [DynamicUIChild]

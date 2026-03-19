@@ -1,6 +1,6 @@
 using OdinSerializer;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     public abstract class RuntimeStatData
     {

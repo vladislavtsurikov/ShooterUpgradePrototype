@@ -1,7 +1,7 @@
 using VladislavTsurikov.Nody.Runtime.AdvancedNodeStack;
 using VladislavTsurikov.Nody.Runtime.Core;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.Stats
+namespace Stats.Runtime
 {
     public sealed class StatsComponentStack : NodeStackOnlyDifferentTypes<ComponentData>
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ArmyClash.WaypointsSystem.Runtime
+namespace WaypointsSystem.Runtime
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("ArmyClash/Waypoints/Waypoints System")]

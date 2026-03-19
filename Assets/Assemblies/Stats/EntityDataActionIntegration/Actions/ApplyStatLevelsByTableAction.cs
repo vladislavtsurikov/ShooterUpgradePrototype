@@ -4,7 +4,7 @@ using UniRx;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     [RequiresData(typeof(StatsEntityData))]
     [Name("Stats/Apply Stat Levels By Table")]

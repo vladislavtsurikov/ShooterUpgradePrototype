@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LevelProgression.Runtime;
+using LevelProgression.Runtime.ProgressionTables;
 using OdinSerializer;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
 
-namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
+namespace LevelProgression.Editor
 {
     [CustomEditor(typeof(LevelProgressionTable))]
     public sealed class LevelProgressionTableEditor : UnityEditor.Editor
@@ -34,6 +35,7 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
 
         private LevelProgressionTable LevelProgressionTable => (LevelProgressionTable)target;
         private IReadOnlyList<Type> ProgressionTypes => _progressionTypes ??= LoadProgressionTypes();
+        private ProgressionTable CurrentProgression => LevelProgressionTable.Progression;
 
         private IReadOnlyList<Type> _progressionTypes;
 
@@ -67,7 +69,7 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
                 .Select(type => CreateProgression(type).DisplayName)
                 .ToList();
 
-            _progressionField = new PopupField<string>("Table", names, Mathf.Max(0, GetProgressionIndex(LevelProgressionTable.Progression.GetType())));
+            _progressionField = new PopupField<string>("Table", names, Mathf.Max(0, GetProgressionIndex(CurrentProgression?.GetType())));
             _progressionField.RegisterValueChangedCallback(OnProgressionChanged);
             return _progressionField;
         }
@@ -259,7 +261,7 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
             }
 
             Type selectedType = ProgressionTypes[index];
-            if (LevelProgressionTable.Progression.GetType() == selectedType)
+            if (CurrentProgression?.GetType() == selectedType)
             {
                 return;
             }
@@ -272,14 +274,14 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
 
         private void RefreshUI()
         {
-            int progressionIndex = Mathf.Max(0, GetProgressionIndex(LevelProgressionTable.Progression.GetType()));
+            int progressionIndex = Mathf.Max(0, GetProgressionIndex(CurrentProgression?.GetType()));
             _progressionField.SetValueWithoutNotify(_progressionField.choices[progressionIndex]);
-            _descriptionLabel.text = LevelProgressionTable.Progression.Description;
+            _descriptionLabel.text = CurrentProgression?.Description ?? "Progression table is not selected.";
 
             RebuildProgressionFields();
             RebuildManualValues();
 
-            _manualSection.style.display = LevelProgressionTable.Progression.CanEditValuesDirectly
+            _manualSection.style.display = CurrentProgression?.CanEditValuesDirectly == true
                 ? DisplayStyle.Flex
                 : DisplayStyle.None;
 
@@ -292,7 +294,12 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
         {
             _progressionFieldsRoot.Clear();
 
-            foreach (FieldInfo field in GetEditableFields(LevelProgressionTable.Progression.GetType()))
+            if (CurrentProgression == null)
+            {
+                return;
+            }
+
+            foreach (FieldInfo field in GetEditableFields(CurrentProgression.GetType()))
             {
                 VisualElement fieldElement = CreateProgressionField(field);
                 if (fieldElement != null)
@@ -304,7 +311,7 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
 
         private VisualElement CreateProgressionField(FieldInfo field)
         {
-            object currentValue = field.GetValue(LevelProgressionTable.Progression);
+            object currentValue = field.GetValue(CurrentProgression);
             string label = ObjectNames.NicifyVariableName(field.Name.TrimStart('_'));
 
             if (field.FieldType == typeof(int))
@@ -317,7 +324,7 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
                 intField.RegisterValueChangedCallback(evt =>
                 {
                     RecordChange($"Change {label}");
-                    field.SetValue(LevelProgressionTable.Progression, evt.newValue);
+                    field.SetValue(CurrentProgression, evt.newValue);
                     LevelProgressionTable.RebuildValues();
                     ClampSelectedLevel();
                     RefreshUI();
@@ -336,7 +343,7 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
                 floatField.RegisterValueChangedCallback(evt =>
                 {
                     RecordChange($"Change {label}");
-                    field.SetValue(LevelProgressionTable.Progression, evt.newValue);
+                    field.SetValue(CurrentProgression, evt.newValue);
                     LevelProgressionTable.RebuildValues();
                     ClampSelectedLevel();
                     RefreshUI();
@@ -355,7 +362,7 @@ namespace VladislavTsurikov.ActionFlow.Editor.LevelProgression
                 toggle.RegisterValueChangedCallback(evt =>
                 {
                     RecordChange($"Change {label}");
-                    field.SetValue(LevelProgressionTable.Progression, evt.newValue);
+                    field.SetValue(CurrentProgression, evt.newValue);
                     LevelProgressionTable.RebuildValues();
                     ClampSelectedLevel();
                     RefreshUI();

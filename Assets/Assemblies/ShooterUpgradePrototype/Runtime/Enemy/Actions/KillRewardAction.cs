@@ -2,13 +2,11 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Nody.Runtime.Core;
 using UnityEngine;
-using ShooterUpgradePrototype.Enemy.Entities;
-using ShooterUpgradePrototype.Enemy.Services;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using Zenject;
 
-namespace AutoStrike.Actions
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [Name("AutoStrike/Actions/KillReward")]
     [Group("Death")]

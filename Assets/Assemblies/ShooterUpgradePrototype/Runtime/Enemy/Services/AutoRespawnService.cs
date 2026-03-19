@@ -1,12 +1,10 @@
 using System;
 using System.Threading;
-using AutoStrike.Config;
-using AutoStrike.Spawning;
+using AutoStrike.Spawning.WaypointPathEntitySpawner.Runtime;
 using Cysharp.Threading.Tasks;
-using ShooterUpgradePrototype.Enemy.Services;
 using UniRx;
 
-namespace ShooterUpgradePrototype.Enemy.Services
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class AutoRespawnService : IDisposable
     {

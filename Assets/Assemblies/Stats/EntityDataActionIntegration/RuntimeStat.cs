@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using OdinSerializer;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
+using Stats.Runtime;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     [Serializable]
     public sealed class RuntimeStat

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ArmyClash.WaypointsSystem.Runtime.Movement
+namespace WaypointsSystem.Runtime
 {
     public static class WaypointPathNormalizedMovementUtility
     {

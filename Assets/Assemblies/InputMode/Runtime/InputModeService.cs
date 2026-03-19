@@ -1,62 +1,65 @@
 using System;
 using UniRx;
+using UnityEngine;
 using UnityEngine.InputSystem;
-using AutoStrike.Input.Services.States;
 
-namespace AutoStrike.Input.Services
+namespace AutoStrike.Input.InputMode.Runtime
 {
     public sealed class InputModeService : IDisposable
     {
-        private readonly ReactiveProperty<InputModeState> _currentState;
-        private readonly InputModeStateRegistry _stateRegistry;
+        private readonly ReactiveProperty<InputSource> _currentInputSource;
         private InputDevice _lastUsedDevice;
 
-        public InputModeService(InputModeStateRegistry stateRegistry)
+        public InputModeService()
         {
-            _stateRegistry = stateRegistry;
-            _currentState = new ReactiveProperty<InputModeState>();
+            _currentInputSource = new ReactiveProperty<InputSource>(InputSource.KeyboardMouse);
 
             InputSystem.onDeviceChange += HandleDeviceChange;
 
-            RefreshCurrentState();
+            RefreshCurrentSource();
         }
 
-        public IReadOnlyReactiveProperty<InputModeState> CurrentState => _currentState;
+        public IReadOnlyReactiveProperty<InputSource> CurrentInputSource => _currentInputSource;
 
         public void ReportDevice(InputDevice device)
         {
             _lastUsedDevice = device;
-            RefreshCurrentState();
+            RefreshCurrentSource();
         }
 
         public void ReportTouchInput() => ReportDevice(Touchscreen.current);
 
         public void Dispose()
         {
-            for (int i = 0; i < _stateRegistry.All.Count; i++)
+            _currentInputSource.Dispose();
+            InputSystem.onDeviceChange -= HandleDeviceChange;
+        }
+
+        private void RefreshCurrentSource()
+        {
+            if (TryGetSourceFromLastUsedDevice(_lastUsedDevice, out InputSource source))
             {
-                _stateRegistry.All[i].SetActive(false);
+                SetCurrentSource(source);
+                return;
             }
 
-            _currentState.Dispose();
-            InputSystem.onDeviceChange -= HandleDeviceChange;
-            _stateRegistry.Dispose();
+            if (TryGetFallbackSourceFromConnectedDevices(out source))
+            {
+                SetCurrentSource(source);
+                return;
+            }
+
+            SetCurrentSource(GetPlatformDefaultSource());
         }
 
-        private void RefreshCurrentState()
+        private void SetCurrentSource(InputSource source)
         {
-            InputModeState nextState = _stateRegistry.GetHighestPriorityState(_lastUsedDevice);
-            SwitchState(nextState);
-        }
-
-        private void SwitchState(InputModeState nextState)
-        {
-            if (ReferenceEquals(_currentState.Value, nextState))
+            if (_currentInputSource.Value == source)
             {
                 return;
             }
 
-            _currentState.Value = nextState;
+            _currentInputSource.Value = source;
         }
 
         private void HandleDeviceChange(InputDevice device, InputDeviceChange change)
@@ -67,14 +70,82 @@ namespace AutoStrike.Input.Services
                 case InputDeviceChange.Removed:
                 case InputDeviceChange.Disconnected:
                 case InputDeviceChange.Reconnected:
-                    if (ReferenceEquals(_lastUsedDevice, device) && change is InputDeviceChange.Removed or InputDeviceChange.Disconnected)
+                    if (ShouldClearLastUsedDevice(_lastUsedDevice, device, change))
                     {
                         _lastUsedDevice = null;
                     }
 
-                    RefreshCurrentState();
+                    RefreshCurrentSource();
                     break;
             }
         }
+
+        private static bool ShouldClearLastUsedDevice(InputDevice lastUsedDevice, InputDevice changedDevice, InputDeviceChange change)
+        {
+            return ReferenceEquals(lastUsedDevice, changedDevice)
+                && change is InputDeviceChange.Removed or InputDeviceChange.Disconnected;
+        }
+
+        private static bool TryGetSourceFromLastUsedDevice(InputDevice device, out InputSource source)
+        {
+            if (IsPhysicalGamepad(device))
+            {
+                source = InputSource.Gamepad;
+                return true;
+            }
+
+            if (device is Touchscreen)
+            {
+                source = InputSource.Touch;
+                return true;
+            }
+
+            if (device is Keyboard or Mouse)
+            {
+                source = InputSource.KeyboardMouse;
+                return true;
+            }
+
+            source = default;
+            return false;
+        }
+
+        private static bool TryGetFallbackSourceFromConnectedDevices(out InputSource source)
+        {
+            if (HasPhysicalGamepad())
+            {
+                source = InputSource.Gamepad;
+                return true;
+            }
+
+            source = default;
+            return false;
+        }
+
+        private static InputSource GetPlatformDefaultSource()
+        {
+            return Application.isMobilePlatform
+                ? InputSource.Touch
+                : InputSource.KeyboardMouse;
+        }
+
+        private static bool HasPhysicalGamepad()
+        {
+            for (int i = 0; i < Gamepad.all.Count; i++)
+            {
+                if (IsPhysicalGamepad(Gamepad.all[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsPhysicalGamepad(InputDevice device) =>
+            device is Gamepad && !IsMobileVirtualGamepad(device);
+
+        private static bool IsMobileVirtualGamepad(InputDevice device) =>
+            device.description.product == InputDeviceConstants.MobileVirtualGamepadName;
     }
 }

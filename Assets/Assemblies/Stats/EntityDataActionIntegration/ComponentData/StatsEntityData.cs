@@ -1,9 +1,9 @@
 using OdinSerializer;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
+using Stats.Runtime;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     [Name("Stats/StatsEntity")]
     public sealed class StatsEntityData : ComponentData

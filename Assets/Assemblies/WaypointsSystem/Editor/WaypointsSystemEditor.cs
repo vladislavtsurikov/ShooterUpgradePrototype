@@ -1,21 +1,21 @@
 #if UNITY_EDITOR
-using ArmyClash.WaypointsSystem.Runtime;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using WaypointsSystem.Runtime;
 
-namespace ArmyClash.WaypointsSystem.Editor
+namespace WaypointsSystem.Editor
 {
-    [CustomEditor(typeof(Runtime.WaypointsSystem))]
+    [CustomEditor(typeof(global::WaypointsSystem.Runtime.WaypointsSystem))]
     public sealed class WaypointsSystemEditor : UnityEditor.Editor
     {
         private ReorderableList _pathsList;
         private SerializedProperty _pathsProperty;
-        private Runtime.WaypointsSystem _system;
+        private global::WaypointsSystem.Runtime.WaypointsSystem _system;
 
         private void OnEnable()
         {
-            _system = (Runtime.WaypointsSystem)target;
+            _system = (global::WaypointsSystem.Runtime.WaypointsSystem)target;
             _pathsProperty = serializedObject.FindProperty("_paths");
 
             _pathsList = new ReorderableList(serializedObject, _pathsProperty, true, true, true, true)

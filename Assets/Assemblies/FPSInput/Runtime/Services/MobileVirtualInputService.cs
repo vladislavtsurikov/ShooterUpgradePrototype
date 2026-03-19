@@ -1,13 +1,12 @@
 using System;
+using AutoStrike.Input.InputMode.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace AutoStrike.Input.Services
+namespace AutoStrike.Input.FPSInput.Runtime
 {
     public sealed class MobileVirtualInputService : IDisposable
     {
-        private const string VirtualDeviceName = "AutoStrike.MobileVirtualGamepad";
-
         private Gamepad _virtualGamepad;
 
         public void SetMove(Vector2 moveDirection, bool isPressed)
@@ -45,7 +44,7 @@ namespace AutoStrike.Input.Services
                 return;
             }
 
-            _virtualGamepad = InputSystem.AddDevice<Gamepad>(VirtualDeviceName);
+            _virtualGamepad = InputSystem.AddDevice<Gamepad>(InputDeviceConstants.MobileVirtualGamepadName);
         }
     }
 }

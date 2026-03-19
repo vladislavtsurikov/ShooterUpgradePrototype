@@ -2,7 +2,7 @@
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
-namespace AutoStrike.MobileInputUI.Loaders
+namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     [SceneFilter("Battle")]
     public sealed class MobileControlsLayoutLoader : UIToolkitLayoutLoader

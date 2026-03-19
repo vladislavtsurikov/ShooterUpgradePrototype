@@ -3,7 +3,7 @@ using UnityEngine;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace AutoStrike.Input.Data
+namespace AutoStrike.Input.FPSInput.Runtime
 {
     [Name("AutoStrike.Input/Data/LookInput")]
     public sealed class LookInputData : ComponentData

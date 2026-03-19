@@ -1,12 +1,11 @@
+using LevelProgression.Runtime;
 using Nody.Runtime.Core;
 using OdinSerializer;
+using Stats.EntityDataActionIntegration;
 using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
-using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.Stats
+namespace Stats.Runtime.StatComponents
 {
     [Name("Stats/Level Table")]
     [Group("Stats")]

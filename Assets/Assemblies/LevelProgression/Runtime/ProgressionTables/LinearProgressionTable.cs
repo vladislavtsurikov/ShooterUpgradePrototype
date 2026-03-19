@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OdinSerializer;
 using UnityEngine;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.LevelProgression
+namespace LevelProgression.Runtime.ProgressionTables
 {
     [Serializable]
     public sealed class LinearProgressionTable : ProgressionTable
@@ -33,19 +33,16 @@ namespace VladislavTsurikov.ActionFlow.Runtime.LevelProgression
             set => _incrementPerLevel = value;
         }
 
-        public override void Initialize(List<float> values)
+        public override IReadOnlyList<float> BuildValues()
         {
-            RebuildValues(values);
-        }
+            var values = new float[MaxLevel + 1];
 
-        public override void RebuildValues(List<float> values)
-        {
-            ResizeValues(values, MaxLevel + 1);
-
-            for (int level = 0; level < values.Count; level++)
+            for (int level = 0; level < values.Length; level++)
             {
                 values[level] = BaseValue + IncrementPerLevel * level;
             }
+
+            return values;
         }
     }
 }

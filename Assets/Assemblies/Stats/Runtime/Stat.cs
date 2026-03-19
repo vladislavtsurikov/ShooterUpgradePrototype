@@ -1,10 +1,8 @@
 using OdinSerializer;
-using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
+using UnityEngine;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.Stats
+namespace Stats.Runtime
 {
     [CreateAssetMenu(menuName = "ActionFlow/Stats/Stat", fileName = "Stat")]
     public sealed class Stat : SerializedScriptableObject

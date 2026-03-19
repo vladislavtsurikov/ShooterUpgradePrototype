@@ -1,13 +1,12 @@
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Stats.Runtime;
 using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.CustomInspector.Runtime;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     [RequiresData(typeof(StatsEntityData))]
     [Name("Stats/Modify/Modify Stat Random")]

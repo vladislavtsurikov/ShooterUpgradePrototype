@@ -1,7 +1,7 @@
 using UnityEngine;
 using VladislavTsurikov.ScriptableObjectUtility.Runtime;
 
-namespace ArmyClash.WaypointsSystem.Runtime.Config
+namespace WaypointsSystem.Runtime
 {
     [LocationAsset("ArmyClash/WaypointsSystem/WaypointsSystemConfig", false)]
     public sealed class WaypointsSystemConfig : SerializedScriptableObjectSingleton<WaypointsSystemConfig>

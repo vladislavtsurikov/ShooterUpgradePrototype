@@ -1,9 +1,8 @@
-using ShooterUpgradePrototype.Player.Services;
+using Stats.EntityDataActionIntegration;
 using UnityEngine;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 using Zenject;
 
-namespace ShooterUpgradePrototype.Infrastructure.Installers
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class PlayerStatsInstaller : MonoInstaller
     {

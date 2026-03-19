@@ -1,12 +1,10 @@
 #if UNITY_EDITOR
-using ArmyClash.WaypointsSystem.Runtime;
-using ArmyClash.WaypointsSystem.Runtime.Config;
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using UnityEditor;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Editor.Core;
+using WaypointsSystem.Runtime;
 
-namespace ArmyClash.WaypointsSystem.Editor
+namespace WaypointsSystem.Editor
 {
     [CustomEditor(typeof(WaypointPath))]
     public sealed class WaypointPathEditor : UnityEditor.Editor

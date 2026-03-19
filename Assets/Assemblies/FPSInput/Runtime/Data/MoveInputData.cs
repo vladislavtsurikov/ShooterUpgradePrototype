@@ -4,7 +4,7 @@ using UnityEngine;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace AutoStrike.Input.Data
+namespace AutoStrike.Input.FPSInput.Runtime
 {
     [Name("AutoStrike.Input/Data/MoveInput")]
     public sealed class MoveInputData : ComponentData

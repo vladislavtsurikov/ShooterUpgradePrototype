@@ -8,7 +8,7 @@ using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 using Zenject;
 
-namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
+namespace UIRootSystem.Runtime
 {
     [SceneFilter("Battle")]
     public sealed class Root : UIToolkitUIHandler

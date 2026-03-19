@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using OdinSerializer;
 using UnityEngine;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.Stats
+namespace Stats.Runtime
 {
     [CreateAssetMenu(menuName = "ActionFlow/Stats/Stat Collection", fileName = "StatCollection")]
     public sealed class StatCollection : SerializedScriptableObject

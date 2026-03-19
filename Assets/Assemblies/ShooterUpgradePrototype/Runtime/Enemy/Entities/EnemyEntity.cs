@@ -1,13 +1,11 @@
 using System;
-using System.Linq;
-using AutoStrike.Actions;
-using ArmyClash.WaypointsSystem.Runtime.Movement;
+using Stats.EntityDataActionIntegration;
+using Stats.Runtime;
 using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
+using WaypointsSystem.Runtime;
 
-namespace ShooterUpgradePrototype.Enemy.Entities
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class EnemyEntity : EntityMonoBehaviour
     {

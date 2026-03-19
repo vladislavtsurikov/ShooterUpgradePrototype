@@ -1,14 +1,11 @@
 using System;
-using AutoStrike.Actions;
-using AutoStrike.FirstPersonCamera.Actions;
 using AutoStrike.FirstPersonCamera.Data;
-using AutoStrike.Input.Actions;
-using AutoStrike.Input.Data;
-using UnityEngine;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
+using AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime;
+using AutoStrike.Input.FPSInput.Runtime;
+using Stats.EntityDataActionIntegration;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 
-namespace ShooterUpgradePrototype.Player.Entities
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class PlayerEntity : EntityMonoBehaviour
     {

@@ -1,10 +1,9 @@
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using Nody.Runtime.Core;
 using UniRx;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace ArmyClash.WaypointsSystem.Runtime.Actions
+namespace WaypointsSystem.Runtime
 {
     [RequiresData(typeof(LoopData), typeof(CapacityData))]
     [Group("Waypoints")]

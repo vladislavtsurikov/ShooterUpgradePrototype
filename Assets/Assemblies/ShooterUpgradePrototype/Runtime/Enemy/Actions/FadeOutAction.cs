@@ -5,7 +5,7 @@ using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace AutoStrike.Actions
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [Name("AutoStrike/Actions/FadeOut")]
     [Group("Death")]

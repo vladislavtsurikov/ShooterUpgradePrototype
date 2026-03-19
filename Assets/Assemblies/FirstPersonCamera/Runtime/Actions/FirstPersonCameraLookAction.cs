@@ -1,5 +1,4 @@
-using AutoStrike.FirstPersonCamera.Settings;
-using AutoStrike.Input.Data;
+using AutoStrike.Input.FPSInput.Runtime;
 using AutoStrike.Input.Generated;
 using UniRx;
 using UnityEngine;
@@ -7,7 +6,7 @@ using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using Zenject;
 
-namespace AutoStrike.FirstPersonCamera.Actions
+namespace AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime
 {
     [RequiresData(typeof(LookInputData))]
     [Name("AutoStrike.FirstPersonCamera/Actions/FirstPersonCameraLook")]

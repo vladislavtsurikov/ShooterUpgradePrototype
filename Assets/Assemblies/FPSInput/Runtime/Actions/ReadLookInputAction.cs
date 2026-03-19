@@ -1,13 +1,12 @@
-using AutoStrike.Input.Data;
 using AutoStrike.Input.Generated;
-using AutoStrike.Input.Services;
+using AutoStrike.Input.InputMode.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using Zenject;
 
-namespace AutoStrike.Input.Actions
+namespace AutoStrike.Input.FPSInput.Runtime
 {
     [RequiresData(typeof(LookInputData))]
     [Name("AutoStrike.Input/Actions/ReadLookInput")]

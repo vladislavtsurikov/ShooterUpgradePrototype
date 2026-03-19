@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Stats.EntityDataActionIntegration;
+using Stats.Runtime.StatComponents;
 using UniRx;
 using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 
-namespace ShooterUpgradePrototype.Player.Services
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class PlayerStatsService : IDisposable
     {

@@ -1,10 +1,10 @@
 using System;
+using LevelProgression.Runtime;
 using OdinSerializer;
 using UniRx;
 using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.LevelProgression;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     [Serializable]
     public sealed class RuntimeStatLevelData : RuntimeStatData

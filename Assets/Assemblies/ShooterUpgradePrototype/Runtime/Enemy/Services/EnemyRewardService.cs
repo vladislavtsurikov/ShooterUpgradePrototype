@@ -1,7 +1,6 @@
 using UniRx;
-using ShooterUpgradePrototype.Player.Services;
 
-namespace ShooterUpgradePrototype.Enemy.Services
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class EnemyRewardService
     {

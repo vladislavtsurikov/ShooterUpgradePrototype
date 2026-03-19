@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace AutoStrike.Spawning.Installers
+namespace AutoStrike.Spawning.WaypointPathEntitySpawner.Runtime
 {
     [AddComponentMenu("AutoStrike/Spawning/Entity Spawner Installer")]
     public sealed class WaypointPathEntitySpawnerInstaller : MonoInstaller

@@ -3,7 +3,7 @@ using OdinSerializer;
 using UniRx;
 using UnityEngine;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     [Serializable]
     public sealed class RuntimeStatValueData : RuntimeStatData

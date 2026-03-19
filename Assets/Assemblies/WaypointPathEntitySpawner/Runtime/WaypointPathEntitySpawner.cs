@@ -1,12 +1,10 @@
-using ArmyClash.WaypointsSystem.Runtime;
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using System.Collections.Generic;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
-using ArmyClash.WaypointsSystem.Runtime.Movement;
+using WaypointsSystem.Runtime;
 using Zenject;
 
-namespace AutoStrike.Spawning
+namespace AutoStrike.Spawning.WaypointPathEntitySpawner.Runtime
 {
     [DisallowMultipleComponent]
     public class WaypointPathEntitySpawner : MonoBehaviour
@@ -18,7 +16,7 @@ namespace AutoStrike.Spawning
         private float _spawnHeightOffset;
 
         [Inject]
-        private WaypointsSystem _waypoints;
+        private WaypointsSystem.Runtime.WaypointsSystem _waypoints;
 
         protected virtual void OnAfterSpawn(GameObject instance, WaypointPath path, float normalizedPosition)
         {

@@ -1,9 +1,7 @@
-using ArmyClash.WaypointsSystem.Runtime.Movement;
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 
-namespace ArmyClash.WaypointsSystem.Runtime
+namespace WaypointsSystem.Runtime
 {
     public static class WaypointPathExtensions
     {

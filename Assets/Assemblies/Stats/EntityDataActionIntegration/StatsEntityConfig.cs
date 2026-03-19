@@ -1,7 +1,7 @@
 using OdinSerializer;
 using UnityEngine;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     [CreateAssetMenu(menuName = "Stats/Stats Entity Config", fileName = "StatsEntityConfig")]
     public sealed class StatsEntityConfig : SerializedScriptableObject

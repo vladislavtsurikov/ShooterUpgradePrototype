@@ -1,10 +1,10 @@
 #if UNITY_EDITOR
+using Stats.Runtime;
 using UnityEditor;
 using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.CustomInspector.Editor.IMGUI;
 
-namespace VladislavTsurikov.ActionFlow.Editor.Stats
+namespace Stats.Editor.Stats
 {
     [CustomEditor(typeof(StatCollection))]
     public sealed class StatCollectionEditor : UnityEditor.Editor

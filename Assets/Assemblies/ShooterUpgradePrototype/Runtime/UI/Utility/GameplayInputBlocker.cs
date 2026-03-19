@@ -1,7 +1,7 @@
 using AutoStrike.Input.Generated;
 using UnityEngine;
 
-namespace ShooterUpgradePrototype.UI.Utility
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class GameplayInputBlocker
     {

@@ -4,22 +4,36 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
-namespace AutoStrike.MobileInputUI.Views
+namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     public sealed class MobileMoveStickView : BindableVisualElement
     {
+        public readonly struct StickPointerData
+        {
+            public StickPointerData(Vector2 localPosition, Vector2 padCenter, float radius)
+            {
+                LocalPosition = localPosition;
+                PadCenter = padCenter;
+                Radius = radius;
+            }
+
+            public Vector2 LocalPosition { get; }
+            public Vector2 PadCenter { get; }
+            public float Radius { get; }
+        }
+
         public new class UxmlFactory : UxmlFactory<MobileMoveStickView, UxmlTraits>
         {
         }
 
-        private readonly Subject<Vector2> _inputChanged = new();
+        private readonly Subject<StickPointerData> _pointerChanged = new();
         private readonly Subject<Unit> _released = new();
 
         private VisualElement _pad;
         private VisualElement _knob;
         private int _activePointerId = -1;
 
-        public IObservable<Vector2> OnInputChanged => _inputChanged;
+        public IObservable<StickPointerData> OnPointerChanged => _pointerChanged;
         public IObservable<Unit> OnReleased => _released;
 
         protected override void InitializeElements()
@@ -44,7 +58,7 @@ namespace AutoStrike.MobileInputUI.Views
 
             _activePointerId = evt.pointerId;
             PointerCaptureHelper.CapturePointer(this, _activePointerId);
-            UpdateStick(evt.position);
+            NotifyPointerChanged(evt.position);
             evt.StopPropagation();
         }
 
@@ -55,7 +69,7 @@ namespace AutoStrike.MobileInputUI.Views
                 return;
             }
 
-            UpdateStick(evt.position);
+            NotifyPointerChanged(evt.position);
             evt.StopPropagation();
         }
 
@@ -89,21 +103,50 @@ namespace AutoStrike.MobileInputUI.Views
             }
         }
 
-        private void UpdateStick(Vector2 worldPosition)
+        public void SetKnobOffset(Vector2 knobOffset)
         {
-            if (_pad == null || _knob == null)
+            if (_knob == null)
             {
                 return;
+            }
+
+            _knob.transform.position = new Vector3(knobOffset.x, knobOffset.y, 0f);
+        }
+
+        public void ResetKnob()
+        {
+            if (_knob != null)
+            {
+                _knob.transform.position = Vector3.zero;
+            }
+        }
+
+        private void NotifyPointerChanged(Vector2 worldPosition)
+        {
+            if (!TryCreatePointerData(worldPosition, out StickPointerData pointerData))
+            {
+                return;
+            }
+
+            _pointerChanged.OnNext(pointerData);
+        }
+
+        private bool TryCreatePointerData(Vector2 worldPosition, out StickPointerData pointerData)
+        {
+            pointerData = default;
+
+            if (_pad == null || _knob == null)
+            {
+                return false;
             }
 
             Vector2 localPosition = _pad.WorldToLocal(worldPosition);
             Rect padRect = _pad.contentRect;
             Vector2 padCenter = padRect.center;
             float radius = CalculateRadius(padRect);
-            Vector2 knobOffset = Vector2.ClampMagnitude(localPosition - padCenter, radius);
 
-            _knob.transform.position = new Vector3(knobOffset.x, knobOffset.y, 0f);
-            _inputChanged.OnNext(radius <= Mathf.Epsilon ? Vector2.zero : knobOffset / radius);
+            pointerData = new StickPointerData(localPosition, padCenter, radius);
+            return true;
         }
 
         private float CalculateRadius(Rect padRect)
@@ -123,12 +166,7 @@ namespace AutoStrike.MobileInputUI.Views
             }
 
             _activePointerId = -1;
-
-            if (_knob != null)
-            {
-                _knob.transform.position = Vector3.zero;
-            }
-
+            ResetKnob();
             _released.OnNext(Unit.Default);
         }
     }

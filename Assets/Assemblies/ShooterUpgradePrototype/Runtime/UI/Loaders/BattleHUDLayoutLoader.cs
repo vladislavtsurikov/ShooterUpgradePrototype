@@ -2,7 +2,7 @@
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
-namespace ShooterUpgradePrototype.UI.UISystem.Loaders
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     public sealed class BattleHUDLayoutLoader : UIToolkitLayoutLoader

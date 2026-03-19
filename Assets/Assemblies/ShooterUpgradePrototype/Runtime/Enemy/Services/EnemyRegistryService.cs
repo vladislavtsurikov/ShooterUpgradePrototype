@@ -1,7 +1,6 @@
 using UniRx;
-using ShooterUpgradePrototype.Enemy.Entities;
 
-namespace ShooterUpgradePrototype.Enemy.Services
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class EnemyRegistryService
     {

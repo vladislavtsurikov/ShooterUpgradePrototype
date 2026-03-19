@@ -1,12 +1,11 @@
 using OdinSerializer;
+using Stats.EntityDataActionIntegration;
 using UnityEngine;
 using VladislavTsurikov.CustomInspector.Runtime;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 using VladislavTsurikov.Nody.Runtime.AdvancedNodeStack;
-using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.Stats
+namespace Stats.Runtime.StatComponents
 {
     [Persistent]
     [Name("Stats/Value")]

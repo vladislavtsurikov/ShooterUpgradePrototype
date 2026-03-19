@@ -1,13 +1,11 @@
 #if UNITY_EDITOR
-using ArmyClash.WaypointsSystem.Runtime;
-using ArmyClash.WaypointsSystem.Runtime.Config;
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using WaypointsSystem.Runtime;
 
-namespace ArmyClash.WaypointsSystem.Editor
+namespace WaypointsSystem.Editor
 {
     public static class WaypointsSetupEditorExtension
     {
@@ -18,7 +16,7 @@ namespace ArmyClash.WaypointsSystem.Editor
             _ = WaypointsSystemConfig.Instance;
 
             Transform parent = (menuCommand.context as GameObject)?.transform;
-            Runtime.WaypointsSystem waypointsSystem = Object.FindFirstObjectByType<Runtime.WaypointsSystem>();
+            global::WaypointsSystem.Runtime.WaypointsSystem waypointsSystem = Object.FindFirstObjectByType<global::WaypointsSystem.Runtime.WaypointsSystem>();
 
             GameObject loopPath = CreatePath(
                 waypointsSystem,
@@ -67,7 +65,7 @@ namespace ArmyClash.WaypointsSystem.Editor
         }
 
         private static GameObject CreatePath(
-            Runtime.WaypointsSystem waypointsSystem,
+            global::WaypointsSystem.Runtime.WaypointsSystem waypointsSystem,
             Transform parent,
             string objectName,
             Vector3 localPosition,

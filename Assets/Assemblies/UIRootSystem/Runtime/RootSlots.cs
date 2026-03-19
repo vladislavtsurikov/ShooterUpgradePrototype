@@ -1,4 +1,4 @@
-namespace VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration
+namespace UIRootSystem.Runtime
 {
     public static class RootSlots
     {

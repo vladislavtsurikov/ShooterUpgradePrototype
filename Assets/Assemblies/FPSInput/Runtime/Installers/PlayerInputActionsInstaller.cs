@@ -1,10 +1,9 @@
 using AutoStrike.Input.Generated;
-using AutoStrike.Input.Services;
-using AutoStrike.Input.Services.States;
+using AutoStrike.Input.InputMode.Runtime;
 using UnityEngine;
 using Zenject;
 
-namespace AutoStrike.Input.Installers
+namespace AutoStrike.Input.FPSInput.Runtime
 {
     [AddComponentMenu("AutoStrike/Input/Player Input Actions Installer")]
     public sealed class PlayerInputActionsInstaller : MonoInstaller
@@ -16,7 +15,7 @@ namespace AutoStrike.Input.Installers
         public override void InstallBindings()
         {
             _playerInputActions = new PlayerInputActions();
-            _inputModeService = new InputModeService(new InputModeStateRegistry());
+            _inputModeService = new InputModeService();
             _mobileVirtualInputService = new MobileVirtualInputService();
 
             _playerInputActions.Enable();
@@ -34,13 +33,8 @@ namespace AutoStrike.Input.Installers
             _mobileVirtualInputService?.Dispose();
             _mobileVirtualInputService = null;
 
-            if (_playerInputActions == null)
-            {
-                return;
-            }
-
-            _playerInputActions.Disable();
-            _playerInputActions.Dispose();
+            _playerInputActions?.Disable();
+            _playerInputActions?.Dispose();
             _playerInputActions = null;
         }
     }

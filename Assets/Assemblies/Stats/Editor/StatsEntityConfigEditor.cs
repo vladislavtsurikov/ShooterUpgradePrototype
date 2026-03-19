@@ -1,10 +1,10 @@
 #if UNITY_EDITOR
+using Stats.EntityDataActionIntegration;
 using UnityEditor;
 using UnityEngine;
 using VladislavTsurikov.CustomInspector.Editor.IMGUI;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Editor.Stats
+namespace Stats.Editor
 {
     [CustomEditor(typeof(StatsEntityConfig))]
     public sealed class StatsEntityConfigEditor : UnityEditor.Editor

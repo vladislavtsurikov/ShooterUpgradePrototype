@@ -1,16 +1,17 @@
 #if UI_SYSTEM_UNIRX
 #if UI_SYSTEM_ZENJECT
 using System.Threading;
-using AutoStrike.Input.Services;
-using AutoStrike.MobileInputUI.Views;
+using AutoStrike.Input.FPSInput.Runtime;
+using AutoStrike.Input.InputMode.Runtime;
 using Cysharp.Threading.Tasks;
 using UniRx;
+using UnityEngine;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 using Zenject;
 
-namespace AutoStrike.MobileInputUI.Presenters
+namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(MobileControlsRootPresenter))]
@@ -32,19 +33,33 @@ namespace AutoStrike.MobileInputUI.Presenters
         {
             MobileMoveStickView view = GetView<MobileMoveStickView>(nameof(MobileMoveStickView));
 
-            view.OnInputChanged
-                .Subscribe(direction =>
+            view.OnPointerChanged
+                .Subscribe(pointerData =>
                 {
+                    Vector2 knobOffset = Vector2.ClampMagnitude(pointerData.LocalPosition - pointerData.PadCenter, pointerData.Radius);
+                    Vector2 direction = pointerData.Radius <= Mathf.Epsilon
+                        ? Vector2.zero
+                        : knobOffset / pointerData.Radius;
+
+                    view.SetKnobOffset(knobOffset);
                     _mobileVirtualInputService.SetMove(direction, true);
                     _inputModeService.ReportTouchInput();
                 })
                 .AddTo(disposables);
 
             view.OnReleased
-                .Subscribe(_ => _mobileVirtualInputService.ResetMove())
+                .Subscribe(_ =>
+                {
+                    view.ResetKnob();
+                    _mobileVirtualInputService.ResetMove();
+                })
                 .AddTo(disposables);
 
-            Disposable.Create(() => _mobileVirtualInputService.ResetMove())
+            Disposable.Create(() =>
+                {
+                    view.ResetKnob();
+                    _mobileVirtualInputService.ResetMove();
+                })
                 .AddTo(disposables);
 
             return UniTask.CompletedTask;

@@ -1,17 +1,17 @@
 using UnityEngine;
 using Zenject;
 
-namespace ArmyClash.WaypointsSystem.Runtime.Installers
+namespace WaypointsSystem.Runtime
 {
     [AddComponentMenu("ArmyClash/Waypoints/Waypoints System Installer")]
     public sealed class WaypointsSystemInstaller : MonoInstaller
     {
         [SerializeField]
-        private WaypointsSystem _system;
+        private global::WaypointsSystem.Runtime.WaypointsSystem _system;
 
         public override void InstallBindings()
         {
-            Container.Bind<WaypointsSystem>().FromInstance(_system).AsSingle();
+            Container.Bind<global::WaypointsSystem.Runtime.WaypointsSystem>().FromInstance(_system).AsSingle();
         }
     }
 }

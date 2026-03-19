@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using UnityEngine.Localization;
+using Stats.EntityDataActionIntegration;
 using UnityEngine.Localization.Settings;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Common;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 
-namespace ShooterUpgradePrototype.Player.Services
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public static class PlayerStatsServiceLocalizationExtensions
     {

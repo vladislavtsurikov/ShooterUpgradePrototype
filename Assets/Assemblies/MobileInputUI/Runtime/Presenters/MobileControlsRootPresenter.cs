@@ -2,18 +2,16 @@
 #if UI_SYSTEM_UNIRX
 #if UI_SYSTEM_ZENJECT
 using System.Threading;
-using AutoStrike.Input.Services;
-using AutoStrike.Input.Services.States;
-using AutoStrike.MobileInputUI.Loaders;
+using AutoStrike.Input.InputMode.Runtime;
 using Cysharp.Threading.Tasks;
+using UIRootSystem.Runtime;
 using UniRx;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
-using VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration;
 using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 using Zenject;
 
-namespace AutoStrike.MobileInputUI.Presenters
+namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(Root), RootSlots.HUD)]
@@ -30,19 +28,17 @@ namespace AutoStrike.MobileInputUI.Presenters
             _inputModeService = inputModeService;
         }
 
-        protected override async UniTask InitializeUIHandler(
+        protected override UniTask InitializeUIHandler(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
-            await Show(cancellationToken);
+            _inputModeService.CurrentInputSource
+                .Select(state => state == InputSource.Touch)
+                .DistinctUntilChanged()
+                .Subscribe(isTouchscreen => ToggleVisibilityAsync(isTouchscreen, cancellationToken).Forget())
+                .AddTo(disposables);
 
-            // _inputModeService.CurrentState
-            //     .Select(state => state is TouchscreenInputModeState)
-            //     .DistinctUntilChanged()
-            //     .Subscribe(isTouchscreen => ToggleVisibilityAsync(isTouchscreen, cancellationToken).Forget())
-            //     .AddTo(disposables);
-            //
-            // return UniTask.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected override string SpawnedRootName => "AutoStrikeMobileControlsHUD";

@@ -1,14 +1,13 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Nody.Runtime.Core;
 using OdinSerializer;
+using Stats.EntityDataActionIntegration;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace AutoStrike.Actions
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [RequiresData(typeof(StatsEntityData))]
     [Name("AutoStrike/Actions/Death")]

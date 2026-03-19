@@ -1,7 +1,6 @@
-using ShooterUpgradePrototype.Enemy.Services;
 using Zenject;
 
-namespace ShooterUpgradePrototype.Enemy.Installers
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class EnemyServicesInstaller : MonoInstaller
     {

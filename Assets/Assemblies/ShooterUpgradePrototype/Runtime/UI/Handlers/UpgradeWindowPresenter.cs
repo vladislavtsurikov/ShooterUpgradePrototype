@@ -5,18 +5,14 @@ using System.Collections.Generic;
 using System.Threading;
 using AutoStrike.Input.Generated;
 using Cysharp.Threading.Tasks;
-using ShooterUpgradePrototype.Player.Services;
-using ShooterUpgradePrototype.UI.UISystem.Loaders;
-using ShooterUpgradePrototype.UI.UISystem.Views;
-using ShooterUpgradePrototype.UI.Utility;
+using UIRootSystem.Runtime;
 using UniRx;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
-using VladislavTsurikov.UIRootSystem.Runtime.UIToolkitIntegration;
 using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 using Zenject;
 
-namespace ShooterUpgradePrototype.UI.UISystem.Handlers
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(Root), RootSlots.Screens)]

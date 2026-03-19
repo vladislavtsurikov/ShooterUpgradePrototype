@@ -1,17 +1,16 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.Core.Runtime;
+using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using VladislavTsurikov.SceneManagerTool.Runtime.SettingsSystem;
-using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.SceneUtility.Runtime;
 using Zenject;
 using Action = VladislavTsurikov.ActionFlow.Runtime.Actions.Action;
 using Single = VladislavTsurikov.SceneManagerTool.Runtime.SceneTypeSystem.Single;
 
-namespace ArmyClash.SceneManager
+namespace ArmyClash.SceneManager.SceneManagerIntergration.Runtime.Operations
 {
     [Name("Addressables/Load Resource Loaders")]
     [ParentRequired(typeof(BeforeLoadOperationsSettings), typeof(Single))]

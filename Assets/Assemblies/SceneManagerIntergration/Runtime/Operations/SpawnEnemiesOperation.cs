@@ -1,8 +1,7 @@
 using System.Threading;
-using AutoStrike.Config;
-using AutoStrike.Spawning;
+using AutoStrike.Spawning.WaypointPathEntitySpawner.Runtime;
 using Cysharp.Threading.Tasks;
-using ShooterUpgradePrototype.Enemy.Services;
+using ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using VladislavTsurikov.SceneManagerTool.Runtime.SettingsSystem;
@@ -10,7 +9,7 @@ using Zenject;
 using Action = VladislavTsurikov.ActionFlow.Runtime.Actions.Action;
 using Single = VladislavTsurikov.SceneManagerTool.Runtime.SceneTypeSystem.Single;
 
-namespace ArmyClash.SceneManager
+namespace ArmyClash.SceneManager.SceneManagerIntergration.Runtime.Operations
 {
     [Name("AutoStrike/Spawn Enemies")]
     [ParentRequired(typeof(AfterLoadOperationsSettings), typeof(Single))]

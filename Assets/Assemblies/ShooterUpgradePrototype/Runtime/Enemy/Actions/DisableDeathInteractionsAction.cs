@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace AutoStrike.Actions
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [Name("AutoStrike/Actions/DisableDeathInteractions")]
     [Group("Death")]

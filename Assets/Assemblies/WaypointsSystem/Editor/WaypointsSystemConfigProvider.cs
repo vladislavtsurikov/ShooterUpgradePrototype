@@ -1,10 +1,10 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
-using ArmyClash.WaypointsSystem.Runtime.Config;
 using UnityEditor;
 using UnityEngine;
+using WaypointsSystem.Runtime;
 
-namespace ArmyClash.WaypointsSystem.Editor
+namespace WaypointsSystem.Editor
 {
     public static class WaypointsSystemConfigProvider
     {

@@ -1,4 +1,4 @@
-namespace VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats
+namespace Stats.EntityDataActionIntegration
 {
     public static class StatsEntityDataUtility
     {

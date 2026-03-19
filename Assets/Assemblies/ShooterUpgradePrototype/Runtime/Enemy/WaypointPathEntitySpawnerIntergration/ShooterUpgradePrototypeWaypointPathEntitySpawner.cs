@@ -1,13 +1,9 @@
-using AutoStrike.Config;
-using AutoStrike.Spawning;
-using ArmyClash.WaypointsSystem.Runtime;
-using ArmyClash.WaypointsSystem.Runtime.Movement;
-using ShooterUpgradePrototype.Enemy.Entities;
-using ShooterUpgradePrototype.Enemy.Services;
+using AutoStrike.Spawning.WaypointPathEntitySpawner.Runtime;
 using UnityEngine;
+using WaypointsSystem.Runtime;
 using Zenject;
 
-namespace ShooterUpgradePrototype.Spawning
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class ShooterUpgradePrototypeWaypointPathEntitySpawner : WaypointPathEntitySpawner
     {

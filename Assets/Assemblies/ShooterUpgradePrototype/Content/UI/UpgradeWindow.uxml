@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" game="ShooterUpgradePrototype.UI.UISystem.Views" editor-extension-mode="False">
     <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/UpgradeWindow.uss?fileID=7433441132597879392&amp;guid=fb2aa96f52fa9ae469d135ca0cb610af&amp;type=3#UpgradeWindow" />
-    <ShooterUpgradePrototype.UI.UISystem.Views.UpgradeWindowView style="flex-grow: 1; align-self: auto;">
+    <ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime.UpgradeWindowView style="flex-grow: 1; align-self: auto;">
         <ui:VisualElement name="backdrop" class="upgrade-backdrop">
             <ui:VisualElement name="modalPanel" class="upgrade-modal">
                 <ui:VisualElement class="upgrade-header">
@@ -14,5 +14,5 @@
                 <ui:Button name="applyButton" text="APPLY" class="upgrade-apply-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-    </ShooterUpgradePrototype.UI.UISystem.Views.UpgradeWindowView>
+    </ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime.UpgradeWindowView>
 </ui:UXML>

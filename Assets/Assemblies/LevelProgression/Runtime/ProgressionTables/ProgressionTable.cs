@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.LevelProgression
+namespace LevelProgression.Runtime.ProgressionTables
 {
     [Serializable]
     public abstract class ProgressionTable
@@ -11,48 +12,46 @@ namespace VladislavTsurikov.ActionFlow.Runtime.LevelProgression
         public virtual string Description => string.Empty;
         public virtual bool CanEditValuesDirectly => false;
 
-        public virtual void Initialize(List<float> values)
+        public abstract IReadOnlyList<float> BuildValues();
+
+        public virtual void SetValues(IReadOnlyList<float> values)
         {
-            EnsureValues(values);
         }
 
-        public virtual void RebuildValues(List<float> values)
+        public virtual void SetValuesCount(int count)
         {
-            EnsureValues(values);
         }
 
-        public virtual void SetValuesCount(List<float> values, int count)
+        public virtual void SetValue(int level, float value)
         {
-            ResizeValues(values, count);
         }
 
-        public virtual void SetValue(List<float> values, int level, float value)
+        protected static List<float> EnsureValues(IReadOnlyList<float> values)
         {
-            EnsureValues(values);
-            values[Mathf.Clamp(level, 0, values.Count - 1)] = value;
-        }
-
-        protected static void EnsureValues(List<float> values)
-        {
-            if (values.Count == 0)
+            if (values == null || values.Count == 0)
             {
-                values.Add(0f);
+                return new List<float> { 0f };
             }
+
+            return values.ToList();
         }
 
-        protected static void ResizeValues(List<float> values, int count)
+        protected static List<float> ResizeValues(IReadOnlyList<float> values, int count)
         {
+            List<float> result = EnsureValues(values);
             int targetCount = Mathf.Max(1, count);
-            while (values.Count < targetCount)
+            while (result.Count < targetCount)
             {
-                float nextValue = values.Count == 0 ? 0f : values[values.Count - 1];
-                values.Add(nextValue);
+                float nextValue = result.Count == 0 ? 0f : result[result.Count - 1];
+                result.Add(nextValue);
             }
 
-            while (values.Count > targetCount)
+            while (result.Count > targetCount)
             {
-                values.RemoveAt(values.Count - 1);
+                result.RemoveAt(result.Count - 1);
             }
+
+            return result;
         }
     }
 }

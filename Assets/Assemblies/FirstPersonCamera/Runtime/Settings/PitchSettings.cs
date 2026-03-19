@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace AutoStrike.FirstPersonCamera.Settings
+namespace AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime
 {
     [Serializable]
     public sealed class PitchSettings

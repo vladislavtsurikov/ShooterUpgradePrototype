@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using OdinSerializer;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 
-namespace ArmyClash.WaypointsSystem.Runtime
+namespace WaypointsSystem.Runtime
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("ArmyClash/Waypoints/Waypoint Path")]
@@ -41,9 +39,9 @@ namespace ArmyClash.WaypointsSystem.Runtime
         protected override Type[] ActionTypesToCreate() =>
             new[]
             {
-                typeof(Actions.SyncWaypointPathCapacityAction),
-                typeof(Actions.RebuildWaypointPathSegmentCountAction),
-                typeof(Actions.RebuildWaypointPathMetricsCacheAction)
+                typeof(SyncWaypointPathCapacityAction),
+                typeof(RebuildWaypointPathSegmentCountAction),
+                typeof(RebuildWaypointPathMetricsCacheAction)
             };
 
         protected override void BeforeOnSetupEntity()

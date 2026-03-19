@@ -1,10 +1,10 @@
 using System;
-using UnityEngine.Localization.Settings;
 using UniRx;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
-namespace ShooterUpgradePrototype.UI.UISystem.Views
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class UpgradeWindowView : BindableVisualElement
     {

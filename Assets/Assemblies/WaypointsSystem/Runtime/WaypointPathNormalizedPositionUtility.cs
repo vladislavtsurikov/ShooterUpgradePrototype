@@ -1,7 +1,6 @@
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using UnityEngine;
 
-namespace ArmyClash.WaypointsSystem.Runtime
+namespace WaypointsSystem.Runtime
 {
     public static class WaypointPathNormalizedPositionUtility
     {

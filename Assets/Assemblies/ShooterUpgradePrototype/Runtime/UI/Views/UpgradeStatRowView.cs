@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine.UIElements;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
-namespace ShooterUpgradePrototype.UI.UISystem.Views
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     public sealed class UpgradeStatRowView : BindableVisualElement
     {

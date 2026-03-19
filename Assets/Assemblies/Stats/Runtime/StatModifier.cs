@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OdinSerializer;
 using UnityEngine;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.Stats
+namespace Stats.Runtime
 {
     [CreateAssetMenu(menuName = "ActionFlow/Stats/Stat Modifier", fileName = "StatModifier")]
     public sealed class StatModifier : SerializedScriptableObject

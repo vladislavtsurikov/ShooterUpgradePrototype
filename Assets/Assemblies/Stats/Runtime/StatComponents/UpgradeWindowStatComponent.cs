@@ -1,10 +1,9 @@
 using Nody.Runtime.Core;
 using OdinSerializer;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
-using VladislavTsurikov.Nody.Runtime.Core;
+using Stats.EntityDataActionIntegration;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.Stats
+namespace Stats.Runtime.StatComponents
 {
     [Name("Stats/Upgrade Window")]
     [Group("Stats")]

@@ -1,11 +1,9 @@
 #if UNITY_EDITOR
-using ArmyClash.WaypointsSystem.Runtime;
-using ArmyClash.WaypointsSystem.Runtime.Config;
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
 using UnityEditor;
 using UnityEngine;
+using WaypointsSystem.Runtime;
 
-namespace ArmyClash.WaypointsSystem.Editor
+namespace WaypointsSystem.Editor
 {
     public static class WaypointPathVisualisation
     {

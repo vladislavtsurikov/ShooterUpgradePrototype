@@ -1,12 +1,13 @@
 #if UNITY_EDITOR
+using Stats.EntityDataActionIntegration;
+using Stats.Runtime;
+using Stats.Runtime.StatComponents;
 using UnityEditor;
 using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.Core.Editor;
 using VladislavTsurikov.IMGUIUtility.Editor.ElementStack.ReorderableList;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
 
-namespace VladislavTsurikov.EntityDataAction.Shared.Editor.Stats
+namespace Stats.Editor
 {
     [ElementEditor(typeof(StatsEntityData))]
     public sealed class StatsEntityDataEditor : ReorderableListComponentEditor

@@ -1,12 +1,12 @@
 #if UNITY_EDITOR
+using Stats.Runtime;
 using UnityEditor;
 using UnityEngine;
-using VladislavTsurikov.ActionFlow.Runtime.Stats;
 using VladislavTsurikov.CustomInspector.Editor.IMGUI;
 using VladislavTsurikov.IMGUIUtility.Editor.ElementStack.ReorderableList;
 using VladislavTsurikov.Nody.Runtime.Core;
 
-namespace VladislavTsurikov.ActionFlow.Editor.Stats
+namespace Stats.Editor.Stats
 {
     [CustomEditor(typeof(Stat))]
     public sealed class StatEditor : UnityEditor.Editor

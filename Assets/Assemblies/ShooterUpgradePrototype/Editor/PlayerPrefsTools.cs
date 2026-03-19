@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ShooterUpgradePrototype.Editor
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Editor
 {
     public static class PlayerPrefsTools
     {

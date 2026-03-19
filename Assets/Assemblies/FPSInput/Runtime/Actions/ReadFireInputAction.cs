@@ -1,12 +1,11 @@
-using AutoStrike.Input.Data;
 using AutoStrike.Input.Generated;
-using AutoStrike.Input.Services;
+using AutoStrike.Input.InputMode.Runtime;
+using UnityEngine.InputSystem;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
-using UnityEngine.InputSystem;
 using Zenject;
 
-namespace AutoStrike.Input.Actions
+namespace AutoStrike.Input.FPSInput.Runtime
 {
     [RequiresData(typeof(FireInputData))]
     [Name("AutoStrike.Input/Actions/ReadFireInput")]

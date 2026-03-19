@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AutoStrike.Config
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [CreateAssetMenu(menuName = "Configs/ShooterUpgradePrototype/EnemySpawnConfig", fileName = "EnemySpawnConfig")]
     public sealed class EnemySpawnConfig : ScriptableObject

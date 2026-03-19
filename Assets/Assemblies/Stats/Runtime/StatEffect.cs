@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OdinSerializer;
 using UnityEngine;
-using System.Linq;
 
-namespace VladislavTsurikov.ActionFlow.Runtime.Stats
+namespace Stats.Runtime
 {
     [CreateAssetMenu(menuName = "Stats/Effect", fileName = "StatEffect")]
     public class StatEffect : SerializedScriptableObject

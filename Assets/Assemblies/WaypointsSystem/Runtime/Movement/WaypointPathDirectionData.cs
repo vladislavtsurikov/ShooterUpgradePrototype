@@ -1,11 +1,10 @@
-using Nody.Runtime.Core;
 using OdinSerializer;
 using UnityEngine;
 using VladislavTsurikov.Nody.Runtime.AdvancedNodeStack;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace ArmyClash.WaypointsSystem.Runtime.Movement
+namespace WaypointsSystem.Runtime
 {
     [Persistent]
     [Name("Waypoints/Movement/Path Direction Data")]

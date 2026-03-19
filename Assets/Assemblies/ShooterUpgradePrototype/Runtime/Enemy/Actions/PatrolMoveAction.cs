@@ -1,12 +1,10 @@
-using ArmyClash.WaypointsSystem.Runtime;
-using ArmyClash.WaypointsSystem.Runtime.Movement;
-using ArmyClash.WaypointsSystem.Runtime.Spawning;
-using VladislavTsurikov.EntityDataAction.Runtime.Core;
-using VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats;
-using VladislavTsurikov.ReflectionUtility;
+using Stats.EntityDataActionIntegration;
 using UnityEngine;
+using VladislavTsurikov.EntityDataAction.Runtime.Core;
+using VladislavTsurikov.ReflectionUtility;
+using WaypointsSystem.Runtime;
 
-namespace AutoStrike.Actions
+namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [RequiresData(typeof(WaypointPathData), typeof(StatsEntityData))]
     [Name("AutoStrike/Actions/PatrolMove")]
