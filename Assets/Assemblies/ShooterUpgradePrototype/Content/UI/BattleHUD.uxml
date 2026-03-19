@@ -1,9 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" game="ShooterUpgradePrototype.UI.UISystem.Views" editor-extension-mode="False">
     <Style src="project://database/Assets/Assemblies/ShooterUpgradePrototype/Content/UI/BattleHUD.uss?fileID=7433441132597879392&amp;guid=fd4b736ab70a56f4cbfa035ee1ef2c06&amp;type=3#BattleHUD" />
-    <ShooterUpgradePrototype.UI.UISystem.Views.BattleHUDView class="hud-root">
-        <ui:VisualElement class="hud-top-row">
-            <ShooterUpgradePrototype.UI.UISystem.Views.PlayerHealthHUDView class="hud-health">
-                <ui:VisualElement class="hud-health-panel">
+    <ShooterUpgradePrototype.UI.UISystem.Views.BattleHUDView class="hud-root" picking-mode="Ignore">
+        <ui:VisualElement class="hud-top-row" picking-mode="Ignore">
+            <ShooterUpgradePrototype.UI.UISystem.Views.PlayerHealthHUDView class="hud-health" picking-mode="Ignore">
+                <ui:VisualElement class="hud-health-panel" picking-mode="Ignore">
                     <ui:Label name="healthTitleLabel" text="HP" class="hud-health-title" />
                     <ui:VisualElement class="hud-health-bar-shell">
                         <ui:VisualElement class="hud-health-bar-track">
@@ -15,7 +15,7 @@
             </ShooterUpgradePrototype.UI.UISystem.Views.PlayerHealthHUDView>
             <ShooterUpgradePrototype.UI.UISystem.Views.OpenUpgradeHUDButtonView text="Upgrade" class="hud-chip hud-upgrade-button" />
         </ui:VisualElement>
-        <ui:VisualElement class="hud-crosshair" style="left: 50%; position: relative; top: 50%; flex-grow: 0;">
+        <ui:VisualElement class="hud-crosshair" picking-mode="Ignore" style="left: 50%; position: relative; top: 50%; flex-grow: 0;">
             <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-top" />
             <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-right" />
             <ui:VisualElement class="hud-crosshair-outline hud-crosshair-outline-left" />

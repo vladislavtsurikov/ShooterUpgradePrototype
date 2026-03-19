@@ -1,9 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="uiRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;">
-        <ui:VisualElement name="uiCanvas" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;">
-            <ui:VisualElement name="hudRoot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;" />
-            <ui:VisualElement name="screensRoot" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;" />
-            <ui:VisualElement name="popupsRoot" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;" />
-        </ui:VisualElement>
+    <ui:VisualElement name="Root" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;">
+        <ui:VisualElement name="HUD" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;" />
+        <ui:VisualElement name="Screens" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;" />
+        <ui:VisualElement name="Popups" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-grow: 1;" />
     </ui:VisualElement>
 </ui:UXML>

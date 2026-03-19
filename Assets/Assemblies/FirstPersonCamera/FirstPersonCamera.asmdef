@@ -1,0 +1,26 @@
+{
+    "name": "FirstPersonCamera",
+    "rootNamespace": "AutoStrike.FirstPersonCamera",
+    "references": [
+        "AutoStrike.Input",
+        "AutoStrike.InputMode",
+        "Zenject",
+        "VladislavTsurikov.EntityDataAction",
+        "VladislavTsurikov.ReflectionUtility",
+        "VladislavTsurikov.ActionFlow",
+        "VladislavTsurikov.ComponentStack",
+        "UniRx",
+        "OdinSerializer",
+        "FPSInput",
+        "VladislavTsurikov.EntityDataAction.Shared"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

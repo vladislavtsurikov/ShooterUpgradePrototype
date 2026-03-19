@@ -1,111 +1,112 @@
+using AutoStrike.FirstPersonCamera.Settings;
 using AutoStrike.Input.Data;
-using AutoStrike.Input.Services;
-using AutoStrike.Input.Services.States;
-using AutoStrike.FirstPersonCamera.Data;
+using AutoStrike.Input.Generated;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
+using VladislavTsurikov.ReflectionUtility;
 using Zenject;
 
 namespace AutoStrike.FirstPersonCamera.Actions
 {
-    public abstract class FirstPersonCameraLookAction : EntityMonoBehaviourAction
+    [RequiresData(typeof(LookInputData))]
+    [Name("AutoStrike.FirstPersonCamera/Actions/FirstPersonCameraLook")]
+    public sealed class FirstPersonCameraLookAction : EntityMonoBehaviourAction
     {
-        [Header("Pitch")]
-        [SerializeField]
-        private float _minPitch = -80f;
-
-        [SerializeField]
-        private float _maxPitch = 80f;
-
-        [SerializeField]
-        private bool _invertY;
-
-        private CompositeDisposable _subscriptions = new();
-        private float _pitch;
-        private CameraData _cameraData;
-        private bool _canProcessLook;
+        private CompositeDisposable _subscriptions;
 
         [Inject]
-        private InputModeService _inputModeService;
+        private PlayerInputActions _playerInput;
 
-        protected LookInputData LookInputData { get; private set; }
+        [SerializeField]
+        private PitchSettings _pitch = new();
+
+        [SerializeField]
+        private DragSettings _drag = new();
+
+        [SerializeField]
+        private StickSettings _stick = new();
+
+        private LookInputData _lookInputData;
+        private Camera _camera;
+        private float _pitchValue;
 
         protected override void OnEnable()
         {
-            _subscriptions ??= new CompositeDisposable();
-            _subscriptions.Clear();
-            LookInputData = Entity.GetData<LookInputData>();
-            _cameraData = Entity.GetData<CameraData>();
+            _subscriptions = new CompositeDisposable();
 
-            Transform pitchTransform = _cameraData.Camera.transform;
+            _lookInputData = Entity.GetData<LookInputData>();
+            _camera = ResolveCamera();
+            _pitchValue = _camera != null
+                ? NormalizeAngle(_camera.transform.localEulerAngles.x)
+                : 0f;
 
-            _pitch = NormalizeAngle(pitchTransform.localEulerAngles.x);
-            _pitch = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
-
-            ApplyPitchRotation();
-            SubscribeToInputMode();
-            SubscribeToLookInput();
+            BindInput();
         }
 
-        protected override void OnDisable() => _subscriptions?.Clear();
-
-        protected abstract bool SupportsState(InputModeState state);
-
-        protected virtual void HandleLookDelta(Vector2 lookDelta) => ApplyLook(lookDelta);
-
-        protected virtual void HandleLookRate(Vector2 lookRate) => ApplyLook(lookRate);
-
-        protected void ApplyLook(Vector2 look)
+        protected override void OnDisable()
         {
-            if (!_canProcessLook)
+            _subscriptions.Dispose();
+        }
+
+        private Camera ResolveCamera()
+        {
+            EntityMonoBehaviour entityMonoBehaviour = EntityMonoBehaviour;
+
+            if (entityMonoBehaviour == null)
+            {
+                return null;
+            }
+
+            return entityMonoBehaviour.GetComponentInChildren<Camera>(true);
+        }
+
+        private void BindInput()
+        {
+            _lookInputData.LookDelta
+                .Subscribe(input => Process(input, false))
+                .AddTo(_subscriptions);
+
+            _lookInputData.LookRate
+                .Subscribe(input => Process(input, true))
+                .AddTo(_subscriptions);
+        }
+
+        private void Process(Vector2 input, bool isRate)
+        {
+            if (_camera == null)
             {
                 return;
             }
 
-            if (look.sqrMagnitude <= 0.0001f)
+            Vector2 scaled = Scale(input, isRate);
+            float yaw = scaled.x;
+            float pitchDelta = _pitch.InvertY ? scaled.y : -scaled.y;
+
+            _pitchValue = Mathf.Clamp(
+                _pitchValue + pitchDelta,
+                _pitch.MinPitch,
+                _pitch.MaxPitch);
+
+            ApplyRotation(yaw, _pitchValue);
+        }
+
+        private Vector2 Scale(Vector2 input, bool isRate)
+        {
+            if (isRate)
             {
-                return;
+                return Vector2.Scale(input, _stick.Sensitivity) * Time.deltaTime;
             }
 
-            EntityMonoBehaviour.transform.Rotate(0f, look.x, 0f, Space.World);
-
-            float pitchDelta = _invertY ? look.y : -look.y;
-            _pitch = Mathf.Clamp(_pitch + pitchDelta, _minPitch, _maxPitch);
-            ApplyPitchRotation();
+            return Vector2.Scale(input, _drag.Sensitivity);
         }
 
-        private void ApplyPitchRotation()
+        private void ApplyRotation(float yaw, float pitch)
         {
-            Transform pitchTransform = _cameraData.Camera.transform;
+            Transform cameraTransform = _camera.transform;
 
-            Vector3 localEulerAngles = pitchTransform.localEulerAngles;
-            localEulerAngles.x = _pitch;
-            pitchTransform.localEulerAngles = localEulerAngles;
-        }
-
-        private void SubscribeToInputMode()
-        {
-            _inputModeService.CurrentState
-                .Subscribe(state => _canProcessLook = SupportsState(state))
-                .AddTo(_subscriptions);
-        }
-
-        private void SubscribeToLookInput()
-        {
-            LookInputData.LookDelta
-                .Skip(1)
-                .Subscribe(HandleLookDelta)
-                .AddTo(_subscriptions);
-
-            LookInputData.LookRate
-                .Select(rate =>
-                    rate.sqrMagnitude > 0.0001f
-                        ? Observable.EveryUpdate().Select(_ => LookInputData.LookRate.Value)
-                        : Observable.Empty<Vector2>())
-                .Switch()
-                .Subscribe(HandleLookRate)
-                .AddTo(_subscriptions);
+            cameraTransform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+            EntityMonoBehaviour.transform.Rotate(Vector3.up * yaw);
         }
 
         private static float NormalizeAngle(float angle)

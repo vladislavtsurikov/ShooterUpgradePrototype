@@ -19,7 +19,7 @@ using Zenject;
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
-    [UIParent(typeof(Root), RootSlots.ScreensRoot)]
+    [UIParent(typeof(Root), RootSlots.Screens)]
     public sealed class UpgradeWindowPresenter : UIToolkitUIHandler
     {
         private readonly GameplayInputBlocker _gameplayInputBlocker;

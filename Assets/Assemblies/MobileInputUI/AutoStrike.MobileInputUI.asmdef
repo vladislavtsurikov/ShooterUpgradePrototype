@@ -11,7 +11,8 @@
         "AutoStrike.Input",
         "AutoStrike.InputMode",
         "VladislavTsurikov.Core",
-        "Unity.Localization"
+        "Unity.Localization",
+        "FPSInput"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -30,8 +30,7 @@ namespace ShooterUpgradePrototype.Player.Entities
                 typeof(ReadLookInputAction),
                 typeof(ReadFireInputAction),
                 typeof(MoveByInputAction),
-                typeof(DesktopFirstPersonCameraLookAction),
-                typeof(MobileFirstPersonCameraLookAction),
+                typeof(FirstPersonCameraLookAction),
                 typeof(AttackTargetAction),
                 typeof(PlayShootAudioAction)
             };

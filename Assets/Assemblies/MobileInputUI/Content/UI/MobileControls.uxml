@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" mobile="AutoStrike.MobileInputUI.Views" editor-extension-mode="False">
     <Style src="project://database/Assets/Assemblies/MobileInputUI/Content/UI/MobileControls.uss?fileID=7433441132597879392&amp;guid=fd8bc29204b84b3582e0485ba081b5df&amp;type=3#MobileControls" />
-    <AutoStrike.MobileInputUI.Views.MobileControlsView name="mobile-controls-root" class="mobile-controls-root">
-        <ui:VisualElement name="mobile-controls-safe-area" class="mobile-controls-safe-area">
+    <AutoStrike.MobileInputUI.Views.MobileControlsView name="MobileControls" class="mobile-controls-root" picking-mode="Ignore">
+        <ui:VisualElement name="MobileControlsSafeArea" class="mobile-controls-safe-area" picking-mode="Ignore">
             <AutoStrike.MobileInputUI.Views.MobileMoveStickView name="mobile-stick-anchor" class="mobile-stick-anchor" style="left: 8%; bottom: 8%; opacity: 1;">
                 <ui:VisualElement name="mobile-stick-pad" class="mobile-stick-pad">
                     <ui:VisualElement name="mobile-stick-ring" class="mobile-stick-ring" />
@@ -24,7 +24,6 @@
                                 <ui:VisualElement class="mobile-fire-reticle-line mobile-fire-reticle-line-left" />
                                 <ui:VisualElement class="mobile-fire-reticle-dot" />
                             </ui:VisualElement>
-                            <ui:Label name="mobile-fire-label" text="FIRE" class="mobile-fire-label" />
                         </ui:VisualElement>
                     </ui:Button>
                 </ui:VisualElement>

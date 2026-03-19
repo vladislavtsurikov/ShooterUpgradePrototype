@@ -14,7 +14,7 @@ using Zenject;
 namespace ShooterUpgradePrototype.UI.UISystem.Handlers
 {
     [SceneFilter("Battle")]
-    [UIParent(typeof(Root), RootSlots.HudRoot)]
+    [UIParent(typeof(Root), RootSlots.HUD)]
     public sealed class BattleHUDRootPresenter : UIToolkitUIHandler
     {
         public BattleHUDRootPresenter(DiContainer container, BattleHUDLayoutLoader loader)
