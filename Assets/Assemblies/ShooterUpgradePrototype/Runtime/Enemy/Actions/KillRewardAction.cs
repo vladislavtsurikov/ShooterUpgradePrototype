@@ -6,7 +6,7 @@ using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using Zenject;
 
-namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
+namespace ShooterUpgradePrototype.Runtime
 {
     [Name("AutoStrike/Actions/KillReward")]
     [Group("Death")]

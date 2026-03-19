@@ -5,7 +5,7 @@ using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using WaypointsSystem.Runtime;
 
-namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
+namespace ShooterUpgradePrototype.Runtime
 {
     public sealed class EnemyEntity : EntityMonoBehaviour
     {

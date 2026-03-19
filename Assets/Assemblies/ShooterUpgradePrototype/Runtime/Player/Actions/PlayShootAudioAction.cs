@@ -5,7 +5,7 @@ using UnityEngine;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 
-namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
+namespace ShooterUpgradePrototype.Runtime
 {
     [RequiresData(typeof(FireInputData), typeof(CameraData))]
     [Name("AutoStrike/Actions/PlayShootAudio")]

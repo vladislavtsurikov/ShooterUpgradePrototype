@@ -1,3 +1,4 @@
+using ShooterUpgradePrototype.Runtime;
 using Stats.EntityDataActionIntegration;
 using UnityEngine;
 using Zenject;

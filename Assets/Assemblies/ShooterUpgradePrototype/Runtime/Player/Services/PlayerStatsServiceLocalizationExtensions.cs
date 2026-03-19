@@ -3,7 +3,7 @@ using Stats.EntityDataActionIntegration;
 using UnityEngine.Localization.Settings;
 using VladislavTsurikov.EntityDataAction.Shared.Runtime.Common;
 
-namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
+namespace ShooterUpgradePrototype.Runtime
 {
     public static class PlayerStatsServiceLocalizationExtensions
     {

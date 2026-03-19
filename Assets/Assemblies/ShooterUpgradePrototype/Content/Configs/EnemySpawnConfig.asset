@@ -11,6 +11,6 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 858cf98033dbcf0489387e1b4ac65a75, type: 3}
   m_Name: EnemySpawnConfig
-  m_EditorClassIdentifier: AutoStrike::AutoStrike.Config.EnemySpawnConfig
+  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime.EnemySpawnConfig
   <RespawnDelay>k__BackingField: 7
   <MaxMobCount>k__BackingField: 5

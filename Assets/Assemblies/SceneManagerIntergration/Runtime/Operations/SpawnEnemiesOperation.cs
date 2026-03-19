@@ -1,6 +1,7 @@
 using System.Threading;
 using AutoStrike.Spawning.WaypointPathEntitySpawner.Runtime;
 using Cysharp.Threading.Tasks;
+using ShooterUpgradePrototype.Runtime;
 using ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime;
 using VladislavTsurikov.Nody.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;

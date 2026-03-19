@@ -6,7 +6,7 @@ using Stats.Runtime.StatComponents;
 using UniRx;
 using UnityEngine;
 
-namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
+namespace ShooterUpgradePrototype.Runtime
 {
     public sealed class PlayerStatsService : IDisposable
     {

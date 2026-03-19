@@ -72,7 +72,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1523f6fe2fe416e88e00d6171cdf91b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Enemy.Entities.EnemyEntity
+  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Runtime.EnemyEntity
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -100,7 +100,7 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 7
-      Data: 3|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.ModifyStatRandomAction,
+      Data: 3|Stats.EntityDataActionIntegration.ModifyStatRandomAction,
         VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
@@ -146,7 +146,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|AutoStrike.Actions.PatrolMoveAction, ShooterUpgradePrototype
+      Data: 4|ShooterUpgradePrototype.Runtime.PatrolMoveAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -179,7 +179,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 5|AutoStrike.Actions.PatrolRotateAction, ShooterUpgradePrototype
+      Data: 5|ShooterUpgradePrototype.Runtime.PatrolRotateAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -215,7 +215,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 6|AutoStrike.Actions.DeathAction, ShooterUpgradePrototype
+      Data: 6|ShooterUpgradePrototype.Runtime.DeathAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -256,7 +256,7 @@ MonoBehaviour:
       Data: 3
     - Name: 
       Entry: 7
-      Data: 9|AutoStrike.Actions.KillRewardAction, ShooterUpgradePrototype
+      Data: 9|ShooterUpgradePrototype.Runtime.KillRewardAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -292,7 +292,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 10|AutoStrike.Actions.DisableDeathInteractionsAction, ShooterUpgradePrototype
+      Data: 10|ShooterUpgradePrototype.Runtime.DisableDeathInteractionsAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -325,7 +325,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 11|AutoStrike.Actions.FadeOutAction, ShooterUpgradePrototype
+      Data: 11|ShooterUpgradePrototype.Runtime.FadeOutAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -393,7 +393,7 @@ MonoBehaviour:
       Data: 3
     - Name: 
       Entry: 7
-      Data: 14|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityData,
+      Data: 14|Stats.EntityDataActionIntegration.StatsEntityData,
         VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
@@ -424,7 +424,7 @@ MonoBehaviour:
       Data: 0
     - Name: _localStats
       Entry: 7
-      Data: 15|VladislavTsurikov.EntityDataAction.Shared.Runtime.Stats.StatsEntityState,
+      Data: 15|Stats.EntityDataActionIntegration.StatsEntityState,
         VladislavTsurikov.Stats
     - Name: _collection
       Entry: 10

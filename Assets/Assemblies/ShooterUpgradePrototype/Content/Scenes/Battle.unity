@@ -2068,7 +2068,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfbaf8757e9f4106a917c281bda322cd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Infrastructure.Installers.ShooterUpgradePrototypeInstaller
+  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime.ShooterUpgradePrototypeInstaller
 --- !u!114 &2500000202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2110,7 +2110,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76670b4443514d2983169a8df79638c2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Spawning.ShooterUpgradePrototypeWaypointPathEntitySpawner
+  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime.ShooterUpgradePrototypeWaypointPathEntitySpawner
   _enemyPrefab: {fileID: 600056529660574793, guid: 9f5537afd43d3644eb788478a14926af,
     type: 3}
   _spawnHeightOffset: 0

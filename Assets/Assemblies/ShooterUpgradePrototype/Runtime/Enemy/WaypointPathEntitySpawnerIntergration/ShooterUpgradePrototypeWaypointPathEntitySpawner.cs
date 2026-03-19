@@ -1,4 +1,5 @@
 using AutoStrike.Spawning.WaypointPathEntitySpawner.Runtime;
+using ShooterUpgradePrototype.Runtime;
 using UnityEngine;
 using WaypointsSystem.Runtime;
 using Zenject;

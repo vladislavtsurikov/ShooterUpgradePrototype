@@ -2,6 +2,7 @@ using System;
 using AutoStrike.FirstPersonCamera.Data;
 using AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime;
 using AutoStrike.Input.FPSInput.Runtime;
+using ShooterUpgradePrototype.Runtime;
 using Stats.EntityDataActionIntegration;
 using VladislavTsurikov.EntityDataAction.Runtime.Core;
 

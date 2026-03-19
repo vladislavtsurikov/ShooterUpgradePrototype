@@ -53,7 +53,7 @@ MonoBehaviour:
       Data: 
     - Name: _progression
       Entry: 7
-      Data: 1|VladislavTsurikov.ActionFlow.Runtime.LevelProgression.ManualProgressionTable,
+      Data: 1|LevelProgression.Runtime.ProgressionTables.ManualProgressionTable,
         VladislavTsurikov.LevelProgression
     - Name: 
       Entry: 8

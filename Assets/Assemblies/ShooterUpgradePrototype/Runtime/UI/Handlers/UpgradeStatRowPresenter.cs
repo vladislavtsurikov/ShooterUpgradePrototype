@@ -4,6 +4,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using ShooterUpgradePrototype.Runtime;
 using UniRx;
 using UnityEngine.UIElements;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;

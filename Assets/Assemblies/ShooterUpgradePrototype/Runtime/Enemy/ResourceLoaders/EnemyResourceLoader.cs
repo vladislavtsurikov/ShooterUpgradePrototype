@@ -2,11 +2,12 @@
 #if ADDRESSABLE_LOADER_SYSTEM_ZENJECT
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.ZenjectIntegration;
 using VladislavTsurikov.Core.Runtime;
 using Zenject;
 
-namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
+namespace ShooterUpgradePrototype.Runtime
 {
     [GlobalFilter]
     public sealed class EnemyResourceLoader : BindableResourceLoader

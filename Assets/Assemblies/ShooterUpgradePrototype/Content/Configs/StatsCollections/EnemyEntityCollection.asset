@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ae7f55cced1b934ab392a71d6c41ece, type: 3}
   m_Name: EnemyEntityCollection
-  m_EditorClassIdentifier: VladislavTsurikov.Stats::VladislavTsurikov.ActionFlow.Runtime.Stats.StatCollection
+  m_EditorClassIdentifier: VladislavTsurikov.Stats::Stats.Runtime.StatCollection
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -25,7 +25,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _stats
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[VladislavTsurikov.ActionFlow.Runtime.Stats.Stat,
+      Data: 0|System.Collections.Generic.List`1[[Stats.Runtime.Stat,
         VladislavTsurikov.Stats]], mscorlib
     - Name: 
       Entry: 12

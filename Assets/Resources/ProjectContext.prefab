@@ -93,7 +93,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19979068e4a44a73a4d63f1b6123370e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: AutoStrike.Input::AutoStrike.Input.Installers.PlayerInputActionsInstaller
+  m_EditorClassIdentifier: FPSInput::AutoStrike.Input.FPSInput.Runtime.PlayerInputActionsInstaller
 --- !u!114 &6165581184075436201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,5 +129,5 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c38cd3445c884b65b725bf823f96c6a7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.Infrastructure.Installers.ShooterUpgradePrototypePlayerStatsInstaller
+  m_EditorClassIdentifier: ShooterUpgradePrototype::ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime.PlayerStatsInstaller
   _playerStatsConfig: {fileID: 11400000, guid: d3d7d4546660d194481d76ecfb693c78, type: 2}

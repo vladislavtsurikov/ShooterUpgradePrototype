@@ -4,7 +4,7 @@ using VladislavTsurikov.EntityDataAction.Runtime.Core;
 using VladislavTsurikov.ReflectionUtility;
 using WaypointsSystem.Runtime;
 
-namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
+namespace ShooterUpgradePrototype.Runtime
 {
     [RequiresData(typeof(WaypointPathData), typeof(StatsEntityData))]
     [Name("AutoStrike/Actions/PatrolMove")]

@@ -27,7 +27,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _stats
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[VladislavTsurikov.ActionFlow.Runtime.Stats.Stat,
+      Data: 0|System.Collections.Generic.List`1[[Stats.Runtime.Stat,
         VladislavTsurikov.Stats]], mscorlib
     - Name: 
       Entry: 12

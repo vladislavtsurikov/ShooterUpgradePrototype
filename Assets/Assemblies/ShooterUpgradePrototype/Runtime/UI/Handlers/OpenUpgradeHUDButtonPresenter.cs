@@ -2,6 +2,7 @@
 #if UI_SYSTEM_ZENJECT
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using ShooterUpgradePrototype.Runtime;
 using UIRootSystem.Runtime;
 using UniRx;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;

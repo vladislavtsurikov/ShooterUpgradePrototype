@@ -1,3 +1,4 @@
+using ShooterUpgradePrototype.Runtime;
 using Zenject;
 
 namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime

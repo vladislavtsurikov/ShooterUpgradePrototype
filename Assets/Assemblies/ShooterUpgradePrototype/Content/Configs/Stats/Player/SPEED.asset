@@ -24,7 +24,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _componentStack
       Entry: 7
-      Data: 0|VladislavTsurikov.ActionFlow.Runtime.Stats.StatsComponentStack, VladislavTsurikov.Stats
+      Data: 0|Stats.Runtime.StatsComponentStack, VladislavTsurikov.Stats
     - Name: _elementList
       Entry: 7
       Data: 1|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
@@ -34,7 +34,7 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 7
-      Data: 2|VladislavTsurikov.ActionFlow.Runtime.Stats.StatValueComponent, VladislavTsurikov.Stats
+      Data: 2|Stats.Runtime.StatComponents.StatValueComponent, VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -85,7 +85,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|VladislavTsurikov.ActionFlow.Runtime.Stats.StatLevelTableComponent,
+      Data: 3|Stats.Runtime.StatComponents.StatLevelTableComponent,
         VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
@@ -125,7 +125,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|VladislavTsurikov.ActionFlow.Runtime.Stats.UpgradeWindowStatComponent,
+      Data: 4|Stats.Runtime.StatComponents.UpgradeWindowStatComponent,
         VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
