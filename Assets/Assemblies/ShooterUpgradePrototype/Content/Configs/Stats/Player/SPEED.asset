@@ -85,8 +85,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|Stats.Runtime.StatComponents.StatLevelTableComponent,
-        VladislavTsurikov.Stats
+      Data: 3|Stats.Runtime.StatComponents.StatLevelTableComponent, VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -125,8 +124,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|Stats.Runtime.StatComponents.UpgradeWindowStatComponent,
-        VladislavTsurikov.Stats
+      Data: 4|Stats.Runtime.StatComponents.UpgradeWindowStatComponent, VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true

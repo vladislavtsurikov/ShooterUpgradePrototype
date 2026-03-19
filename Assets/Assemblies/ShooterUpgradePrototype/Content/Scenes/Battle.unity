@@ -538,8 +538,7 @@ MonoBehaviour:
       Data: 3
     - Name: 
       Entry: 7
-      Data: 3|ArmyClash.WaypointsSystem.Runtime.Actions.SyncWaypointPathCapacityAction,
-        WaypointsSystem
+      Data: 3|WaypointsSystem.Runtime.SyncWaypointPathCapacityAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -551,7 +550,7 @@ MonoBehaviour:
       Data: true
     - Name: _nodeId
       Entry: 1
-      Data: e39ddbb8-df29-4982-90ef-cb222922a478
+      Data: 32723989-f650-438b-88ca-044d2e0c8cc8
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -572,11 +571,10 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|ArmyClash.WaypointsSystem.Runtime.Actions.RebuildWaypointPathSegmentCountAction,
-        WaypointsSystem
+      Data: 4|WaypointsSystem.Runtime.RebuildWaypointPathSegmentCountAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
-      Data: false
+      Data: true
     - Name: _active
       Entry: 5
       Data: true
@@ -585,7 +583,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: eb20b1d6-b78e-4a25-82cc-c84bebd3ad66
+      Data: c984ae25-e591-4c15-b7c8-476e3e571ffb
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -606,8 +604,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 5|ArmyClash.WaypointsSystem.Runtime.Actions.RebuildWaypointPathMetricsCacheAction,
-        WaypointsSystem
+      Data: 5|WaypointsSystem.Runtime.RebuildWaypointPathMetricsCacheAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -619,7 +616,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: b06bdc8c-96eb-49b5-bf38-ef6af9860586
+      Data: ca79bfae-960d-4d02-9ecc-13f3de4fa73c
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -660,7 +657,7 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 7
-      Data: 8|ArmyClash.WaypointsSystem.Runtime.Spawning.LoopData, WaypointsSystem
+      Data: 8|WaypointsSystem.Runtime.LoopData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -669,10 +666,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: true
+      Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 7d1172cb-fbf8-4b86-9b49-73980783a430
+      Data: a2405fef-d24e-48b1-9ef8-1f6d4c79bf50
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -699,7 +696,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 10|ArmyClash.WaypointsSystem.Runtime.Spawning.CapacityData, WaypointsSystem
+      Data: 10|WaypointsSystem.Runtime.CapacityData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -711,7 +708,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 952cb719-e8ce-4630-940a-8bc36e9f5c21
+      Data: 247505aa-0182-4cbf-ae87-6c57955edbf6
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -729,14 +726,13 @@ MonoBehaviour:
       Data: 1
     - Name: Mode
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 11|ArmyClash.WaypointsSystem.Runtime.Spawning.WaypointPathMetricsData,
-        WaypointsSystem
+      Data: 11|WaypointsSystem.Runtime.WaypointPathMetricsData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -745,10 +741,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: false
+      Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 5a58846a-415e-43c2-b380-ca718d9f8cb3
+      Data: ad2c8617-7a5f-459f-8b59-4d40edda087b
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -766,8 +762,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 12|ArmyClash.WaypointsSystem.Runtime.Spawning.WaypointPathSegmentCountData,
-        WaypointsSystem
+      Data: 12|WaypointsSystem.Runtime.WaypointPathSegmentCountData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -779,7 +774,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: e47300cb-7afa-4529-9d2f-46f06e30949f
+      Data: 5de7fdb1-be18-4624-a8b5-7941bb39a731
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1058,8 +1053,7 @@ MonoBehaviour:
       Data: 3
     - Name: 
       Entry: 7
-      Data: 3|ArmyClash.WaypointsSystem.Runtime.Actions.SyncWaypointPathCapacityAction,
-        WaypointsSystem
+      Data: 3|WaypointsSystem.Runtime.SyncWaypointPathCapacityAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1071,7 +1065,7 @@ MonoBehaviour:
       Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 1e3f80d0-6ea8-4401-bf92-87b431e896a0
+      Data: 8504bcc0-417f-4d32-96f7-f8bf4d928d3a
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1092,8 +1086,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|ArmyClash.WaypointsSystem.Runtime.Actions.RebuildWaypointPathSegmentCountAction,
-        WaypointsSystem
+      Data: 4|WaypointsSystem.Runtime.RebuildWaypointPathSegmentCountAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1105,7 +1098,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: d762ab23-5b1a-4fd5-9f41-578afeb319df
+      Data: 982f2a74-f636-409a-b7e6-eb58e4a9fe77
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1126,8 +1119,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 5|ArmyClash.WaypointsSystem.Runtime.Actions.RebuildWaypointPathMetricsCacheAction,
-        WaypointsSystem
+      Data: 5|WaypointsSystem.Runtime.RebuildWaypointPathMetricsCacheAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1139,7 +1131,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: bb2e7d17-2a9d-4cf9-a1b9-31d349ddf290
+      Data: 66c4140b-dd6e-4572-8835-89ceb9e0b21f
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1180,7 +1172,7 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 7
-      Data: 8|ArmyClash.WaypointsSystem.Runtime.Spawning.LoopData, WaypointsSystem
+      Data: 8|WaypointsSystem.Runtime.LoopData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1189,10 +1181,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: true
+      Data: false
     - Name: _nodeId
       Entry: 1
-      Data: d7c93ff2-4f74-4d2e-a1be-22c10b7c3dd4
+      Data: 9fc2b0ed-c367-4ba7-81fb-3bd9d276a799
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1210,7 +1202,7 @@ MonoBehaviour:
       Data: 9|UniRx.ReactiveProperty`1[[System.Boolean, mscorlib]], UniRx
     - Name: value
       Entry: 5
-      Data: false
+      Data: true
     - Name: 
       Entry: 8
       Data: 
@@ -1219,7 +1211,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 10|ArmyClash.WaypointsSystem.Runtime.Spawning.CapacityData, WaypointsSystem
+      Data: 10|WaypointsSystem.Runtime.CapacityData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1231,7 +1223,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 9717aaf3-868e-444e-999e-dc751a34f1eb
+      Data: 01b9c84b-3fdb-4513-b74b-7490e9a24455
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1249,14 +1241,13 @@ MonoBehaviour:
       Data: 1
     - Name: Mode
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 11|ArmyClash.WaypointsSystem.Runtime.Spawning.WaypointPathMetricsData,
-        WaypointsSystem
+      Data: 11|WaypointsSystem.Runtime.WaypointPathMetricsData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1265,10 +1256,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: false
+      Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 4992c8c2-3e42-43d9-8f66-4dd86877bf03
+      Data: 909a1c6b-763e-4024-bb77-d3123ff2ead8
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1286,8 +1277,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 12|ArmyClash.WaypointsSystem.Runtime.Spawning.WaypointPathSegmentCountData,
-        WaypointsSystem
+      Data: 12|WaypointsSystem.Runtime.WaypointPathSegmentCountData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1299,7 +1289,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: e5f6e1c3-169c-4894-aad4-714e2b7a39de
+      Data: 50063935-afc0-4e20-b422-d1b02af41a00
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1502,8 +1492,7 @@ MonoBehaviour:
       Data: 3
     - Name: 
       Entry: 7
-      Data: 3|ArmyClash.WaypointsSystem.Runtime.Actions.SyncWaypointPathCapacityAction,
-        WaypointsSystem
+      Data: 3|WaypointsSystem.Runtime.SyncWaypointPathCapacityAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1515,7 +1504,7 @@ MonoBehaviour:
       Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 9488d66c-7671-4487-96d9-36867ed854ac
+      Data: aeb224a2-4568-486b-a978-f7d4f16d221d
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1536,8 +1525,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|ArmyClash.WaypointsSystem.Runtime.Actions.RebuildWaypointPathSegmentCountAction,
-        WaypointsSystem
+      Data: 4|WaypointsSystem.Runtime.RebuildWaypointPathSegmentCountAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1549,7 +1537,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: e7d26b66-8cae-4416-9a61-039f60cb1b8c
+      Data: 9452803c-3f6d-4fac-bbfb-c5ce36ad3205
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1570,8 +1558,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 5|ArmyClash.WaypointsSystem.Runtime.Actions.RebuildWaypointPathMetricsCacheAction,
-        WaypointsSystem
+      Data: 5|WaypointsSystem.Runtime.RebuildWaypointPathMetricsCacheAction, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1583,7 +1570,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 31cd73ca-1dac-4718-b34b-291b0b0d8a7d
+      Data: 26d57814-ecf3-477e-b858-935f7295a2f9
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1624,7 +1611,7 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 7
-      Data: 8|ArmyClash.WaypointsSystem.Runtime.Spawning.LoopData, WaypointsSystem
+      Data: 8|WaypointsSystem.Runtime.LoopData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1633,10 +1620,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: true
+      Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 181e7f64-faa6-43f9-94e7-bfc1a6f21999
+      Data: 7f0dd880-a885-476a-a408-189ed5037e27
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1663,7 +1650,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 10|ArmyClash.WaypointsSystem.Runtime.Spawning.CapacityData, WaypointsSystem
+      Data: 10|WaypointsSystem.Runtime.CapacityData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1675,7 +1662,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 3d169c1e-2794-4ea2-b22b-578a9f15576e
+      Data: 70853ff0-9be1-4f2b-ae5e-07a2073f28a5
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1699,8 +1686,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 11|ArmyClash.WaypointsSystem.Runtime.Spawning.WaypointPathMetricsData,
-        WaypointsSystem
+      Data: 11|WaypointsSystem.Runtime.WaypointPathMetricsData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1709,10 +1695,10 @@ MonoBehaviour:
       Data: true
     - Name: _selected
       Entry: 5
-      Data: false
+      Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 22a50278-6445-459c-b14b-1d49abb7361e
+      Data: f0098966-652b-43c6-a258-8d9dc7539467
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -1730,8 +1716,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 12|ArmyClash.WaypointsSystem.Runtime.Spawning.WaypointPathSegmentCountData,
-        WaypointsSystem
+      Data: 12|WaypointsSystem.Runtime.WaypointPathSegmentCountData, WaypointsSystem
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -1743,7 +1728,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 5d3b1b17-0f2b-43c0-8e9c-cccc1e9246de
+      Data: 0fec6755-ee75-4ca3-9566-545892fd53d8
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule

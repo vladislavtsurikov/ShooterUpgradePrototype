@@ -418,8 +418,7 @@ MonoBehaviour:
       Data: 8
     - Name: 
       Entry: 7
-      Data: 3|Stats.EntityDataActionIntegration.ApplyStatLevelsByTableAction,
-        VladislavTsurikov.Stats
+      Data: 3|Stats.EntityDataActionIntegration.ApplyStatLevelsByTableAction, VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -615,7 +614,7 @@ MonoBehaviour:
       Data: false
     - Name: _pitch
       Entry: 7
-      Data: 21|AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime.PitchSettings,
+      Data: 9|AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime.PitchSettings,
         FirstPersonCamera
     - Name: _minPitch
       Entry: 4
@@ -626,9 +625,12 @@ MonoBehaviour:
     - Name: _invertY
       Entry: 5
       Data: false
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: _drag
       Entry: 7
-      Data: 22|AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime.DragSettings,
+      Data: 10|AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime.DragSettings,
         FirstPersonCamera
     - Name: _sensitivity
       Entry: 7
@@ -639,12 +641,15 @@ MonoBehaviour:
     - Name: 
       Entry: 4
       Data: 0.12
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
     - Name: _stick
       Entry: 7
-      Data: 23|AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime.StickSettings,
+      Data: 11|AutoStrike.FirstPersonCamera.FirstPersonCamera.Runtime.StickSettings,
         FirstPersonCamera
     - Name: _sensitivity
       Entry: 7
@@ -662,8 +667,11 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 7
-      Data: 10|ShooterUpgradePrototype.Runtime.AttackTargetAction, ShooterUpgradePrototype
+      Data: 12|ShooterUpgradePrototype.Runtime.AttackTargetAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -675,7 +683,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: ad7ef9dd-0b04-47d0-bfa5-836ef148fc13
+      Data: 2a5ff918-b939-491c-a054-9b06fa2257b5
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -708,7 +716,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 11|ShooterUpgradePrototype.Runtime.PlayShootAudioAction, ShooterUpgradePrototype
+      Data: 13|ShooterUpgradePrototype.Runtime.PlayShootAudioAction, ShooterUpgradePrototype
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -720,7 +728,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 180d541e-925d-4714-9de9-2970102f8424
+      Data: fcbf0990-3f85-4ef5-aa02-9181815289e7
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -759,19 +767,18 @@ MonoBehaviour:
       Data: 
     - Name: _data
       Entry: 7
-      Data: 12|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityDataCollection,
+      Data: 14|VladislavTsurikov.EntityDataAction.Runtime.Core.EntityDataCollection,
         VladislavTsurikov.EntityDataAction
     - Name: _elementList
       Entry: 7
-      Data: 13|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
+      Data: 15|VladislavTsurikov.Utility.Runtime.ObservableList`1[[VladislavTsurikov.Nody.Runtime.Core.ComponentData,
         VladislavTsurikov.ComponentStack]], VladislavTsurikov.Utility
     - Name: 
       Entry: 12
       Data: 5
     - Name: 
       Entry: 7
-      Data: 14|Stats.EntityDataActionIntegration.StatsEntityData,
-        VladislavTsurikov.Stats
+      Data: 16|Stats.EntityDataActionIntegration.StatsEntityData, VladislavTsurikov.Stats
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -783,7 +790,7 @@ MonoBehaviour:
       Data: true
     - Name: _nodeId
       Entry: 1
-      Data: 7b45f814-de54-4afd-9655-a11786e89f71
+      Data: bcb7ffda-6387-4668-92ea-d84e7ef0fc74
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -801,8 +808,7 @@ MonoBehaviour:
       Data: 1
     - Name: _localStats
       Entry: 7
-      Data: 15|Stats.EntityDataActionIntegration.StatsEntityState,
-        VladislavTsurikov.Stats
+      Data: 17|Stats.EntityDataActionIntegration.StatsEntityState, VladislavTsurikov.Stats
     - Name: _collection
       Entry: 6
       Data: 
@@ -817,7 +823,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 16|AutoStrike.FirstPersonCamera.Data.CameraData, AutoStrike.FirstPersonCamera
+      Data: 18|AutoStrike.FirstPersonCamera.Data.CameraData, VladislavTsurikov.EntityDataAction.Shared
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -829,7 +835,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 9d18cdb3-47a7-425b-ba3c-72b2a3c4195d
+      Data: b7313f77-a044-4d44-84de-4cc6abb2884d
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -847,7 +853,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 17|AutoStrike.Input.FPSInput.Runtime.MoveInputData, FPSInput
+      Data: 19|AutoStrike.Input.FPSInput.Runtime.MoveInputData, FPSInput
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -859,7 +865,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: d5b85ce1-05be-47ba-b955-40cfc5f9cbf2
+      Data: dd3fb511-d78d-48fa-a7b5-9f12735f0e8f
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -874,7 +880,7 @@ MonoBehaviour:
       Data: 
     - Name: _moveDirection
       Entry: 7
-      Data: 18|UniRx.ReactiveProperty`1[[UnityEngine.Vector2, UnityEngine.CoreModule]],
+      Data: 20|UniRx.ReactiveProperty`1[[UnityEngine.Vector2, UnityEngine.CoreModule]],
         UniRx
     - Name: value
       Entry: 7
@@ -896,7 +902,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 19|AutoStrike.Input.FPSInput.Runtime.LookInputData, FPSInput
+      Data: 21|AutoStrike.Input.FPSInput.Runtime.LookInputData, FPSInput
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -908,7 +914,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: f12476d5-f7f5-4dd1-b209-203e1374814a
+      Data: 157e2e93-cfe4-43fb-88f6-bc103910b06c
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -926,7 +932,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 20|AutoStrike.Input.FPSInput.Runtime.FireInputData, FPSInput
+      Data: 22|AutoStrike.Input.FPSInput.Runtime.FireInputData, FPSInput
     - Name: SelectSettingsFoldout
       Entry: 5
       Data: true
@@ -938,7 +944,7 @@ MonoBehaviour:
       Data: false
     - Name: _nodeId
       Entry: 1
-      Data: 06cb7e15-52ec-4b1d-8870-701c86879342
+      Data: 10ccb046-72c8-4ff3-b6d3-9799cff5bceb
     - Name: _graphPosition
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
@@ -953,7 +959,7 @@ MonoBehaviour:
       Data: 
     - Name: _isFirePressed
       Entry: 7
-      Data: 21|UniRx.ReactiveProperty`1[[System.Boolean, mscorlib]], UniRx
+      Data: 23|UniRx.ReactiveProperty`1[[System.Boolean, mscorlib]], UniRx
     - Name: value
       Entry: 5
       Data: false
@@ -974,7 +980,7 @@ MonoBehaviour:
       Data: 
     - Name: _localActive
       Entry: 5
-      Data: true
+      Data: false
     - Name: 
       Entry: 8
       Data: 
