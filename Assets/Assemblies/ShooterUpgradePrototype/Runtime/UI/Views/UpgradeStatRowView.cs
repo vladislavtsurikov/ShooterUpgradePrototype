@@ -25,8 +25,8 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         public void SetPendingDelta(string text, bool visible)
         {
-            _pendingDeltaLabel.text = text;
-            _pendingDeltaLabel.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+            _pendingDeltaLabel.text = visible ? text : string.Empty;
+            _pendingDeltaLabel.style.visibility = visible ? Visibility.Visible : Visibility.Hidden;
         }
 
         public void SetUpgradeEnabled(bool enabled)
@@ -63,6 +63,9 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
             _pendingDeltaLabel = this.Q<Label>("pendingDeltaLabel");
             _levelSegmentsContainer = this.Q<VisualElement>("levelSegmentsContainer");
             _upgradeButton = this.Q<Button>("upgradeButton");
+
+            _pendingDeltaLabel.style.visibility = Visibility.Hidden;
+            _pendingDeltaLabel.text = string.Empty;
         }
     }
 }

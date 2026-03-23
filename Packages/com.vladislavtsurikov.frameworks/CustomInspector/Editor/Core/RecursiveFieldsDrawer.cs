@@ -4,7 +4,7 @@ namespace VladislavTsurikov.CustomInspector.Editor.Core
 {
     public abstract class RecursiveFieldsDrawer
     {
-        private readonly Dictionary<object, bool> _foldoutStates = new();
+        private static readonly Dictionary<object, bool> s_foldoutStates = new();
 
         public bool IsExpanded(object value) => GetFoldoutState(value);
 
@@ -15,9 +15,9 @@ namespace VladislavTsurikov.CustomInspector.Editor.Core
                 return false;
             }
 
-            if (!_foldoutStates.TryGetValue(value, out var state))
+            if (!s_foldoutStates.TryGetValue(value, out var state))
             {
-                _foldoutStates[value] = false;
+                s_foldoutStates[value] = false;
                 return false;
             }
 
@@ -31,7 +31,7 @@ namespace VladislavTsurikov.CustomInspector.Editor.Core
                 return;
             }
 
-            _foldoutStates[value] = state;
+            s_foldoutStates[value] = state;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading;
 using AutoStrike.Input.FPSInput.Runtime;
 using Cysharp.Threading.Tasks;
 using UniRx;
+using UnityEngine;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;

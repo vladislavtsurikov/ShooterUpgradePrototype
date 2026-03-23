@@ -14,7 +14,7 @@
             </AutoStrike.MobileInputUI.MobileInputUI.Runtime.MobileMoveStickView>
             <AutoStrike.MobileInputUI.MobileInputUI.Runtime.MobileFireButtonView name="mobile-fire-anchor" class="mobile-fire-anchor" style="right: 12%; bottom: 22%;">
                 <ui:VisualElement name="mobile-fire-button-shadow" class="mobile-fire-button-shadow">
-                    <ui:Button name="mobile-fire-button" class="mobile-fire-button">
+                    <ui:VisualElement name="mobile-fire-button" class="mobile-fire-button">
                         <ui:VisualElement name="mobile-fire-button-face" class="mobile-fire-button-face">
                             <ui:VisualElement name="mobile-fire-reticle" class="mobile-fire-reticle">
                                 <ui:VisualElement class="mobile-fire-reticle-ring" />
@@ -25,7 +25,7 @@
                                 <ui:VisualElement class="mobile-fire-reticle-dot" />
                             </ui:VisualElement>
                         </ui:VisualElement>
-                    </ui:Button>
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </AutoStrike.MobileInputUI.MobileInputUI.Runtime.MobileFireButtonView>
         </ui:VisualElement>

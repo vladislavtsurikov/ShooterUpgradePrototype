@@ -6,7 +6,7 @@
     bottom: 0;
     align-items: center;
     justify-content: center;
-    background-color: rgba(7, 12, 18, 0.46);
+    background-color: rgba(7, 12, 18, 0.75);
     flex-grow: 1;
 }
 
@@ -27,8 +27,8 @@
 }
 
 .upgrade-header {
-    min-height: 86px;
-    padding: 0 20px 0 28px;
+    min-height: 78px;
+    padding: 0 12px 0 18px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -40,9 +40,10 @@
 .upgrade-title {
     flex-grow: 1;
     flex-shrink: 1;
+    flex-basis: 0;
     min-width: 0;
     color: rgb(205, 216, 230);
-    font-size: 34px;
+    font-size: 28px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     white-space: nowrap;
@@ -52,10 +53,10 @@
 
 .upgrade-close-button {
     flex-shrink: 0;
-    width: 72px;
-    height: 58px;
+    width: 52px;
+    height: 48px;
     color: rgb(234, 237, 240);
-    font-size: 28px;
+    font-size: 22px;
     -unity-font-style: bold;
     background-color: rgba(55, 61, 71, 0.96);
 }
@@ -103,45 +104,4 @@
 
 .upgrade-apply-button:disabled {
     opacity: 0.45;
-}
-
-@media (max-width: 520px) {
-    .upgrade-header {
-        min-height: 72px;
-        padding: 0 14px 0 18px;
-    }
-
-    .upgrade-title {
-        font-size: 22px;
-        -unity-text-align: middle-left;
-    }
-
-    .upgrade-close-button {
-        width: 58px;
-        height: 52px;
-        font-size: 24px;
-    }
-
-    .upgrade-points-panel {
-        margin-top: 18px;
-        margin-right: 18px;
-        margin-left: 18px;
-        min-height: 56px;
-    }
-
-    .upgrade-points-label {
-        font-size: 22px;
-    }
-
-    .upgrade-rows-container {
-        margin-right: 18px;
-        margin-left: 18px;
-        padding: 6px 14px;
-    }
-
-    .upgrade-apply-button {
-        margin-top: 22px;
-        height: 68px;
-        font-size: 26px;
-    }
 }

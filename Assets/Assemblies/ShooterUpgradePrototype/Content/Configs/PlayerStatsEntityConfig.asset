@@ -24,8 +24,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _stats
       Entry: 7
-      Data: 0|Stats.EntityDataActionIntegration.StatsEntityState,
-        VladislavTsurikov.Stats
+      Data: 0|Stats.EntityDataActionIntegration.StatsEntityState, VladislavTsurikov.Stats
     - Name: _collection
       Entry: 10
       Data: 0

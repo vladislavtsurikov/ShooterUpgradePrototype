@@ -27,7 +27,8 @@ namespace VladislavTsurikov.CustomInspector.Editor.IMGUI
             foldoutState = EditorGUI.Foldout(
                 foldoutRect,
                 foldoutState,
-                ObjectNames.NicifyVariableName(fieldInfo.Name));
+                ObjectNames.NicifyVariableName(fieldInfo.Name),
+                true);
 
             SetFoldoutState(value, foldoutState);
 

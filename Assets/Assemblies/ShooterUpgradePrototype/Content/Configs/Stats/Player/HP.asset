@@ -149,9 +149,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: _save
-      Entry: 5
-      Data: false
     - Name: _order
       Entry: 3
       Data: 0

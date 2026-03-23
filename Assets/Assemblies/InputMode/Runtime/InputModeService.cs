@@ -10,6 +10,8 @@ namespace AutoStrike.Input.InputMode.Runtime
         private readonly ReactiveProperty<InputSource> _currentInputSource;
         private InputDevice _lastUsedDevice;
 
+        public IReadOnlyReactiveProperty<InputSource> CurrentInputSource => _currentInputSource;
+
         public InputModeService()
         {
             _currentInputSource = new ReactiveProperty<InputSource>(InputSource.KeyboardMouse);
@@ -18,8 +20,6 @@ namespace AutoStrike.Input.InputMode.Runtime
 
             RefreshCurrentSource();
         }
-
-        public IReadOnlyReactiveProperty<InputSource> CurrentInputSource => _currentInputSource;
 
         public void ReportDevice(InputDevice device)
         {

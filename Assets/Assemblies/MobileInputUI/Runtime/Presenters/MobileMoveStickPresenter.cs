@@ -41,6 +41,8 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
                         ? Vector2.zero
                         : knobOffset / pointerData.Radius;
 
+                    direction.y = -direction.y;
+
                     view.SetKnobOffset(knobOffset);
                     _mobileVirtualInputService.SetMove(direction, true);
                     _inputModeService.ReportTouchInput();

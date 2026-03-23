@@ -6,8 +6,10 @@
             <ui:VisualElement class="upgrade-row-track">
                 <ui:VisualElement name="levelSegmentsContainer" class="upgrade-row-segments" />
             </ui:VisualElement>
-            <ui:Label name="pendingDeltaLabel" class="upgrade-row-pending" text="+ 0" />
-            <ui:Button name="upgradeButton" class="upgrade-row-button" text="+" />
+            <ui:VisualElement class="upgrade-row-actions">
+                <ui:Label name="pendingDeltaLabel" class="upgrade-row-pending" text="+ 0" />
+                <ui:Button name="upgradeButton" class="upgrade-row-button" text="+" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </game:UpgradeStatRowView>
 </ui:UXML>

@@ -16,16 +16,18 @@
     align-items: center;
     flex-grow: 1;
     width: 100%;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .upgrade-row-name {
-    flex-grow: 1;
+    flex-grow: 0;
     flex-shrink: 1;
-    flex-basis: 0;
-    min-width: 120px;
-    max-width: 220px;
+    flex-basis: 160px;
+    min-width: 0;
+    max-width: 200px;
     width: auto;
-    margin-right: 18px;
+    margin-right: 14px;
     color: rgb(240, 242, 246);
     font-size: 27px;
     -unity-font-style: bold;
@@ -35,33 +37,45 @@
 }
 
 .upgrade-row-track {
-    flex-grow: 3;
+    flex-grow: 2;
     flex-shrink: 1;
-    flex-basis: 0;
-    min-width: 140px;
+    flex-basis: 180px;
+    min-width: 0;
     width: auto;
-    margin-right: 24px;
+    margin-right: 12px;
+    overflow: hidden;
+}
+
+.upgrade-row-actions {
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 132px;
+    min-width: 132px;
 }
 
 .upgrade-row-segments {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 0;
+    min-width: 0;
     width: auto;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    overflow: hidden;
 }
 
 .level-segment {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 0;
-    min-width: 18px;
-    max-width: 55px;
+    min-width: 0;
+    max-width: 48px;
     width: auto;
     height: 30px;
-    margin-right: 2px;
+    margin-right: 4px;
     border-radius: 2px;
     background-color: rgba(35, 40, 49, 0.96);
     border-top-width: 1px;
@@ -80,8 +94,8 @@
 
 .upgrade-row-pending {
     flex-shrink: 0;
-    width: 76px;
-    margin-right: 26px;
+    width: 64px;
+    margin-right: 8px;
     color: rgb(190, 222, 140);
     font-size: 27px;
     -unity-font-style: bold;
@@ -91,11 +105,13 @@
 
 .upgrade-row-button {
     flex-shrink: 0;
-    min-width: 72px;
-    width: 104px;
-    height: 58px;
+    min-width: 0;
+    width: 56px;
+    height: 48px;
+    padding-left: 0;
+    padding-right: 0;
     color: rgb(243, 246, 248);
-    font-size: 33px;
+    font-size: 26px;
     -unity-font-style: bold;
     border-radius: 8px;
     border-top-width: 2px;
@@ -113,33 +129,79 @@
     opacity: 0.35;
 }
 
+@media (max-width: 760px) {
+    .upgrade-row-content {
+        min-height: 80px;
+    }
+
+    .upgrade-row-name {
+        flex-basis: 136px;
+        max-width: 160px;
+        margin-right: 10px;
+        font-size: 24px;
+    }
+
+    .upgrade-row-track {
+        flex-basis: 160px;
+        margin-right: 10px;
+    }
+
+    .upgrade-row-actions {
+        width: 110px;
+        min-width: 110px;
+    }
+
+    .level-segment {
+        max-width: 28px;
+        height: 28px;
+        margin-right: 2px;
+    }
+
+    .upgrade-row-pending {
+        width: 52px;
+        margin-right: 6px;
+        font-size: 24px;
+    }
+
+    .upgrade-row-button {
+        width: 52px;
+        height: 44px;
+        font-size: 24px;
+    }
+}
+
 @media (max-width: 520px) {
     .upgrade-row-name {
-        min-width: 96px;
-        margin-right: 12px;
+        flex-basis: 108px;
+        max-width: 128px;
+        margin-right: 8px;
         font-size: 22px;
     }
 
     .upgrade-row-track {
-        margin-right: 14px;
-        min-width: 120px;
+        margin-right: 8px;
+        flex-basis: 120px;
+    }
+
+    .upgrade-row-actions {
+        width: 92px;
+        min-width: 92px;
     }
 
     .level-segment {
-        min-width: 14px;
-        height: 26px;
+        max-width: 22px;
+        height: 24px;
     }
 
     .upgrade-row-pending {
-        width: 64px;
-        margin-right: 14px;
+        width: 44px;
+        margin-right: 4px;
         font-size: 22px;
     }
 
     .upgrade-row-button {
-        min-width: 64px;
-        width: 84px;
-        height: 52px;
-        font-size: 30px;
+        width: 44px;
+        height: 40px;
+        font-size: 22px;
     }
 }

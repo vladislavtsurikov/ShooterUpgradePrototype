@@ -17,7 +17,6 @@
     padding-top: 18px;
     padding-right: 18px;
     padding-left: 18px;
-    column-gap: 14px;
 }
 
 .hud-health {
@@ -26,6 +25,7 @@
     flex-basis: 0;
     min-width: 220px;
     max-width: 460px;
+    margin-right: 20px;
 }
 
 .hud-health-panel {
@@ -248,11 +248,11 @@
         padding-top: 14px;
         padding-right: 14px;
         padding-left: 14px;
-        column-gap: 10px;
     }
 
     .hud-health {
         min-width: 190px;
+        margin-right: 10px;
     }
 
     .hud-health-title {

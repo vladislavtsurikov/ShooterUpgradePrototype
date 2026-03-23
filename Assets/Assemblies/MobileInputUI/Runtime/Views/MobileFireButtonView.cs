@@ -13,14 +13,14 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 
         private readonly Subject<bool> _pressedChanged = new();
 
-        private Button _button;
+        private VisualElement _button;
         private int _activePointerId = -1;
 
         public IObservable<bool> OnPressedChanged => _pressedChanged;
 
         protected override void InitializeElements()
         {
-            _button = this.Q<Button>("mobile-fire-button");
+            _button = this.Q<VisualElement>("mobile-fire-button");
             if (_button == null)
             {
                 return;
@@ -78,7 +78,9 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 
         private void ReleaseFireButton()
         {
-            if (_button != null && _activePointerId != -1 && PointerCaptureHelper.HasPointerCapture(_button, _activePointerId))
+            if (_button != null
+                && _activePointerId != -1
+                && PointerCaptureHelper.HasPointerCapture(_button, _activePointerId))
             {
                 PointerCaptureHelper.ReleasePointer(_button, _activePointerId);
             }
