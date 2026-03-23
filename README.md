@@ -261,18 +261,9 @@ UI в проекте построен на связке **UISystem** + **UI Tool
   - `UpgradeStatRowView` — строка стата: название, сегменты уровня, дельта и кнопка `+`.
 - **LayoutLoader**: адресуемая загрузка UXML/USS по адресу (например, `BattleHUD`, `UpgradeWindow`).
 
-Ключевая идея: **Presenter — “умный”, View — “тонкий”**. Presenter держит бизнес-состояние (черновые очки, максимальные уровни, доступность апгрейда), а View занимается только отображением и событиями.
-
 ### 6.2 Масштабирование/адаптивность UI Toolkit
 
-В отличие от `Unity UI Canvas` (где часто решают через `HorizontalLayoutGroup`/`ContentSizeFitter`), в UI Toolkit адаптивность делается через **flexbox** в USS:
-
-- **Flex-сжатие и перераспределение ширины**: `flex-grow / flex-shrink / flex-basis`, `min-width/max-width`.
-- **Правильное сжатие текста**: важно задавать `min-width: 0` у flex-элементов с текстом, иначе лейбл будет “выталкивать” соседей (например, кнопку закрытия).
-- **Узкие экраны**: используются `@media`-правила в USS, чтобы уменьшать шрифты/высоты/минимальные размеры на малой ширине.
-- **Safe Area (notch / вырез камеры)**: для HUD добавлено применение `Screen.safeArea` в рантайме (через `RuntimePanelUtils.ScreenToPanel`) и увеличение `padding` у верхней строки, чтобы интерфейс не залезал под вырез.
-
-Скриншоты адаптивности (разные варианты узких экранов):
+Скриншоты адаптивности (разные варианты экранов):
 
 <p align="center">
   <a href="Docs/Images/upgrade-window-responsive-wide.png"><img src="Docs/Images/upgrade-window-responsive-wide.png" alt="UpgradeWindow responsive (wide)" width="230"></a>
