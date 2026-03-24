@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using UnityEngine;
-using VladislavTsurikov.UISystem.Runtime.UnityUIIntegration.Utility;
+using VladislavTsurikov.UISystem.Runtime.Core;
 using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
@@ -21,7 +21,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 
         protected T ResolveWithId<T>(string bindingId, Type handlerType, int index) where T : MonoBehaviour
         {
-            var id = UIBindingId.FromTypeAndIndex(handlerType, bindingId, index);
+            string id = UIBindingId.FromTypeAndIndex(handlerType, bindingId, index);
             return _container.ResolveId<T>(id);
         }
 

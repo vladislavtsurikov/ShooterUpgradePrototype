@@ -3,11 +3,12 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
+using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
 namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
-    public sealed class OpenUpgradeHUDButtonView : Button, IBindableUIElement
+    public sealed class OpenUpgradeHUDButtonView : Button, IBindableUI
     {
         public new class UxmlFactory : UxmlFactory<OpenUpgradeHUDButtonView, UxmlTraits>
         {
@@ -33,7 +34,6 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
         }
 
         public string BindingId => nameof(OpenUpgradeHUDButtonView);
-        public VisualElement Element => this;
         public IObservable<Unit> OnClicked => this.OnClickAsObservable();
     }
 }

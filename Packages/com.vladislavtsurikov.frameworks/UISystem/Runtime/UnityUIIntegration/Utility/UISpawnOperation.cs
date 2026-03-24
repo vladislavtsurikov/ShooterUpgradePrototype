@@ -30,7 +30,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
             return this;
         }
 
-        public async UniTask<GameObject> Execute(PrefabResourceLoader prefabLoader, UIComponentBinder componentBinder,
+        public async UniTask<GameObject> Execute(PrefabAssetLoader prefabLoader, UIComponentBinder componentBinder,
             CancellationToken cancellationToken)
         {
             GameObject instance = await prefabLoader.LoadAndSpawnPrefab(_parentTransform, cancellationToken);

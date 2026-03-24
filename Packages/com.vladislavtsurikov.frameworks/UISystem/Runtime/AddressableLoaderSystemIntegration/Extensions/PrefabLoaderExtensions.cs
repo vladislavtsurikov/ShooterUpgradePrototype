@@ -7,7 +7,7 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
 {
     public static class PrefabLoaderExtensions
     {
-        public static async UniTask<GameObject> LoadAndSpawnPrefab(this PrefabResourceLoader prefabLoader,
+        public static async UniTask<GameObject> LoadAndSpawnPrefab(this PrefabAssetLoader prefabLoader,
             Transform parent, CancellationToken cancellationToken)
         {
             GameObject prefab = await prefabLoader.LoadPrefabIfNotLoaded(cancellationToken);

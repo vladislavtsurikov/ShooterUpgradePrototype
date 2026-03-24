@@ -1,6 +1,7 @@
 #if UI_SYSTEM_ZENJECT
 using System;
 using UnityEngine.UIElements;
+using VladislavTsurikov.UISystem.Runtime.Core;
 using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
@@ -23,7 +24,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         {
             Type handlerType = Parent?.GetType() ?? GetType();
             string instanceKey = Parent?.InstanceKey;
-            string id = UIToolkitBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
+            string id = UIBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
 
             try
             {

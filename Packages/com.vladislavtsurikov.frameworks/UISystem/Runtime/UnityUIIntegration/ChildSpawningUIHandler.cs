@@ -11,14 +11,14 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
     public abstract class ChildSpawningUIHandler : ComponentBindingUIHandler
     {
-        private readonly List<(GameObject instance, PrefabResourceLoader loader)> _spawnedChildren = new();
+        private readonly List<(GameObject instance, PrefabAssetLoader loader)> _spawnedChildren = new();
 
         protected ChildSpawningUIHandler(DiContainer container)
             : base(container)
         {
         }
 
-        protected async UniTask<GameObject> SpawnChildPrefab(PrefabResourceLoader prefabLoader, Transform parent,
+        protected async UniTask<GameObject> SpawnChildPrefab(PrefabAssetLoader prefabLoader, Transform parent,
             bool enable, CancellationToken cancellationToken)
         {
             GameObject instance = await this.Spawn()
@@ -36,7 +36,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
         {
             if (unload)
             {
-                foreach ((GameObject _, PrefabResourceLoader loader) in _spawnedChildren)
+                foreach ((GameObject _, PrefabAssetLoader loader) in _spawnedChildren)
                 {
                     await loader.Unload(cancellationToken);
                 }

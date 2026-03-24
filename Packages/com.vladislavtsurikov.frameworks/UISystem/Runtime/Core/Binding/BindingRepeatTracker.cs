@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 
-namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
+namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    internal sealed class UIToolkitBindingRepeatTracker
+    internal sealed class BindingRepeatTracker
     {
         private readonly Dictionary<(Type, string), int> _counters = new();
 
         public int GetAndIncrement(Type type, string bindingId)
         {
             (Type, string) key = (type, bindingId ?? string.Empty);
+
             if (!_counters.TryGetValue(key, out int index))
             {
                 _counters[key] = 1;

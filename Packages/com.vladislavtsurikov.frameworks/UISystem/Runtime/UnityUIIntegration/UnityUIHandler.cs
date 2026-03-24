@@ -13,10 +13,10 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
     public abstract class UnityUIHandler : ChildSpawningUIHandler
     {
-        protected UnityUIHandler(DiContainer container, PrefabResourceLoader loader) : base(container) =>
+        protected UnityUIHandler(DiContainer container, PrefabAssetLoader loader) : base(container) =>
             Loader = loader;
 
-        public PrefabResourceLoader Loader { get; }
+        public PrefabAssetLoader Loader { get; }
 
         public GameObject SpawnedParentPrefab { get; private set; }
 
