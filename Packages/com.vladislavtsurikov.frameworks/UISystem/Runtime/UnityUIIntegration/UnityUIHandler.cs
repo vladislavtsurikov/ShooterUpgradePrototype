@@ -1,24 +1,36 @@
 ﻿#if UI_SYSTEM_UNIRX
-#if UI_SYSTEM_ZENJECT
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration;
-using Zenject;
-using Object = UnityEngine.Object;
 
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
     public abstract class UnityUIHandler : ChildSpawningUIHandler
     {
-        protected UnityUIHandler(DiContainer container, PrefabAssetLoader loader) : base(container) =>
+        private readonly IUnityUISpawnContextResolver _spawnContextResolver;
+        private readonly UnityUIRootController _rootController;
+
+        protected UnityUIHandler(PrefabAssetLoader loader)
+            : this(loader, DefaultUnityUISpawnContextResolver.Instance)
+        {
+        }
+
+        protected UnityUIHandler(
+            PrefabAssetLoader loader,
+            IUnityUISpawnContextResolver spawnContextResolver)
+            : base()
+        {
             Loader = loader;
+            _rootController = new UnityUIRootController();
+            _spawnContextResolver = spawnContextResolver ?? DefaultUnityUISpawnContextResolver.Instance;
+        }
 
         public PrefabAssetLoader Loader { get; }
 
-        public GameObject SpawnedParentPrefab { get; private set; }
+        public GameObject SpawnedParentPrefab => _rootController.Root;
 
         public event Action<GameObject, UnityUIHandler> OnAnyChildAdded;
 
@@ -43,48 +55,47 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 
         protected virtual string GetParentName() => null;
 
+        internal Transform ResolveSpawnParentTransform() => GetSpawnParentTransform();
+
+        internal string ResolveSpawnParentName() => GetParentName();
+
         protected override UniTask OnShowUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            SpawnedParentPrefab.SetActive(true);
+            _rootController.Show();
             return UniTask.CompletedTask;
         }
 
         protected override UniTask OnHideUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            SpawnedParentPrefab.SetActive(false);
+            _rootController.Hide();
             return UniTask.CompletedTask;
         }
 
         protected override async UniTask DestroyChildSpawningUIHandler(bool unload, CancellationToken cancellationToken)
         {
-            if (SpawnedParentPrefab != null)
-            {
-                Object.Destroy(SpawnedParentPrefab);
-                SpawnedParentPrefab = null;
-            }
-
-            if (unload)
-            {
-                await Loader.Unload(cancellationToken);
-            }
+            await _rootController.DestroyAsync(unload, Loader, cancellationToken);
         }
 
-        protected override void DisposeChildSpawningUIHandler() => SpawnedParentPrefab = null;
+        protected override void DisposeChildSpawningUIHandler() => _rootController.Dispose();
 
         private async UniTask<GameObject> SpawnMainPrefab(bool enable, CancellationToken cancellationToken)
         {
             if (SpawnedParentPrefab == null)
             {
-                SpawnedParentPrefab = await this.Spawn()
-                    .WithParent(GetSpawnParentTransform())
-                    .Enable(enable)
-                    .WithName(GetParentName())
-                    .Execute(Loader, ComponentBinder, cancellationToken);
+                (Transform parentTransform, string parentName) = _spawnContextResolver.Resolve(this);
+
+                GameObject spawnedRoot = await _rootController.EnsureSpawnedAsync(
+                    Loader,
+                    parentTransform,
+                    parentName,
+                    enable,
+                    ComponentBinder,
+                    cancellationToken);
 
                 if (Parent != null)
                 {
                     var parentUnityUIHandler = (UnityUIHandler)Parent;
-                    parentUnityUIHandler.OnAnyChildAdded?.Invoke(SpawnedParentPrefab, this);
+                    parentUnityUIHandler.OnAnyChildAdded?.Invoke(spawnedRoot, this);
                 }
             }
 
@@ -92,5 +103,4 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
         }
     }
 }
-#endif
 #endif

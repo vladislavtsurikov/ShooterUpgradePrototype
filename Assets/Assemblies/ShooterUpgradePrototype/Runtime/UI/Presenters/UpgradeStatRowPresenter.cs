@@ -35,9 +35,8 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
         protected override string SpawnedRootName => $"ShooterUpgradePrototypeUpgradeStatRow:{InstanceKey}";
 
         public UpgradeStatRowPresenter(
-            DiContainer container,
             UpgradeStatRowLayoutLoader loader,
-            PlayerStatsService playerStatsService) : base(container, loader)
+            PlayerStatsService playerStatsService) : base(loader)
         {
             _playerStatsService =  playerStatsService;
         }

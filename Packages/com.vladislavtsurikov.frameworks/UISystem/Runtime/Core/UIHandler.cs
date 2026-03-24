@@ -21,6 +21,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public UIHandler Parent { get; private set; }
         public string InstanceKey { get; private set; }
         internal UIHandlerManager UIHandlerManager { get; private set; }
+        protected IUIDependencyResolver DependencyResolver => UIDependencyResolverUtility.GetRequiredResolver();
 
         public bool IsActive
         {

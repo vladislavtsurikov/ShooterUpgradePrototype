@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
-using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
     public abstract class UIBindingScope
     {
-        private readonly DiContainer _container;
+        private readonly IUIDependencyResolver _resolver;
         private readonly List<BoundBindingRecord> _records = new();
         private readonly BindingRepeatTracker _repeatTracker = new();
         private readonly UIHandler _uiHandler;
 
-        protected UIBindingScope(DiContainer container, UIHandler handler)
+        protected UIBindingScope(UIHandler handler)
         {
-            _container = container;
+            _resolver = UIDependencyResolverUtility.GetRequiredResolver();
             _uiHandler = handler;
         }
 
@@ -46,10 +45,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                     index,
                     getInstanceKey?.Invoke(node));
 
-                _container.Bind(type)
-                    .WithId(finalId)
-                    .FromInstance(node)
-                    .AsCached();
+                _resolver.BindInstance(type, finalId, node);
 
                 _records.Add(new BoundBindingRecord(type, finalId));
             }
@@ -59,7 +55,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         {
             foreach (BoundBindingRecord record in _records)
             {
-                _container.UnbindId(record.Type, record.Id);
+                _resolver.UnbindId(record.Type, record.Id);
             }
 
             _records.Clear();

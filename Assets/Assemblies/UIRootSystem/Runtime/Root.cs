@@ -13,8 +13,8 @@ namespace UIRootSystem.Runtime
     [SceneFilter("Battle")]
     public sealed class Root : UIToolkitUIHandler
     {
-        public Root(DiContainer container, RootLoader loader)
-            : base(container, loader)
+        public Root(RootLoader loader)
+            : base(loader)
         {
         }
 

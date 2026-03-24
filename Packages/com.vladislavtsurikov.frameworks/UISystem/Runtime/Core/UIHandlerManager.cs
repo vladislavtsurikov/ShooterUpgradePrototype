@@ -11,28 +11,59 @@ using VladislavTsurikov.ReflectionUtility.Runtime;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public abstract class UIHandlerManager
+    public class UIHandlerManager
     {
         private readonly Dictionary<Node, UIHandler> _activeUIHandlers = new();
         private readonly List<Func<FilterAttribute, bool>> _filters = new();
 
         internal static UniTask CurrentAddFilterTask { get; private set; }
 
-        protected virtual UIHandler CreateUIHandler(Type type) => (UIHandler)Activator.CreateInstance(type);
+        protected virtual UIHandler CreateUIHandler(Type type)
+        {
+            if (UIDependencyResolverUtility.TryInstantiate(type, out object instance) && instance is UIHandler handler)
+            {
+                return handler;
+            }
+
+            return (UIHandler)Activator.CreateInstance(type);
+        }
 
         protected virtual void RegisterInContainer(UIHandler handler)
         {
+            IUIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            if (resolver == null)
+            {
+                return;
+            }
+
+            string bindingId = UIHandlerBindingId.FromHandler(handler);
+            resolver.BindInstance(handler.GetType(), bindingId, handler);
         }
 
         protected virtual bool TryResolveInContainer<THandler>(string bindingId, out THandler handler)
             where THandler : UIHandler
         {
+            if (UIDependencyResolverUtility.TryResolveId(typeof(THandler), bindingId, out object instance) &&
+                instance is THandler typedHandler)
+            {
+                handler = typedHandler;
+                return true;
+            }
+
             handler = null;
             return false;
         }
 
         protected virtual void BeforeRemoveHandler(UIHandler handler)
         {
+            IUIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            if (resolver == null)
+            {
+                return;
+            }
+
+            string bindingId = UIHandlerBindingId.FromHandler(handler);
+            resolver.UnbindId(handler.GetType(), bindingId);
         }
 
         public async UniTask AddFilter(Func<FilterAttribute, bool> filter,

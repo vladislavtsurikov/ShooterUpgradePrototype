@@ -13,14 +13,15 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(BattleHUDRootPresenter))]
-    public sealed class PlayerHealthHUDPresenter : ParentBoundUIToolkitHandler
+    public sealed class PlayerHealthHUDPresenter : UIToolkitUIHandler
     {
         private const string HealthStatId = "HP";
 
         private readonly PlayerStatsService _playerStatsService;
         private PlayerHealthHUDView _view;
 
-        public PlayerHealthHUDPresenter(DiContainer container, PlayerStatsService playerStatsService) : base(container)
+        public PlayerHealthHUDPresenter(
+            PlayerStatsService playerStatsService) : base(ParentUIToolkitBindingContextResolver.Instance)
         {
             _playerStatsService = playerStatsService;
         }

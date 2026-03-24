@@ -15,15 +15,15 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(MobileControlsRootPresenter))]
-    public sealed class MobileMoveStickPresenter : ParentBoundUIToolkitHandler
+    public sealed class MobileMoveStickPresenter : UIToolkitUIHandler
     {
         private readonly MobileVirtualInputService _mobileVirtualInputService;
         private readonly InputModeService _inputModeService;
 
         public MobileMoveStickPresenter(
-            DiContainer container,
             MobileVirtualInputService mobileVirtualInputService,
-            InputModeService inputModeService) : base(container)
+            InputModeService inputModeService)
+            : base(ParentUIToolkitBindingContextResolver.Instance)
         {
             _mobileVirtualInputService = mobileVirtualInputService;
             _inputModeService = inputModeService;

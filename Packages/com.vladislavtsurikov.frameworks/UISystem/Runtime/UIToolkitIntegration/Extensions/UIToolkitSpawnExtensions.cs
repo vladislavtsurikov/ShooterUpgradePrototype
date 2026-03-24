@@ -3,7 +3,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
     public static class UIToolkitSpawnExtensions
     {
-        public static UIToolkitSpawnOperation Spawn(this ChildSpawningUIToolkitHandler handler) => new();
+        public static UIToolkitSpawnOperation Spawn(this UIToolkitUIHandler handler) => new();
     }
 }
 #endif

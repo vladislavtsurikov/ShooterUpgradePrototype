@@ -17,8 +17,8 @@ namespace ShooterUpgradePrototype.Runtime
     [UIParent(typeof(Root), RootSlots.HUD)]
     public sealed class BattleHUDRootPresenter : UIToolkitUIHandler
     {
-        public BattleHUDRootPresenter(DiContainer container, BattleHUDLayoutLoader loader)
-            : base(container, loader)
+        public BattleHUDRootPresenter(BattleHUDLayoutLoader loader)
+            : base(loader)
         {
         }
 

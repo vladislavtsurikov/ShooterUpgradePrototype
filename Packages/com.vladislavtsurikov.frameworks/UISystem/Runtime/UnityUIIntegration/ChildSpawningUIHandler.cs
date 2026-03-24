@@ -1,21 +1,19 @@
 ﻿#if UI_SYSTEM_ADDRESSABLE_LOADER_SYSTEM
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration;
-using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
     public abstract class ChildSpawningUIHandler : ComponentBindingUIHandler
     {
-        private readonly List<(GameObject instance, PrefabAssetLoader loader)> _spawnedChildren = new();
+        private readonly UnityUISpawnedChildRegistry _spawnedChildren;
 
-        protected ChildSpawningUIHandler(DiContainer container)
-            : base(container)
+        protected ChildSpawningUIHandler()
         {
+            _spawnedChildren = new UnityUISpawnedChildRegistry();
         }
 
         protected async UniTask<GameObject> SpawnChildPrefab(PrefabAssetLoader prefabLoader, Transform parent,
@@ -26,7 +24,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 .Enable(enable)
                 .Execute(prefabLoader, ComponentBinder, cancellationToken);
 
-            _spawnedChildren.Add((instance, prefabLoader));
+            _spawnedChildren.Register(instance, prefabLoader);
 
             return instance;
         }
@@ -34,15 +32,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
         protected override async UniTask DestroyUIHandler(bool unload, CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
-            if (unload)
-            {
-                foreach ((GameObject _, PrefabAssetLoader loader) in _spawnedChildren)
-                {
-                    await loader.Unload(cancellationToken);
-                }
-            }
-
-            _spawnedChildren.Clear();
+            await _spawnedChildren.DestroyAsync(unload, cancellationToken);
 
             await DestroyChildSpawningUIHandler(unload, cancellationToken);
         }
@@ -56,7 +46,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 
         protected override void DisposeComponentBindingUIHandler()
         {
-            _spawnedChildren.Clear();
+            _spawnedChildren.Dispose();
 
             DisposeChildSpawningUIHandler();
         }

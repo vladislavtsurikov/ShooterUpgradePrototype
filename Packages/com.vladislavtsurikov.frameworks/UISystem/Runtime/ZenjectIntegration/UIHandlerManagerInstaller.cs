@@ -8,7 +8,7 @@ namespace VladislavTsurikov.UISystem.Runtime
     {
         public override void InstallBindings()
         {
-            var manager = new ZenjectUIHandlerManager(Container);
+            var manager = new UIHandlerManager();
             Container.Bind<UIHandlerManager>().FromInstance(manager).AsSingle();
         }
     }

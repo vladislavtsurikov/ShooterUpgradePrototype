@@ -14,12 +14,12 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(BattleHUDRootPresenter))]
-    public sealed class OpenUpgradeHUDButtonPresenter : ParentBoundUIToolkitHandler
+    public sealed class OpenUpgradeHUDButtonPresenter : UIToolkitUIHandler
     {
         private OpenUpgradeHUDButtonView _view;
 
-        public OpenUpgradeHUDButtonPresenter(DiContainer container)
-            : base(container)
+        public OpenUpgradeHUDButtonPresenter()
+            : base(ParentUIToolkitBindingContextResolver.Instance)
         {
         }
 

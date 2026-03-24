@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 using VladislavTsurikov.UISystem.Runtime.Core;
-using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
     public sealed class UIToolkitElementBinder : UIBindingScope
     {
-        public UIToolkitElementBinder(DiContainer container, UIHandler handler)
-            : base(container, handler)
+        public UIToolkitElementBinder(UIHandler handler)
+            : base(handler)
         {
         }
 

@@ -1,13 +1,11 @@
 using UnityEngine;
 using VladislavTsurikov.UISystem.Runtime.Core;
-using Zenject;
-
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
     public class UIComponentBinder : UIBindingScope
     {
-        public UIComponentBinder(DiContainer container, UIHandler handler)
-            : base(container, handler)
+        public UIComponentBinder(UIHandler handler)
+            : base(handler)
         {
         }
 

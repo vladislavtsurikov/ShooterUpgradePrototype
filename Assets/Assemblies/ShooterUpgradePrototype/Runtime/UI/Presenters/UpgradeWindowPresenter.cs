@@ -29,10 +29,9 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
         private UpgradeWindowView _view;
 
         public UpgradeWindowPresenter(
-            DiContainer container,
             UpgradeWindowLayoutLoader loader,
             PlayerInputActions playerInputActions,
-            PlayerStatsService playerStatsService) : base(container, loader)
+            PlayerStatsService playerStatsService) : base(loader)
         {
             _gameplayInputBlocker = new GameplayInputBlocker(playerInputActions);
             _playerStatsService = playerStatsService;

@@ -14,13 +14,13 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(MobileControlsRootPresenter))]
-    public sealed class MobileFireButtonPresenter : ParentBoundUIToolkitHandler
+    public sealed class MobileFireButtonPresenter : UIToolkitUIHandler
     {
         private readonly MobileVirtualInputService _mobileVirtualInputService;
 
         public MobileFireButtonPresenter(
-            DiContainer container,
-            MobileVirtualInputService mobileVirtualInputService) : base(container)
+            MobileVirtualInputService mobileVirtualInputService)
+            : base(ParentUIToolkitBindingContextResolver.Instance)
         {
             _mobileVirtualInputService = mobileVirtualInputService;
         }

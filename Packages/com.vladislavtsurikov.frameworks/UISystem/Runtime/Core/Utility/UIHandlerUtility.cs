@@ -1,6 +1,5 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
-using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
@@ -17,15 +16,13 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public static T FindHandler<T>() where T : UIHandler => FindHandler<T>(null);
         public static T FindHandler<T>(Type parentType, string instanceKey) where T : UIHandler
         {
-            try
+            string id = UIHandlerBindingId.FromParentType(parentType, instanceKey);
+            if (UIDependencyResolverUtility.TryResolveId(typeof(T), id, out object instance) && instance is T handler)
             {
-                string id = UIHandlerBindingId.FromParentType(parentType, instanceKey);
-                return ProjectContext.Instance.Container.ResolveId<T>(id);
+                return handler;
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static T FindHandler<T>(Type parentType) where T : UIHandler

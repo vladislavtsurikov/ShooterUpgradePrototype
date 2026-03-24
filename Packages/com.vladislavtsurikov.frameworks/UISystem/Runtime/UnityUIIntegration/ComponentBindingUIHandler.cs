@@ -1,29 +1,23 @@
 using System;
 using UnityEngine;
 using VladislavTsurikov.UISystem.Runtime.Core;
-using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
-    public abstract class ComponentBindingUIHandler : DiContainerUIHandler
+    public abstract class ComponentBindingUIHandler : UIHandler
     {
-        protected readonly UIComponentBinder ComponentBinder;
+        private readonly UnityUIBindingAccess _bindingAccess;
 
-        protected ComponentBindingUIHandler(DiContainer container)
-            : base(container) =>
-            ComponentBinder = new UIComponentBinder(container, this);
+        protected UIComponentBinder ComponentBinder => _bindingAccess.Binder;
+
+        protected ComponentBindingUIHandler() =>
+            _bindingAccess = new UnityUIBindingAccess(this);
 
         public T GetUIComponent<T>(string bindingId, Type handlerType, int index = 0) where T : MonoBehaviour =>
-            ResolveWithId<T>(bindingId, handlerType, index);
+            _bindingAccess.GetUIComponent<T>(bindingId, handlerType, index);
 
         public virtual T GetUIComponent<T>(string bindingId, int index = 0) where T : MonoBehaviour =>
-            ResolveWithId<T>(bindingId, GetType(), index);
-
-        protected T ResolveWithId<T>(string bindingId, Type handlerType, int index) where T : MonoBehaviour
-        {
-            string id = UIBindingId.FromTypeAndIndex(handlerType, bindingId, index);
-            return _container.ResolveId<T>(id);
-        }
+            _bindingAccess.GetUIComponent<T>(bindingId, index);
 
         protected virtual void DisposeComponentBindingUIHandler()
         {
@@ -31,7 +25,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 
         public override void DisposeUIHandler()
         {
-            ComponentBinder.Dispose();
+            _bindingAccess.Dispose();
             DisposeComponentBindingUIHandler();
         }
     }

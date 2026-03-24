@@ -1,5 +1,4 @@
 #if UI_SYSTEM_ADDRESSABLE_LOADER_SYSTEM
-#if UI_SYSTEM_ZENJECT
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -7,17 +6,57 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VladislavTsurikov.UISystem.Runtime.Core;
-using Zenject;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
-    public abstract class UIToolkitUIHandler : ChildSpawningUIToolkitHandler
+    public abstract class UIToolkitUIHandler : UIHandler
     {
-        protected UIToolkitUIHandler(DiContainer container, UIToolkitLayoutLoader loader) : base(container) =>
+        private readonly UIToolkitBindingAccess _bindingAccess;
+        private readonly IUIToolkitParentElementResolver _parentElementResolver;
+        private readonly UIToolkitRootController _rootController;
+        private readonly UIToolkitSpawnedChildRegistry _spawnedChildren;
+
+        protected UIToolkitUIHandler(UIToolkitLayoutLoader loader)
+            : this(
+                loader,
+                SelfUIToolkitBindingContextResolver.Instance,
+                DefaultUIToolkitParentElementResolver.Instance)
+        {
+        }
+
+        protected UIToolkitUIHandler(IUIToolkitBindingContextResolver bindingContextResolver)
+            : this(null, bindingContextResolver, DefaultUIToolkitParentElementResolver.Instance)
+        {
+        }
+
+        protected UIToolkitUIHandler(
+            UIToolkitLayoutLoader loader,
+            IUIToolkitBindingContextResolver bindingContextResolver)
+            : this(loader, bindingContextResolver, DefaultUIToolkitParentElementResolver.Instance)
+        {
+        }
+
+        protected UIToolkitUIHandler(
+            UIToolkitLayoutLoader loader,
+            IUIToolkitParentElementResolver parentElementResolver)
+            : this(loader, SelfUIToolkitBindingContextResolver.Instance, parentElementResolver)
+        {
+        }
+
+        protected UIToolkitUIHandler(
+            UIToolkitLayoutLoader loader,
+            IUIToolkitBindingContextResolver bindingContextResolver,
+            IUIToolkitParentElementResolver parentElementResolver)
+        {
             Loader = loader;
+            _bindingAccess = new UIToolkitBindingAccess(this, bindingContextResolver);
+            _rootController = new UIToolkitRootController();
+            _spawnedChildren = new UIToolkitSpawnedChildRegistry();
+            _parentElementResolver = parentElementResolver ?? DefaultUIToolkitParentElementResolver.Instance;
+        }
 
         public UIToolkitLayoutLoader Loader { get; }
-        public VisualElement SpawnedRoot { get; private set; }
+        public VisualElement SpawnedRoot => _rootController.Root;
 
         public event Action<VisualElement, UIToolkitUIHandler> OnAnyChildAdded;
 
@@ -25,8 +64,37 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected virtual string SpawnedRootName => null;
 
+        protected UIToolkitElementBinder ElementBinder => _bindingAccess.Binder;
+
+        public TElement GetView<TElement>(string bindingId, Type handlerType, int index = 0)
+            where TElement : VisualElement => _bindingAccess.GetView<TElement>(bindingId, handlerType, index);
+
+        public virtual TElement GetView<TElement>(string bindingId, int index = 0)
+            where TElement : VisualElement => _bindingAccess.GetView<TElement>(bindingId, index);
+
+        public virtual bool TryGetUIComponent<TElement>(string bindingId, out TElement element, int index = 0)
+            where TElement : VisualElement => _bindingAccess.TryGetUIComponent(bindingId, out element, index);
+
         protected virtual void DisposeUIToolkitUIHandler()
         {
+        }
+
+        protected async UniTask<VisualElement> SpawnChildLayout(
+            UIToolkitLayoutLoader layoutLoader,
+            VisualElement parent,
+            bool visible,
+            CancellationToken cancellationToken,
+            string rootName = null)
+        {
+            VisualElement instance = await this.Spawn()
+                .WithParent(parent)
+                .Visible(visible)
+                .WithName(rootName)
+                .Execute(layoutLoader, ElementBinder, cancellationToken);
+
+            _spawnedChildren.Register(instance, layoutLoader);
+
+            return instance;
         }
 
         protected override async UniTask BeforeShowUIHandler(CancellationToken cancellationToken,
@@ -34,52 +102,50 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected override UniTask OnShowUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            if (SpawnedRoot != null)
-            {
-                SpawnedRoot.style.display = StyleKeyword.Null;
-            }
-
+            _rootController.Show();
             return UniTask.CompletedTask;
         }
 
         protected override UniTask OnHideUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            if (SpawnedRoot != null)
-            {
-                SpawnedRoot.style.display = DisplayStyle.None;
-            }
-
+            _rootController.Hide();
             return UniTask.CompletedTask;
         }
 
-        protected override async UniTask DestroyChildSpawningUIHandler(bool unload, CancellationToken cancellationToken)
+        protected override async UniTask DestroyUIHandler(
+            bool unload,
+            CancellationToken cancellationToken,
+            CompositeDisposable disposables)
         {
-            if (SpawnedRoot != null)
+            await _spawnedChildren.DestroyAsync(unload, cancellationToken);
+
+            if (Loader != null)
             {
-                SpawnedRoot.RemoveFromHierarchy();
-                SpawnedRoot = null;
+                await _rootController.DestroyAsync(unload, Loader, cancellationToken);
             }
 
-            if (unload)
-            {
-                await Loader.Unload(cancellationToken);
-            }
+            await DestroyUIToolkitUIHandler(unload, cancellationToken);
         }
 
-        protected override void DisposeChildSpawningUIHandler()
+        protected virtual UniTask DestroyUIToolkitUIHandler(bool unload, CancellationToken cancellationToken) =>
+            UniTask.CompletedTask;
+
+        public override void DisposeUIHandler()
         {
-            SpawnedRoot = null;
+            _bindingAccess.Dispose();
+            _spawnedChildren.Dispose();
+            _rootController.Dispose();
             DisposeUIToolkitUIHandler();
         }
 
         private async UniTask SpawnLayoutIfNeeded(CancellationToken cancellationToken)
         {
-            if (SpawnedRoot != null)
+            if (Loader == null || SpawnedRoot != null)
             {
                 return;
             }
 
-            VisualElement parent = ResolveParentElement();
+            VisualElement parent = _parentElementResolver.Resolve(this);
             if (parent == null)
             {
                 Debug.LogError(
@@ -87,62 +153,34 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return;
             }
 
-            SpawnedRoot = await this.Spawn()
-                .WithParent(parent)
-                .Visible(true)
-                .WithName(SpawnedRootName)
-                .Execute(Loader, ElementBinder, cancellationToken);
+            VisualElement spawnedRoot = await _rootController.EnsureSpawnedAsync(
+                Loader,
+                parent,
+                SpawnedRootName,
+                ElementBinder,
+                cancellationToken);
 
-            if (SpawnedRoot == null)
+            if (spawnedRoot == null)
             {
                 Debug.LogError(
                     $"[UIToolkitUIHandler] Failed to spawn root layout for handler `{GetType().Name}`.");
                 return;
             }
 
-            StretchToParent(SpawnedRoot);
-
             if (Parent is UIToolkitUIHandler parentHandler)
             {
-                parentHandler.OnAnyChildAdded?.Invoke(SpawnedRoot, this);
+                parentHandler.OnAnyChildAdded?.Invoke(spawnedRoot, this);
             }
         }
 
-        private VisualElement ResolveParentElement()
+        internal string ResolveParentContainerName()
         {
-            if (Parent == null)
-            {
-                return GetTopLevelRoot();
-            }
-
-            if (Parent is not UIToolkitUIHandler parentHandler)
-            {
-                throw new InvalidOperationException(
-                    $"Invalid parent type: {Parent.GetType().Name}. Expected {nameof(UIToolkitUIHandler)}.");
-            }
-
             string parentContainerName = ParentContainerName;
-            if (string.IsNullOrEmpty(parentContainerName))
+            if (!string.IsNullOrEmpty(parentContainerName))
             {
-                parentContainerName = GetParentContainerBindingId();
+                return parentContainerName;
             }
 
-            if (string.IsNullOrEmpty(parentContainerName))
-            {
-                return parentHandler.SpawnedRoot;
-            }
-
-            if (parentHandler.TryGetUIComponent(parentContainerName, out VisualElement container))
-            {
-                return container;
-            }
-
-            throw new InvalidOperationException(
-                $"[UIToolkitUIHandler] Parent container `{parentContainerName}` was not found in handler `{parentHandler.GetType().Name}`.");
-        }
-
-        private string GetParentContainerBindingId()
-        {
             var attribute = (UIParentAttribute)Attribute.GetCustomAttribute(
                 GetType(),
                 typeof(UIParentAttribute));
@@ -150,9 +188,10 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             return attribute?.ContainerId;
         }
 
-        private VisualElement GetTopLevelRoot()
+        internal VisualElement ResolveTopLevelRoot()
         {
-            if (_container.TryResolve(typeof(UIDocument)) is UIDocument document)
+            if (UIDependencyResolverUtility.TryResolve(typeof(UIDocument), out object instance) &&
+                instance is UIDocument document)
             {
                 return document.rootVisualElement;
             }
@@ -160,20 +199,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             UIDocument fallbackDocument = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
             return fallbackDocument?.rootVisualElement;
         }
-
-        private static void StretchToParent(VisualElement element)
-        {
-            element.style.position = Position.Absolute;
-            element.style.left = 0;
-            element.style.top = 0;
-            element.style.right = 0;
-            element.style.bottom = 0;
-            element.style.width = StyleKeyword.Auto;
-            element.style.height = StyleKeyword.Auto;
-            element.style.flexGrow = 1;
-            element.style.flexShrink = 0;
-        }
     }
 }
-#endif
 #endif

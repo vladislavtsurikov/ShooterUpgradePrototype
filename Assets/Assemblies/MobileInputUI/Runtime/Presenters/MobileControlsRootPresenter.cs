@@ -20,10 +20,9 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
         private readonly InputModeService _inputModeService;
 
         public MobileControlsRootPresenter(
-            DiContainer container,
             MobileControlsLayoutLoader loader,
             InputModeService inputModeService)
-            : base(container, loader)
+            : base(loader)
         {
             _inputModeService = inputModeService;
         }
