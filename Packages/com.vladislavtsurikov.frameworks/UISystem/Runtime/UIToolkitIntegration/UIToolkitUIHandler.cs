@@ -47,8 +47,8 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         public virtual TElement GetView<TElement>(string bindingId, int index = 0)
             where TElement : VisualElement => _bindingAccess.GetView<TElement>(bindingId, index);
 
-        public virtual bool TryGetUIComponent<TElement>(string bindingId, out TElement element, int index = 0)
-            where TElement : VisualElement => _bindingAccess.TryGetUIComponent(bindingId, out element, index);
+        public virtual bool TryGetView<TElement>(string bindingId, out TElement element, int index = 0)
+            where TElement : VisualElement => _bindingAccess.TryGetView(bindingId, out element, index);
 
         protected virtual void DisposeUIToolkitUIHandler()
         {
@@ -167,7 +167,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return parentHandler.SpawnedRoot;
             }
 
-            if (parentHandler.TryGetUIComponent(parentContainerName, out VisualElement container))
+            if (parentHandler.TryGetView(parentContainerName, out VisualElement container))
             {
                 return container;
             }

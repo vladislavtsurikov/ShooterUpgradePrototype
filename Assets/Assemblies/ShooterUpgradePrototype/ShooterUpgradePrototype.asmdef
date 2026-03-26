@@ -12,6 +12,7 @@
         "VladislavTsurikov.Core",
         "VladislavTsurikov.ComponentStack",
         "VladislavTsurikov.Utility",
+        "VladislavTsurikov.UIElementsUtility",
         "UISystem",
         "UIRootSystem",
         "UniTask",

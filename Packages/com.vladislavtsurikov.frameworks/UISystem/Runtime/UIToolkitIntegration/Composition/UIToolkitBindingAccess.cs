@@ -29,7 +29,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             return ResolveWithId<TElement>(bindingId, handlerType, instanceKey, index);
         }
 
-        public bool TryGetUIComponent<TElement>(string bindingId, out TElement element, int index = 0)
+        public bool TryGetView<TElement>(string bindingId, out TElement element, int index = 0)
             where TElement : VisualElement
         {
             (Type handlerType, string instanceKey) = _handler.ResolveBindingContext();

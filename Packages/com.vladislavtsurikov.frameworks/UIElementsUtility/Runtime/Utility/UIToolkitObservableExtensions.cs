@@ -3,7 +3,7 @@ using System;
 using UniRx;
 using UnityEngine.UIElements;
 
-namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
+namespace VladislavTsurikov.UIElementsUtility.Runtime.Utility
 {
     public static class UIToolkitObservableExtensions
     {

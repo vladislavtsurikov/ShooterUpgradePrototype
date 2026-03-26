@@ -1,6 +1,7 @@
 using System;
 using UniRx;
 using UnityEngine.UIElements;
+using VladislavTsurikov.UIElementsUtility.Runtime.Utility;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
 namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime

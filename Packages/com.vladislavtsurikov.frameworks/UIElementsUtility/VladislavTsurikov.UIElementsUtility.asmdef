@@ -8,7 +8,8 @@
         "GUID:ce9acb4c89fd77746a90c158718c588d",
         "GUID:c372a3935f457fe43ba8f977ae663de7",
         "GUID:5c9c0ef81e306bb4fb8182d62410223a",
-        "GUID:4f3f15d33f84e044490b60cf8fdc046e"
+        "GUID:4f3f15d33f84e044490b60cf8fdc046e",
+        "UniRx"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
