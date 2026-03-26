@@ -12,15 +12,12 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
     public abstract class UIToolkitUIHandler : UIHandler
     {
         private readonly UIToolkitElementBinder _elementBinder;
-        private readonly UIToolkitRootController _rootController;
-        private readonly UIToolkitSpawnedChildRegistry _spawnedChildren;
+        private VisualElement _spawnedRoot;
 
         protected UIToolkitUIHandler(UIToolkitLayoutLoader loader)
         {
             Loader = loader;
             _elementBinder = new UIToolkitElementBinder(this);
-            _rootController = new UIToolkitRootController();
-            _spawnedChildren = new UIToolkitSpawnedChildRegistry();
         }
 
         protected UIToolkitUIHandler()
@@ -29,7 +26,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         }
 
         public UIToolkitLayoutLoader Loader { get; }
-        public VisualElement SpawnedRoot => _rootController.Root;
+        public VisualElement SpawnedRoot => _spawnedRoot;
 
         public event Action<VisualElement, UIToolkitUIHandler> OnAnyChildAdded;
 
@@ -45,36 +42,26 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         {
         }
 
-        protected async UniTask<VisualElement> SpawnChildLayout(
-            UIToolkitLayoutLoader layoutLoader,
-            VisualElement parent,
-            bool visible,
-            CancellationToken cancellationToken,
-            string rootName = null)
-        {
-            VisualElement instance = await UIToolkitSpawnOperation.Spawn()
-                .WithParent(parent)
-                .Visible(visible)
-                .WithName(rootName)
-                .Execute(layoutLoader, ElementBinder, cancellationToken);
-
-            _spawnedChildren.Register(instance, layoutLoader);
-
-            return instance;
-        }
-
         protected override async UniTask BeforeShowUIHandler(CancellationToken cancellationToken,
             CompositeDisposable disposables) => await SpawnLayoutIfNeeded(cancellationToken);
 
         protected override UniTask OnShowUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            _rootController.Show();
+            if (_spawnedRoot != null)
+            {
+                _spawnedRoot.style.display = StyleKeyword.Null;
+            }
+
             return UniTask.CompletedTask;
         }
 
         protected override UniTask OnHideUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            _rootController.Hide();
+            if (_spawnedRoot != null)
+            {
+                _spawnedRoot.style.display = DisplayStyle.None;
+            }
+
             return UniTask.CompletedTask;
         }
 
@@ -83,11 +70,18 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
-            await _spawnedChildren.DestroyAsync(unload, cancellationToken);
-
             if (Loader != null)
             {
-                await _rootController.DestroyAsync(unload, Loader, cancellationToken);
+                if (_spawnedRoot != null)
+                {
+                    _spawnedRoot.RemoveFromHierarchy();
+                    _spawnedRoot = null;
+                }
+
+                if (unload)
+                {
+                    await Loader.Unload(cancellationToken);
+                }
             }
 
             await DestroyUIToolkitUIHandler(unload, cancellationToken);
@@ -99,8 +93,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         public override void DisposeUIHandler()
         {
             _elementBinder.Dispose();
-            _spawnedChildren.Dispose();
-            _rootController.Dispose();
+            _spawnedRoot = null;
             DisposeUIToolkitUIHandler();
         }
 
@@ -119,12 +112,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return;
             }
 
-            VisualElement spawnedRoot = await _rootController.EnsureSpawnedAsync(
-                Loader,
-                parent,
-                SpawnedRootName,
-                ElementBinder,
-                cancellationToken);
+            VisualElement spawnedRoot = await EnsureSpawnedRoot(parent, cancellationToken);
 
             if (spawnedRoot == null)
             {
@@ -202,6 +190,42 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
             UIDocument fallbackDocument = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
             return fallbackDocument?.rootVisualElement;
+        }
+
+        private async UniTask<VisualElement> EnsureSpawnedRoot(
+            VisualElement parent,
+            CancellationToken cancellationToken)
+        {
+            if (_spawnedRoot != null)
+            {
+                return _spawnedRoot;
+            }
+
+            _spawnedRoot = await UIToolkitSpawnOperation.Spawn()
+                .WithParent(parent)
+                .Visible(true)
+                .WithName(SpawnedRootName)
+                .Execute(Loader, ElementBinder, cancellationToken);
+
+            if (_spawnedRoot != null)
+            {
+                StretchToParent(_spawnedRoot);
+            }
+
+            return _spawnedRoot;
+        }
+
+        private static void StretchToParent(VisualElement element)
+        {
+            element.style.position = Position.Absolute;
+            element.style.left = 0;
+            element.style.top = 0;
+            element.style.right = 0;
+            element.style.bottom = 0;
+            element.style.width = StyleKeyword.Auto;
+            element.style.height = StyleKeyword.Auto;
+            element.style.flexGrow = 1;
+            element.style.flexShrink = 0;
         }
     }
 }
