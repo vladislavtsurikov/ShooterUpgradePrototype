@@ -19,7 +19,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
         protected async UniTask<GameObject> SpawnChildPrefab(PrefabAssetLoader prefabLoader, Transform parent,
             bool enable, CancellationToken cancellationToken)
         {
-            GameObject instance = await this.Spawn()
+            GameObject instance = await UnityCanvasSpawnOperation.Spawn()
                 .WithParent(parent)
                 .Enable(enable)
                 .Execute(prefabLoader, ComponentBinder, cancellationToken);

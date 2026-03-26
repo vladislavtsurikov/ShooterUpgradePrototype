@@ -61,7 +61,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             CancellationToken cancellationToken,
             string rootName = null)
         {
-            VisualElement instance = await this.Spawn()
+            VisualElement instance = await UIToolkitSpawnOperation.Spawn()
                 .WithParent(parent)
                 .Visible(visible)
                 .WithName(rootName)

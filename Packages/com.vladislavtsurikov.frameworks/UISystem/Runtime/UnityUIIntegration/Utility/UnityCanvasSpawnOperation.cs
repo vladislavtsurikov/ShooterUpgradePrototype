@@ -1,0 +1,42 @@
+#if UI_SYSTEM_ADDRESSABLE_LOADER_SYSTEM
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+using VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration;
+using VladislavTsurikov.UISystem.Runtime.Core;
+
+namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
+{
+    public class UnityCanvasSpawnOperation
+        : UISpawnOperation<UnityCanvasSpawnOperation, Transform, GameObject, PrefabAssetLoader, UIComponentBinder>
+    {
+        public UnityCanvasSpawnOperation Enable(bool enable)
+        {
+            return SetVisibleState(enable);
+        }
+
+        protected override UniTask<GameObject> CreateInstance(
+            PrefabAssetLoader prefabLoader,
+            Transform parent,
+            CancellationToken cancellationToken) =>
+            prefabLoader.LoadAndSpawnPrefab(parent, cancellationToken);
+
+        protected override void ApplyName(GameObject instance, string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                instance.name = name;
+            }
+        }
+
+        protected override void ApplyVisibility(GameObject instance, bool visible) => instance.SetActive(visible);
+
+        protected override void AttachToParent(GameObject instance, Transform parent)
+        {
+        }
+
+        protected override void Bind(GameObject instance, UIComponentBinder componentBinder) =>
+            componentBinder.BindUIComponentsFrom(instance);
+    }
+}
+#endif

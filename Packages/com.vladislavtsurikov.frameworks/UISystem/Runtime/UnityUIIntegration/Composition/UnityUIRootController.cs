@@ -23,7 +23,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 return Root;
             }
 
-            Root = await new UISpawnOperation()
+            Root = await UnityCanvasSpawnOperation.Spawn()
                 .WithParent(parent)
                 .Enable(enable)
                 .WithName(name)

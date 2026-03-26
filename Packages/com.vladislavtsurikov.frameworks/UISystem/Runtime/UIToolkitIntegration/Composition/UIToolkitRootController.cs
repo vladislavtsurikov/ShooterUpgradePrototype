@@ -22,7 +22,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return Root;
             }
 
-            Root = await new UIToolkitSpawnOperation()
+            Root = await UIToolkitSpawnOperation.Spawn()
                 .WithParent(parent)
                 .Visible(true)
                 .WithName(rootName)
