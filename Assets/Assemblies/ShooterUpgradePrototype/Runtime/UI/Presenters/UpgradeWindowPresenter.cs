@@ -117,12 +117,18 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
                 return;
             }
 
+            UIChildrenModule childrenModule = ChildrenModule;
+            if (childrenModule == null)
+            {
+                return;
+            }
+
             int availableDraftPoints = GetAvailableDraftPoints();
             _view.SetAvailablePoints(availableDraftPoints);
 
             foreach (string statId in _upgradeStatIds)
             {
-                if (!TryGetDynamicChild(statId, out UpgradeStatRowPresenter rowHandler))
+                if (!childrenModule.TryGetDynamicChild(statId, out UpgradeStatRowPresenter rowHandler))
                 {
                     continue;
                 }
@@ -188,13 +194,19 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         private async UniTask CreateStats(CancellationToken cancellationToken)
         {
+            UIChildrenModule childrenModule = ChildrenModule;
+            if (childrenModule == null)
+            {
+                return;
+            }
+
             foreach (string statId in _upgradeStatIds)
             {
-                UpgradeStatRowPresenter row = GetDynamicChild<UpgradeStatRowPresenter>(statId);
+                UpgradeStatRowPresenter row = childrenModule.GetDynamicChild<UpgradeStatRowPresenter>(statId);
 
                 if (row == null)
                 {
-                    row = await CreateDynamicChild<UpgradeStatRowPresenter>(
+                    row = await childrenModule.CreateDynamicChild<UpgradeStatRowPresenter>(
                         statId,
                         showAutomatically: true,
                         cancellationToken);
@@ -206,9 +218,12 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         protected override void DisposeUIToolkitUIHandler()
         {
+            UIChildrenModule childrenModule = ChildrenModule;
+
             foreach (string statId in _upgradeStatIds)
             {
-                if (TryGetDynamicChild(statId, out UpgradeStatRowPresenter row))
+                if (childrenModule != null &&
+                    childrenModule.TryGetDynamicChild(statId, out UpgradeStatRowPresenter row))
                 {
                     row.UpgradeRequested -= AddDraftLevel;
                 }

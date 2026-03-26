@@ -186,8 +186,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 return false;
             }
 
-            if (!parent.TryGetRegisteredDynamicChild(instanceKey, out UIHandler registeredHandler) ||
-                registeredHandler is not THandler)
+            if (parent.ChildrenModule == null)
             {
                 handler = null;
                 return false;
@@ -209,10 +208,10 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 return;
             }
 
-            parent.UnregisterDynamicChild(instanceKey);
+            UIChildrenModule childrenModule = RequireChildrenModule(parent);
             await handler.Destroy(unload, cancellationToken);
             BeforeRemoveHandler(handler);
-            parent.RemoveUIHandlerChild(handler);
+            childrenModule.Remove(handler);
         }
 
         private async UniTask TraverseMissingUIHandler(Node node, UIHandler parent, CancellationToken cancellationToken)
@@ -257,7 +256,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             if (parent != null)
             {
-                parent.AddUIHandlerChild(handler);
+                UIChildrenModule childrenModule = RequireChildrenModule(parent);
+                childrenModule.Add(handler);
                 handler.SetParent(parent);
             }
 
@@ -265,10 +265,21 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             if (parent != null && IsDynamicChildType(handler.GetType()))
             {
-                parent.RegisterDynamicChild(handler);
+                ValidateDynamicInstanceKey(instanceKey, handler.GetType());
             }
 
             RegisterInContainer(handler);
+        }
+
+        private static UIChildrenModule RequireChildrenModule(UIHandler handler)
+        {
+            if (handler?.ChildrenModule != null)
+            {
+                return handler.ChildrenModule;
+            }
+
+            throw new InvalidOperationException(
+                $"[UISystem] Handler `{handler?.GetType().FullName}` does not support child handlers.");
         }
 
         private static NodeTree GetNodeTree()
@@ -342,6 +353,15 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             {
                 throw new InvalidOperationException(
                     $"Dynamic child handler `{type.FullName}` must be marked with [{nameof(DynamicUIChildAttribute)}].");
+            }
+        }
+
+        private static void ValidateDynamicInstanceKey(string instanceKey, Type type)
+        {
+            if (string.IsNullOrEmpty(instanceKey))
+            {
+                throw new InvalidOperationException(
+                    $"Dynamic child handler `{type.FullName}` must have a non-empty instance key.");
             }
         }
 

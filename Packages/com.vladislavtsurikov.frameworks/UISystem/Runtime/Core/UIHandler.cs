@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UniRx;
 
@@ -9,19 +7,29 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 {
     public abstract class UIHandler
     {
-        private ChildActivityTracker _childTracker;
-        private readonly Dictionary<string, UIHandler> _dynamicChildren = new();
+        private readonly UIChildrenModule _childrenModule;
         private bool _isActive;
         private bool _isInitialized;
-        private SingleActiveUIChildSwitcher _switcher;
-
-        protected ReactiveCollection<UIHandler> Children { get; } = new();
         protected virtual bool AllowMultipleActiveChildren => true;
+
+        protected UIHandler()
+            : this(true)
+        {
+        }
+
+        protected UIHandler(bool supportsChildren)
+        {
+            if (supportsChildren)
+            {
+                _childrenModule = new UIChildrenModule(this);
+            }
+        }
 
         public UIHandler Parent { get; private set; }
         public string InstanceKey { get; private set; }
         internal UIHandlerManager UIHandlerManager { get; private set; }
         protected IUIDependencyResolver DependencyResolver => UIDependencyResolverUtility.GetRequiredResolver();
+        public UIChildrenModule ChildrenModule => _childrenModule;
 
         public bool IsActive
         {
@@ -64,8 +72,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
 
             _isInitialized = true;
-
-            TrackChildActivation();
+            ChildrenModule?.Initialize(AllowMultipleActiveChildren);
             InitializeUIHandler(cancellationToken, disposables);
             return UniTask.CompletedTask;
         }
@@ -102,9 +109,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         internal void Dispose()
         {
             Disposables.Dispose();
-            _childTracker?.Dispose();
-            _switcher?.Dispose();
-            _dynamicChildren.Clear();
+            ChildrenModule?.Dispose();
 
             IsActive = false;
             _isInitialized = false;
@@ -158,9 +163,11 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             IsActive = true;
 
-            await InitializeChildren(cancellationToken);
-
-            await ShowDynamicChildren(cancellationToken);
+            if (ChildrenModule != null)
+            {
+                await ChildrenModule.InitializeChildren(cancellationToken);
+                await ChildrenModule.ShowDynamicChildren(cancellationToken);
+            }
         }
 
         public async UniTask Hide(CancellationToken cancellationToken)
@@ -170,16 +177,19 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             await BeforeHide(cancellationToken);
             await OnHide(cancellationToken);
             await AfterHide(cancellationToken);
-            await HideChildren(cancellationToken);
+            if (ChildrenModule != null)
+            {
+                await ChildrenModule.HideChildren(cancellationToken);
+            }
 
             IsActive = false;
         }
 
         internal async UniTask Destroy(bool unload, CancellationToken cancellationToken)
         {
-            foreach (UIHandler child in Children)
+            if (ChildrenModule != null)
             {
-                await child.Destroy(unload, cancellationToken);
+                await ChildrenModule.DestroyAll(unload, cancellationToken);
             }
 
             await DestroyUIHandler(unload, cancellationToken, Disposables);
@@ -189,120 +199,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             OnUIHandlerDestroyed?.Invoke(this);
         }
 
-        protected internal void AddUIHandlerChild(UIHandler child) => Children.Add(child);
-        protected internal void RemoveUIHandlerChild(UIHandler child)
-        {
-            Children.Remove(child);
-
-            if (!string.IsNullOrEmpty(child.InstanceKey))
-            {
-                _dynamicChildren.Remove(child.InstanceKey);
-            }
-        }
-
         internal void SetParent(UIHandler parent) => Parent = parent;
         internal void SetInstanceKey(string instanceKey) => InstanceKey = instanceKey;
         internal void SetUIHandlerManager(UIHandlerManager uiHandlerManager) => UIHandlerManager = uiHandlerManager;
-
-        internal void RegisterDynamicChild(UIHandler child)
-        {
-            if (string.IsNullOrEmpty(child.InstanceKey))
-            {
-                throw new InvalidOperationException(
-                    $"Dynamic child `{child.GetType().FullName}` must have a non-empty instance key.");
-            }
-
-            _dynamicChildren.Add(child.InstanceKey, child);
-        }
-
-        internal bool TryGetRegisteredDynamicChild(string instanceKey, out UIHandler child) =>
-            _dynamicChildren.TryGetValue(instanceKey, out child);
-
-        internal void UnregisterDynamicChild(string instanceKey)
-        {
-            if (string.IsNullOrEmpty(instanceKey))
-            {
-                return;
-            }
-
-            _dynamicChildren.Remove(instanceKey);
-        }
-
-        protected UniTask<THandler> CreateDynamicChild<THandler>(
-            string instanceKey,
-            bool showAutomatically = false,
-            CancellationToken cancellationToken = default)
-            where THandler : UIHandler
-        {
-            return UIHandlerManager.CreateDynamicChild<THandler>(this, instanceKey, showAutomatically,
-                cancellationToken);
-        }
-
-        protected THandler GetDynamicChild<THandler>(string instanceKey)
-            where THandler : UIHandler
-        {
-            return UIHandlerManager.GetDynamicChild<THandler>(this, instanceKey);
-        }
-
-        protected bool TryGetDynamicChild<THandler>(string instanceKey, out THandler handler)
-            where THandler : UIHandler
-        {
-            return UIHandlerManager.TryGetDynamicChild(this, instanceKey, out handler);
-        }
-
-        protected UniTask DestroyChild<THandler>(
-            string instanceKey,
-            bool unload,
-            CancellationToken cancellationToken = default)
-            where THandler : UIHandler
-        {
-            return UIHandlerManager.DestroyDynamicChild<THandler>(this, instanceKey, unload, cancellationToken);
-        }
-
-        private void TrackChildActivation()
-        {
-            _childTracker?.Dispose();
-            _childTracker = new ChildActivityTracker(Children);
-
-            if (!AllowMultipleActiveChildren)
-            {
-                _switcher?.Dispose();
-                _switcher = new SingleActiveUIChildSwitcher(_childTracker);
-            }
-        }
-
-        private async Task InitializeChildren(CancellationToken cancellationToken)
-        {
-            foreach (UIHandler child in Children)
-            {
-                await child.Initialize(cancellationToken, child.Disposables);
-            }
-        }
-
-        private async Task HideChildren(CancellationToken cancellationToken)
-        {
-            List<UIHandler> childrenToHide = new();
-
-            foreach (UIHandler child in Children)
-            {
-                if (child.IsActive)
-                {
-                    childrenToHide.Add(child);
-                }
-            }
-
-            foreach (UIHandler child in childrenToHide)
-            {
-                await child.Hide(cancellationToken);
-            }
-        }
-
-        private async Task ShowDynamicChildren(CancellationToken cancellationToken)
-        {
-            foreach (UIHandler child in _dynamicChildren.Values)
-            {
-                await child.Show(cancellationToken);
-            }
-        }
     }
 }
