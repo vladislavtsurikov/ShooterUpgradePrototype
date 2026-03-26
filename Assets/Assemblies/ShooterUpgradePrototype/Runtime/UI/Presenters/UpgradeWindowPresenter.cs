@@ -46,7 +46,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
         {
             _gameplayInputBlocker.DisableGameplayInput();
 
-            _view = GetView<UpgradeWindowView>(nameof(UpgradeWindowView));
+            _view = ViewResolver.GetView<UpgradeWindowView>(nameof(UpgradeWindowView));
 
             CompositeDisposable showDisposables = new CompositeDisposable();
             _showBindings.Disposable = showDisposables;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public abstract class UIBindingScope
+    public abstract class UIBindingScope : IDisposable
     {
         private readonly IUIDependencyResolver _resolver;
         private readonly List<BoundBindingRecord> _records = new();

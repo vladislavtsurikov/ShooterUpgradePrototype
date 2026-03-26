@@ -8,28 +8,16 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public abstract class UIHandler
     {
         private readonly UIChildrenModule _childrenModule;
+        private readonly UIViewResolver _viewResolver;
         private bool _isActive;
         private bool _isInitialized;
         protected virtual bool AllowMultipleActiveChildren => true;
 
-        protected UIHandler()
-            : this(true)
-        {
-        }
-
-        protected UIHandler(bool supportsChildren)
-        {
-            if (supportsChildren)
-            {
-                _childrenModule = new UIChildrenModule(this);
-            }
-        }
-
         public UIHandler Parent { get; private set; }
         public string InstanceKey { get; private set; }
         internal UIHandlerManager UIHandlerManager { get; private set; }
-        protected IUIDependencyResolver DependencyResolver => UIDependencyResolverUtility.GetRequiredResolver();
         public UIChildrenModule ChildrenModule => _childrenModule;
+        public UIViewResolver ViewResolver => _viewResolver;
 
         public bool IsActive
         {
@@ -63,6 +51,21 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public static event Action<UIHandler> OnUIHandlerAfterHide;
 
         public static event Action<UIHandler> OnUIHandlerDestroyed;
+
+        protected UIHandler()
+            : this(true)
+        {
+        }
+
+        protected UIHandler(bool supportsChildren)
+        {
+            _viewResolver = new UIViewResolver(this);
+
+            if (supportsChildren)
+            {
+                _childrenModule = new UIChildrenModule(this);
+            }
+        }
 
         internal UniTask Initialize(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
@@ -198,6 +201,9 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             OnUIHandlerDestroyed?.Invoke(this);
         }
+
+        internal virtual (Type handlerType, string instanceKey) ResolveBindingContext() =>
+            (GetType(), InstanceKey);
 
         internal void SetParent(UIHandler parent) => Parent = parent;
         internal void SetInstanceKey(string instanceKey) => InstanceKey = instanceKey;

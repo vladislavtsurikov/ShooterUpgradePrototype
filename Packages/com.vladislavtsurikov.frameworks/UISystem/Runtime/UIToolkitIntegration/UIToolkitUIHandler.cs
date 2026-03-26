@@ -11,14 +11,14 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
     public abstract class UIToolkitUIHandler : UIHandler
     {
-        private readonly UIToolkitBindingAccess _bindingAccess;
+        private readonly UIToolkitElementBinder _elementBinder;
         private readonly UIToolkitRootController _rootController;
         private readonly UIToolkitSpawnedChildRegistry _spawnedChildren;
 
         protected UIToolkitUIHandler(UIToolkitLayoutLoader loader)
         {
             Loader = loader;
-            _bindingAccess = new UIToolkitBindingAccess(this);
+            _elementBinder = new UIToolkitElementBinder(this);
             _rootController = new UIToolkitRootController();
             _spawnedChildren = new UIToolkitSpawnedChildRegistry();
         }
@@ -39,16 +39,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected virtual bool UsesParentBindingContext => Loader == null;
 
-        protected UIToolkitElementBinder ElementBinder => _bindingAccess.Binder;
-
-        public TElement GetView<TElement>(string bindingId, Type handlerType, int index = 0)
-            where TElement : VisualElement => _bindingAccess.GetView<TElement>(bindingId, handlerType, index);
-
-        public virtual TElement GetView<TElement>(string bindingId, int index = 0)
-            where TElement : VisualElement => _bindingAccess.GetView<TElement>(bindingId, index);
-
-        public virtual bool TryGetView<TElement>(string bindingId, out TElement element, int index = 0)
-            where TElement : VisualElement => _bindingAccess.TryGetView(bindingId, out element, index);
+        protected UIToolkitElementBinder ElementBinder => _elementBinder;
 
         protected virtual void DisposeUIToolkitUIHandler()
         {
@@ -107,7 +98,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         public override void DisposeUIHandler()
         {
-            _bindingAccess.Dispose();
+            _elementBinder.Dispose();
             _spawnedChildren.Dispose();
             _rootController.Dispose();
             DisposeUIToolkitUIHandler();
@@ -167,7 +158,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return parentHandler.SpawnedRoot;
             }
 
-            if (parentHandler.TryGetView(parentContainerName, out VisualElement container))
+            if (parentHandler.ViewResolver.TryGetView(parentContainerName, out VisualElement container))
             {
                 return container;
             }
@@ -191,7 +182,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             return attribute?.ContainerId;
         }
 
-        internal (Type handlerType, string instanceKey) ResolveBindingContext()
+        internal override (Type handlerType, string instanceKey) ResolveBindingContext()
         {
             if (!UsesParentBindingContext)
             {
