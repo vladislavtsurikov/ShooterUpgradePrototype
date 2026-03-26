@@ -19,7 +19,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
         private OpenUpgradeHUDButtonView _view;
 
         public OpenUpgradeHUDButtonPresenter()
-            : base(ParentUIToolkitBindingContextResolver.Instance)
+            : base()
         {
         }
 

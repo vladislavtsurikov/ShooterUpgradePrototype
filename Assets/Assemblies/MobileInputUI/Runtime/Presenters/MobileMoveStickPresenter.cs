@@ -23,7 +23,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
         public MobileMoveStickPresenter(
             MobileVirtualInputService mobileVirtualInputService,
             InputModeService inputModeService)
-            : base(ParentUIToolkitBindingContextResolver.Instance)
+            : base()
         {
             _mobileVirtualInputService = mobileVirtualInputService;
             _inputModeService = inputModeService;

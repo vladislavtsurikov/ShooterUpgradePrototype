@@ -7,15 +7,11 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
     public sealed class UIToolkitBindingAccess : IDisposable
     {
         private readonly UIToolkitUIHandler _handler;
-        private readonly IUIToolkitBindingContextResolver _bindingContextResolver;
         private readonly IUIDependencyResolver _resolver;
 
-        public UIToolkitBindingAccess(
-            UIToolkitUIHandler handler,
-            IUIToolkitBindingContextResolver bindingContextResolver)
+        public UIToolkitBindingAccess(UIToolkitUIHandler handler)
         {
             _handler = handler;
-            _bindingContextResolver = bindingContextResolver ?? SelfUIToolkitBindingContextResolver.Instance;
             _resolver = UIDependencyResolverUtility.GetRequiredResolver();
             Binder = new UIToolkitElementBinder(handler);
         }
@@ -29,14 +25,14 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         public TElement GetView<TElement>(string bindingId, int index = 0)
             where TElement : VisualElement
         {
-            (Type handlerType, string instanceKey) = ResolveCurrentBindingContext();
+            (Type handlerType, string instanceKey) = _handler.ResolveBindingContext();
             return ResolveWithId<TElement>(bindingId, handlerType, instanceKey, index);
         }
 
         public bool TryGetUIComponent<TElement>(string bindingId, out TElement element, int index = 0)
             where TElement : VisualElement
         {
-            (Type handlerType, string instanceKey) = ResolveCurrentBindingContext();
+            (Type handlerType, string instanceKey) = _handler.ResolveBindingContext();
             string id = UIBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
 
             if (_resolver.TryResolveId(typeof(TElement), id, out object instance) && instance is TElement typedElement)
@@ -48,9 +44,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             element = null;
             return false;
         }
-
-        public (Type handlerType, string instanceKey) ResolveCurrentBindingContext() =>
-            (_bindingContextResolver.ResolveHandlerType(_handler), _bindingContextResolver.ResolveInstanceKey(_handler));
 
         public void Dispose() => Binder.Dispose();
 

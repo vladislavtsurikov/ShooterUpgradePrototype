@@ -20,7 +20,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 
         public MobileFireButtonPresenter(
             MobileVirtualInputService mobileVirtualInputService)
-            : base(ParentUIToolkitBindingContextResolver.Instance)
+            : base()
         {
             _mobileVirtualInputService = mobileVirtualInputService;
         }

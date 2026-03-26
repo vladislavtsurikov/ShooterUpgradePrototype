@@ -12,47 +12,20 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
     public abstract class UIToolkitUIHandler : UIHandler
     {
         private readonly UIToolkitBindingAccess _bindingAccess;
-        private readonly IUIToolkitParentElementResolver _parentElementResolver;
         private readonly UIToolkitRootController _rootController;
         private readonly UIToolkitSpawnedChildRegistry _spawnedChildren;
 
         protected UIToolkitUIHandler(UIToolkitLayoutLoader loader)
-            : this(
-                loader,
-                SelfUIToolkitBindingContextResolver.Instance,
-                DefaultUIToolkitParentElementResolver.Instance)
-        {
-        }
-
-        protected UIToolkitUIHandler(IUIToolkitBindingContextResolver bindingContextResolver)
-            : this(null, bindingContextResolver, DefaultUIToolkitParentElementResolver.Instance)
-        {
-        }
-
-        protected UIToolkitUIHandler(
-            UIToolkitLayoutLoader loader,
-            IUIToolkitBindingContextResolver bindingContextResolver)
-            : this(loader, bindingContextResolver, DefaultUIToolkitParentElementResolver.Instance)
-        {
-        }
-
-        protected UIToolkitUIHandler(
-            UIToolkitLayoutLoader loader,
-            IUIToolkitParentElementResolver parentElementResolver)
-            : this(loader, SelfUIToolkitBindingContextResolver.Instance, parentElementResolver)
-        {
-        }
-
-        protected UIToolkitUIHandler(
-            UIToolkitLayoutLoader loader,
-            IUIToolkitBindingContextResolver bindingContextResolver,
-            IUIToolkitParentElementResolver parentElementResolver)
         {
             Loader = loader;
-            _bindingAccess = new UIToolkitBindingAccess(this, bindingContextResolver);
+            _bindingAccess = new UIToolkitBindingAccess(this);
             _rootController = new UIToolkitRootController();
             _spawnedChildren = new UIToolkitSpawnedChildRegistry();
-            _parentElementResolver = parentElementResolver ?? DefaultUIToolkitParentElementResolver.Instance;
+        }
+
+        protected UIToolkitUIHandler()
+            : this(null)
+        {
         }
 
         public UIToolkitLayoutLoader Loader { get; }
@@ -63,6 +36,8 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         protected virtual string ParentContainerName => null;
 
         protected virtual string SpawnedRootName => null;
+
+        protected virtual bool UsesParentBindingContext => Loader == null;
 
         protected UIToolkitElementBinder ElementBinder => _bindingAccess.Binder;
 
@@ -145,7 +120,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return;
             }
 
-            VisualElement parent = _parentElementResolver.Resolve(this);
+            VisualElement parent = ResolveParentElement();
             if (parent == null)
             {
                 Debug.LogError(
@@ -173,6 +148,34 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             }
         }
 
+        private VisualElement ResolveParentElement()
+        {
+            if (Parent == null)
+            {
+                return ResolveTopLevelRoot();
+            }
+
+            if (Parent is not UIToolkitUIHandler parentHandler)
+            {
+                throw new InvalidOperationException(
+                    $"Invalid parent type: {Parent.GetType().Name}. Expected {nameof(UIToolkitUIHandler)}.");
+            }
+
+            string parentContainerName = ResolveParentContainerName();
+            if (string.IsNullOrEmpty(parentContainerName))
+            {
+                return parentHandler.SpawnedRoot;
+            }
+
+            if (parentHandler.TryGetUIComponent(parentContainerName, out VisualElement container))
+            {
+                return container;
+            }
+
+            throw new InvalidOperationException(
+                $"[UIToolkitUIHandler] Parent container `{parentContainerName}` was not found in handler `{parentHandler.GetType().Name}`.");
+        }
+
         internal string ResolveParentContainerName()
         {
             string parentContainerName = ParentContainerName;
@@ -186,6 +189,16 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 typeof(UIParentAttribute));
 
             return attribute?.ContainerId;
+        }
+
+        internal (Type handlerType, string instanceKey) ResolveBindingContext()
+        {
+            if (!UsesParentBindingContext)
+            {
+                return (GetType(), InstanceKey);
+            }
+
+            return (Parent?.GetType() ?? GetType(), Parent?.InstanceKey);
         }
 
         internal VisualElement ResolveTopLevelRoot()
