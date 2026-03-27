@@ -7,7 +7,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public abstract class ViewBindingScope : IDisposable
     {
         private readonly DependencyResolver _resolver;
-        private readonly List<BoundViewRecord> _records = new();
+        private readonly List<ViewKey> _records = new();
         private readonly ViewBindingRepeatTracker _repeatTracker = new();
         private readonly UIHandler _uiHandler;
 
@@ -40,23 +40,24 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
                 Type type = node.GetType();
                 int index = _repeatTracker.GetAndIncrement(type, rawBindingId);
-                string finalId = ViewBindingId.FromTypeAndIndex(
+                ViewKey key = new(
+                    type,
                     _uiHandler.GetType(),
                     rawBindingId,
                     index,
                     getInstanceKey?.Invoke(node));
 
-                _resolver.BindInstance(type, finalId, node);
+                _resolver.BindInstance(type, key.Id, node);
 
-                _records.Add(new BoundViewRecord(type, finalId));
+                _records.Add(key);
             }
         }
 
         public void Dispose()
         {
-            foreach (BoundViewRecord record in _records)
+            foreach (ViewKey key in _records)
             {
-                _resolver.UnbindId(record.Type, record.Id);
+                _resolver.UnbindId(key.ViewType, key.Id);
             }
 
             _records.Clear();

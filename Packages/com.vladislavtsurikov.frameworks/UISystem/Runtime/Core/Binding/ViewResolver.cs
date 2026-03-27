@@ -16,44 +16,38 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public TView GetView<TView>(string bindingId, Type handlerType, int index = 0)
         {
-            return ResolveWithId<TView>(bindingId, handlerType, _handler.InstanceKey, index);
+            ViewKey key = new(typeof(TView), handlerType, bindingId, index, _handler.InstanceKey);
+            return ResolveWithKey<TView>(key);
         }
 
         public TView GetView<TView>(string bindingId, int index = 0)
         {
             (Type handlerType, string instanceKey) = _handler.ResolveBindingContext();
-            return ResolveWithId<TView>(bindingId, handlerType, instanceKey, index);
+            ViewKey key = new(typeof(TView), handlerType, bindingId, index, instanceKey);
+            return ResolveWithKey<TView>(key);
         }
 
         public bool TryGetView<TView>(string bindingId, out TView view, int index = 0)
         {
             (Type handlerType, string instanceKey) = _handler.ResolveBindingContext();
-            return TryResolveWithId(bindingId, handlerType, instanceKey, index, out view);
+            ViewKey key = new(typeof(TView), handlerType, bindingId, index, instanceKey);
+            return TryResolveWithKey(key, out view);
         }
 
-        private TView ResolveWithId<TView>(string bindingId, Type handlerType, string instanceKey, int index)
+        private TView ResolveWithKey<TView>(ViewKey key)
         {
-            string id = ViewBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
-
-            if (_resolver.TryResolveId(typeof(TView), id, out object instance) && instance is TView typedView)
+            if (_resolver.TryResolveId(typeof(TView), key.Id, out object instance) && instance is TView typedView)
             {
                 return typedView;
             }
 
             throw new InvalidOperationException(
-                $"[UISystem] Failed to resolve bound view `{typeof(TView).Name}` with id `{id}`.");
+                $"[UISystem] Failed to resolve bound view `{typeof(TView).Name}` with id `{key.Id}`.");
         }
 
-        private bool TryResolveWithId<TView>(
-            string bindingId,
-            Type handlerType,
-            string instanceKey,
-            int index,
-            out TView view)
+        private bool TryResolveWithKey<TView>(ViewKey key, out TView view)
         {
-            string id = ViewBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
-
-            if (_resolver.TryResolveId(typeof(TView), id, out object instance) && instance is TView typedView)
+            if (_resolver.TryResolveId(typeof(TView), key.Id, out object instance) && instance is TView typedView)
             {
                 view = typedView;
                 return true;
