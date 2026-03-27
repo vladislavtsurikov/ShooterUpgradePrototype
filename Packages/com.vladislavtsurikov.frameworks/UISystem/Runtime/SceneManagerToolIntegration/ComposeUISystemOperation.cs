@@ -1,4 +1,4 @@
-#if UI_SYSTEM_ADDRESSABLE_LOADER_SYSTEM
+#if UI_SYSTEM_ADDRESSABLE_LOADER_SYSTEM && UI_SYSTEM_SCENE_MANAGER_TOOL && UI_SYSTEM_ZENJECT
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using VladislavTsurikov.Core.Runtime;
