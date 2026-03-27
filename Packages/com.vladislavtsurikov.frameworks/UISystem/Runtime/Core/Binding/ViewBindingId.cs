@@ -2,7 +2,7 @@ using System;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public static class UIBindingId
+    public static class ViewBindingId
     {
         public static string FromTypeAndIndex(
             Type handlerType,

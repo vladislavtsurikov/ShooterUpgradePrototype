@@ -2,6 +2,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 
 namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
 {

@@ -8,7 +8,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public abstract class UIHandler
     {
         private readonly UIChildrenModule _childrenModule;
-        private readonly UIViewResolver _viewResolver;
+        private readonly ViewResolver _viewResolver;
         private bool _isActive;
         private bool _isInitialized;
         protected virtual bool AllowMultipleActiveChildren => true;
@@ -17,7 +17,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public string InstanceKey { get; private set; }
         internal UIHandlerManager UIHandlerManager { get; private set; }
         public UIChildrenModule ChildrenModule => _childrenModule;
-        public UIViewResolver ViewResolver => _viewResolver;
+        public ViewResolver ViewResolver => _viewResolver;
 
         public bool IsActive
         {
@@ -59,7 +59,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         protected UIHandler(bool supportsChildren)
         {
-            _viewResolver = new UIViewResolver(this);
+            _viewResolver = new ViewResolver(this);
 
             if (supportsChildren)
             {

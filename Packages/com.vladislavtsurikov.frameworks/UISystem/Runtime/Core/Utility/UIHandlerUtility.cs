@@ -17,7 +17,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public static T FindHandler<T>(Type parentType, string instanceKey) where T : UIHandler
         {
             string id = UIHandlerBindingId.FromParentType(parentType, instanceKey);
-            if (UIDependencyResolverUtility.TryResolveId(typeof(T), id, out object instance) && instance is T handler)
+            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            if (resolver != null && resolver.TryResolveId(typeof(T), id, out object instance) && instance is T handler)
             {
                 return handler;
             }

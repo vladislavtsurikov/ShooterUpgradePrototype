@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    internal sealed class BindingRepeatTracker
+    internal sealed class ViewBindingRepeatTracker
     {
         private readonly Dictionary<(Type, string), int> _counters = new();
 

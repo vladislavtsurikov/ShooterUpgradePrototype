@@ -2,9 +2,9 @@ using System;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    internal readonly struct BoundBindingRecord
+    internal readonly struct BoundViewRecord
     {
-        public BoundBindingRecord(Type type, string id)
+        public BoundViewRecord(Type type, string id)
         {
             Type = type;
             Id = id;

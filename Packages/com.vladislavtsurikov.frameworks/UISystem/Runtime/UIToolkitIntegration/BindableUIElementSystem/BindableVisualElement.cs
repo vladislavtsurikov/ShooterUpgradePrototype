@@ -3,11 +3,9 @@ using VladislavTsurikov.UISystem.Runtime.Core;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
-    public abstract class BindableVisualElement : VisualElement, IBindableUI
+    public abstract class BindableVisualElement : VisualElement, IBindableView
     {
         protected BindableVisualElement() => RegisterCallback<AttachToPanelEvent>(HandleAttachToPanel);
-
-        public string BindingId => GetType().Name;
 
         protected virtual void InitializeElements()
         {

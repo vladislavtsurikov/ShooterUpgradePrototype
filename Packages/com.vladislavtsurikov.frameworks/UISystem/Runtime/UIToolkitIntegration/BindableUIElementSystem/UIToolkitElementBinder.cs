@@ -5,7 +5,7 @@ using VladislavTsurikov.UISystem.Runtime.Core;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
-    public sealed class UIToolkitElementBinder : UIBindingScope
+    public sealed class UIToolkitElementBinder : ViewBindingScope
     {
         public UIToolkitElementBinder(UIHandler handler)
             : base(handler)
@@ -41,7 +41,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         private static string GetBindingId(VisualElement element)
         {
-            if (element is IBindableUI bindableElement && !string.IsNullOrEmpty(bindableElement.BindingId))
+            if (element is IBindableView bindableElement && !string.IsNullOrEmpty(bindableElement.BindingId))
             {
                 return bindableElement.BindingId;
             }

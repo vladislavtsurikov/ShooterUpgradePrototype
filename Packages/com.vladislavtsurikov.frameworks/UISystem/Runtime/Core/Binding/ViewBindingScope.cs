@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using VladislavTsurikov.Core.Runtime.DependencyInjection;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public abstract class UIBindingScope : IDisposable
+    public abstract class ViewBindingScope : IDisposable
     {
-        private readonly IUIDependencyResolver _resolver;
-        private readonly List<BoundBindingRecord> _records = new();
-        private readonly BindingRepeatTracker _repeatTracker = new();
+        private readonly DependencyResolver _resolver;
+        private readonly List<BoundViewRecord> _records = new();
+        private readonly ViewBindingRepeatTracker _repeatTracker = new();
         private readonly UIHandler _uiHandler;
 
-        protected UIBindingScope(UIHandler handler)
+        protected ViewBindingScope(UIHandler handler)
         {
-            _resolver = UIDependencyResolverUtility.GetRequiredResolver();
+            _resolver = DependencyResolverProvider.GetResolver();
             _uiHandler = handler;
         }
 
@@ -39,7 +40,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
                 Type type = node.GetType();
                 int index = _repeatTracker.GetAndIncrement(type, rawBindingId);
-                string finalId = UIBindingId.FromTypeAndIndex(
+                string finalId = ViewBindingId.FromTypeAndIndex(
                     _uiHandler.GetType(),
                     rawBindingId,
                     index,
@@ -47,13 +48,13 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
                 _resolver.BindInstance(type, finalId, node);
 
-                _records.Add(new BoundBindingRecord(type, finalId));
+                _records.Add(new BoundViewRecord(type, finalId));
             }
         }
 
         public void Dispose()
         {
-            foreach (BoundBindingRecord record in _records)
+            foreach (BoundViewRecord record in _records)
             {
                 _resolver.UnbindId(record.Type, record.Id);
             }

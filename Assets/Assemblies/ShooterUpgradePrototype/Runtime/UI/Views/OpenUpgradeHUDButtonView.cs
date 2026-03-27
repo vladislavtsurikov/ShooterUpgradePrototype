@@ -9,7 +9,7 @@ using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
 
 namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
-    public sealed class OpenUpgradeHUDButtonView : Button, IBindableUI
+    public sealed class OpenUpgradeHUDButtonView : Button, IBindableView
     {
         public new class UxmlFactory : UxmlFactory<OpenUpgradeHUDButtonView, UxmlTraits>
         {

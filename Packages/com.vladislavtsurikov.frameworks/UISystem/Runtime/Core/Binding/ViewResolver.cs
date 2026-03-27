@@ -1,16 +1,17 @@
 using System;
+using VladislavTsurikov.Core.Runtime.DependencyInjection;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public sealed class UIViewResolver
+    public sealed class ViewResolver
     {
         private readonly UIHandler _handler;
-        private readonly IUIDependencyResolver _resolver;
+        private readonly DependencyResolver _resolver;
 
-        public UIViewResolver(UIHandler handler)
+        public ViewResolver(UIHandler handler)
         {
             _handler = handler;
-            _resolver = UIDependencyResolverUtility.GetRequiredResolver();
+            _resolver = DependencyResolverProvider.GetResolver();
         }
 
         public TView GetView<TView>(string bindingId, Type handlerType, int index = 0)
@@ -32,7 +33,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         private TView ResolveWithId<TView>(string bindingId, Type handlerType, string instanceKey, int index)
         {
-            string id = UIBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
+            string id = ViewBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
 
             if (_resolver.TryResolveId(typeof(TView), id, out object instance) && instance is TView typedView)
             {
@@ -50,7 +51,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             int index,
             out TView view)
         {
-            string id = UIBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
+            string id = ViewBindingId.FromTypeAndIndex(handlerType, bindingId, index, instanceKey);
 
             if (_resolver.TryResolveId(typeof(TView), id, out object instance) && instance is TView typedView)
             {

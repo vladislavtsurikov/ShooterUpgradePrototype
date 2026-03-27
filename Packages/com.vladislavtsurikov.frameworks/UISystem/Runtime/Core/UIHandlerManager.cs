@@ -20,7 +20,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         protected virtual UIHandler CreateUIHandler(Type type)
         {
-            if (UIDependencyResolverUtility.TryInstantiate(type, out object instance) && instance is UIHandler handler)
+            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            if (resolver != null && resolver.Instantiate(type) is UIHandler handler)
             {
                 return handler;
             }
@@ -30,7 +31,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         protected virtual void RegisterInContainer(UIHandler handler)
         {
-            IUIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
             if (resolver == null)
             {
                 return;
@@ -43,7 +44,9 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         protected virtual bool TryResolveInContainer<THandler>(string bindingId, out THandler handler)
             where THandler : UIHandler
         {
-            if (UIDependencyResolverUtility.TryResolveId(typeof(THandler), bindingId, out object instance) &&
+            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            if (resolver != null &&
+                resolver.TryResolveId(typeof(THandler), bindingId, out object instance) &&
                 instance is THandler typedHandler)
             {
                 handler = typedHandler;
@@ -56,7 +59,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         protected virtual void BeforeRemoveHandler(UIHandler handler)
         {
-            IUIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
             if (resolver == null)
             {
                 return;

@@ -2,7 +2,7 @@ using UnityEngine;
 using VladislavTsurikov.UISystem.Runtime.Core;
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
-    public class UIComponentBinder : UIBindingScope
+    public class UIComponentBinder : ViewBindingScope
     {
         public UIComponentBinder(UIHandler handler)
             : base(handler)
@@ -11,7 +11,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 
         public void BindUIComponentsFrom(GameObject instance)
         {
-            IBindableUI[] allComponents = instance.GetComponentsInChildren<IBindableUI>(true);
+            IBindableView[] allComponents = instance.GetComponentsInChildren<IBindableView>(true);
             RegisterBindings(allComponents, component => component.BindingId);
         }
     }

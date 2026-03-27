@@ -28,8 +28,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         public UIToolkitLayoutLoader Loader { get; }
         public VisualElement SpawnedRoot => _spawnedRoot;
 
-        public event Action<VisualElement, UIToolkitUIHandler> OnAnyChildAdded;
-
         protected virtual string ParentContainerName => null;
 
         protected virtual string SpawnedRootName => null;
@@ -120,11 +118,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                     $"[UIToolkitUIHandler] Failed to spawn root layout for handler `{GetType().Name}`.");
                 return;
             }
-
-            if (Parent is UIToolkitUIHandler parentHandler)
-            {
-                parentHandler.OnAnyChildAdded?.Invoke(spawnedRoot, this);
-            }
         }
 
         private VisualElement ResolveParentElement()
@@ -182,7 +175,9 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         internal VisualElement ResolveTopLevelRoot()
         {
-            if (UIDependencyResolverUtility.TryResolve(typeof(UIDocument), out object instance) &&
+            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            if (resolver != null &&
+                resolver.TryResolve(typeof(UIDocument), out object instance) &&
                 instance is UIDocument document)
             {
                 return document.rootVisualElement;

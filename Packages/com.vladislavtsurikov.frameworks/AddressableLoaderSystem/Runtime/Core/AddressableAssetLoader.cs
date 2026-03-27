@@ -2,9 +2,8 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 
-namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
+namespace VladislavTsurikov.AddressableLoaderSystem.Runtime.Core
 {
     public abstract class AddressableAssetLoader<TAsset> : ResourceLoader
         where TAsset : Object

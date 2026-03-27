@@ -1,7 +1,9 @@
 {
     "name": "VladislavTsurikov.Core",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "VladislavTsurikov.ReflectionUtility"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

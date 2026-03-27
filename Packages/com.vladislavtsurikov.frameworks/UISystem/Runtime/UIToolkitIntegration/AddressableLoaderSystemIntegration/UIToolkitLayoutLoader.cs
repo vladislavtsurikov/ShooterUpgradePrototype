@@ -2,7 +2,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine.UIElements;
-using VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration;
+using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
