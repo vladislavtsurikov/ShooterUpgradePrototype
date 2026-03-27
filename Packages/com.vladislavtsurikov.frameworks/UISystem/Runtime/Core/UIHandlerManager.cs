@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.Core.Runtime;
+using VladislavTsurikov.Core.Runtime.DependencyInjection;
 using VladislavTsurikov.UISystem.Runtime.Core.Graph;
 using VladislavTsurikov.ReflectionUtility.Runtime;
 
@@ -20,7 +21,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         protected virtual UIHandler CreateUIHandler(Type type)
         {
-            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
             if (resolver != null && resolver.Instantiate(type) is UIHandler handler)
             {
                 return handler;
@@ -31,7 +32,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         protected virtual void RegisterInContainer(UIHandler handler)
         {
-            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
             if (resolver == null)
             {
                 return;
@@ -44,7 +45,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         protected virtual bool TryResolveInContainer<THandler>(string bindingId, out THandler handler)
             where THandler : UIHandler
         {
-            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
             if (resolver != null &&
                 resolver.TryResolveId(typeof(THandler), bindingId, out object instance) &&
                 instance is THandler typedHandler)
@@ -59,7 +60,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         protected virtual void BeforeRemoveHandler(UIHandler handler)
         {
-            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
             if (resolver == null)
             {
                 return;

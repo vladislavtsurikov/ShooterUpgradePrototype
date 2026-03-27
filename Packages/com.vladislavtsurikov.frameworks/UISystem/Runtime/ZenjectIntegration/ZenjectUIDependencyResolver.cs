@@ -1,10 +1,11 @@
 #if UI_SYSTEM_ZENJECT
 using System;
 using Zenject;
+using VladislavTsurikov.Core.Runtime.DependencyInjection;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public sealed class ZenjectUIDependencyResolver : UIDependencyResolver
+    public sealed class ZenjectUIDependencyResolver : DependencyResolver
     {
         public override object Instantiate(Type type) => ProjectContext.Instance.Container.Instantiate(type);
 

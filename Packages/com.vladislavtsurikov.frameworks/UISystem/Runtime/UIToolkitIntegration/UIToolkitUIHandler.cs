@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UIElements;
+using VladislavTsurikov.Core.Runtime.DependencyInjection;
 using VladislavTsurikov.UISystem.Runtime.Core;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
@@ -175,7 +176,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         internal VisualElement ResolveTopLevelRoot()
         {
-            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
             if (resolver != null &&
                 resolver.TryResolve(typeof(UIDocument), out object instance) &&
                 instance is UIDocument document)

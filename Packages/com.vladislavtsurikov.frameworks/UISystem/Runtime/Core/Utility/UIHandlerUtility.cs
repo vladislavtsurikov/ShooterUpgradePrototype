@@ -1,6 +1,8 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 
+using VladislavTsurikov.Core.Runtime.DependencyInjection;
+
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
     public static class UIHandlerUtility
@@ -17,7 +19,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public static T FindHandler<T>(Type parentType, string instanceKey) where T : UIHandler
         {
             string id = UIHandlerBindingId.FromParentType(parentType, instanceKey);
-            UIDependencyResolver resolver = UIDependencyResolverUtility.GetResolver();
+            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
             if (resolver != null && resolver.TryResolveId(typeof(T), id, out object instance) && instance is T handler)
             {
                 return handler;
