@@ -128,7 +128,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
             foreach (string statId in _upgradeStatIds)
             {
-                if (!childrenModule.TryGetDynamicChild(statId, out UpgradeStatRowPresenter rowHandler))
+                if (!childrenModule.TryGetDynamicChild(statId, out UpgradeStatRowPresenter rowPresenter))
                 {
                     continue;
                 }
@@ -140,7 +140,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
                 float currentValue = _playerStatsService.GetCumulativeValue(statId, currentLevel);
                 float previewValue = _playerStatsService.GetCumulativeValue(statId, currentLevel + draftLevel);
 
-                rowHandler.UpdateState(
+                rowPresenter.UpdateState(
                     statId,
                     currentLevel,
                     draftLevel,

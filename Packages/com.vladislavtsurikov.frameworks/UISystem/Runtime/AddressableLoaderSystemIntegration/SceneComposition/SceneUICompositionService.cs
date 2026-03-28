@@ -12,7 +12,7 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
 
         public SceneUICompositionService(UIPresenterManager presenterManager) => _presenterManager = presenterManager;
 
-        public void RemoveScenePresenters() => _presenterManager.RemoveExceptGlobalHandlers();
+        public void RemoveScenePresenters() => _presenterManager.RemoveExceptGlobalPresenters();
 
         public UniTask ComposeScene(string sceneName, CancellationToken cancellationToken = default)
         {

@@ -7,8 +7,8 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
     public sealed class UIToolkitElementBinder : ViewBindingScope
     {
-        public UIToolkitElementBinder(UIPresenter handler)
-            : base(handler)
+        public UIToolkitElementBinder(UIPresenter presenter)
+            : base(presenter)
         {
         }
 

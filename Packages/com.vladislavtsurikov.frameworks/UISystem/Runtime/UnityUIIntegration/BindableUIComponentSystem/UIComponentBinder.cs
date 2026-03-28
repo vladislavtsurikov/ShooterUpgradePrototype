@@ -4,8 +4,8 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
     public class UIComponentBinder : ViewBindingScope
     {
-        public UIComponentBinder(UIPresenter handler)
-            : base(handler)
+        public UIComponentBinder(UIPresenter presenter)
+            : base(presenter)
         {
         }
 

@@ -76,22 +76,22 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public void RemoveFilter(Func<FilterAttribute, bool> filter)
         {
             _filters.Remove(filter);
-            CleanupInactiveHandlers(_filters);
+            CleanupInactivePresenters(_filters);
         }
 
-        public void RemoveExceptGlobalHandlers()
+        public void RemoveExceptGlobalPresenters()
         {
             var filtersToKeep = _filters
                 .Where(f => f(new GlobalFilterAttribute()))
                 .ToList();
 
-            CleanupInactiveHandlers(filtersToKeep);
+            CleanupInactivePresenters(filtersToKeep);
 
             _filters.Clear();
             _filters.AddRange(filtersToKeep);
         }
 
-        private void CleanupInactiveHandlers(List<Func<FilterAttribute, bool>> activeFilters)
+        private void CleanupInactivePresenters(List<Func<FilterAttribute, bool>> activeFilters)
         {
             var toRemove = new List<Node>();
 
