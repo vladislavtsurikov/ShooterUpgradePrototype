@@ -9,26 +9,16 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     {
         public static async UniTask Show<T>(CancellationToken ct = default)
             where T : UIHandler =>
-            await Handle<T>(null, true, ct);
-
-        public static async UniTask Show<T, TParent>(CancellationToken ct = default)
-            where T : UIHandler
-            where TParent : UIHandler =>
-            await Handle<T>(typeof(TParent), true, ct);
+            await Handle<T>(true, ct);
 
         public static async UniTask Hide<T>(CancellationToken ct = default)
             where T : UIHandler =>
-            await Handle<T>(null, false, ct);
+            await Handle<T>(false, ct);
 
-        public static async UniTask Hide<T, TParent>(CancellationToken ct = default)
-            where T : UIHandler
-            where TParent : UIHandler =>
-            await Handle<T>(typeof(TParent), false, ct);
-
-        private static async UniTask Handle<T>(Type parentType, bool isShow, CancellationToken ct)
+        private static async UniTask Handle<T>(bool isShow, CancellationToken ct)
             where T : UIHandler
         {
-            await UIHandlerResolver.EnsureHandlersReady();
+            Type parentType = ResolveParentType<T>();
 
             T handler = parentType == null
                 ? UIHandlerResolver.FindHandler<T>()
@@ -50,6 +40,12 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             {
                 await handler.Hide(ct);
             }
+        }
+
+        private static Type ResolveParentType<T>() where T : UIHandler
+        {
+            var attribute = (UIParentAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(UIParentAttribute));
+            return attribute?.ParentType;
         }
     }
 }

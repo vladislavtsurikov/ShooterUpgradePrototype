@@ -88,7 +88,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
         private async UniTaskVoid CloseAsync()
         {
             _draftLevels.Clear();
-            await UINavigator.Hide<UpgradeWindowPresenter, Root>(CancellationToken.None);
+            await UINavigator.Hide<UpgradeWindowPresenter>(CancellationToken.None);
         }
 
         private void ApplyDraftLevels()

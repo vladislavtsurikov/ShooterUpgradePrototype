@@ -23,10 +23,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 
         protected override void ApplyName(GameObject instance, string name)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                instance.name = name;
-            }
+            instance.name = name;
         }
 
         protected override void ApplyVisibility(GameObject instance, bool visible) => instance.SetActive(visible);

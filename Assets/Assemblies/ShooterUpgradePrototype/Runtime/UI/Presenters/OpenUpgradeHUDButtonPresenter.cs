@@ -22,7 +22,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
             _view = ViewResolver.GetView<OpenUpgradeHUDButtonView>(nameof(OpenUpgradeHUDButtonView));
 
             _view.OnClicked
-                .Subscribe(_ => UINavigator.Show<UpgradeWindowPresenter, Root>(cancellationToken).Forget())
+                .Subscribe(_ => UINavigator.Show<UpgradeWindowPresenter>(cancellationToken).Forget())
                 .AddTo(disposables);
 
             return UniTask.CompletedTask;
