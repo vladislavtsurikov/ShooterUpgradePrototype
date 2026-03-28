@@ -139,7 +139,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public async UniTask Show(CancellationToken cancellationToken)
         {
-            await UIHandlerUtility.EnsureHandlersReady();
+            await UIHandlerResolver.EnsureHandlersReady();
 
             await BeforeShow(cancellationToken);
             await OnShow(cancellationToken);
@@ -156,7 +156,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public async UniTask Hide(CancellationToken cancellationToken)
         {
-            await UIHandlerUtility.EnsureHandlersReady();
+            await UIHandlerResolver.EnsureHandlersReady();
 
             await BeforeHide(cancellationToken);
             await OnHide(cancellationToken);

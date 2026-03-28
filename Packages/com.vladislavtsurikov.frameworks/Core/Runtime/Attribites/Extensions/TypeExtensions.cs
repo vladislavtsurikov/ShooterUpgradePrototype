@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using UnityEngine;
-using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 
-namespace VladislavTsurikov.UISystem.Runtime.Core
+namespace VladislavTsurikov.AddressableLoaderSystem.Runtime.Core
 {
     public static class TypeExtensions
     {

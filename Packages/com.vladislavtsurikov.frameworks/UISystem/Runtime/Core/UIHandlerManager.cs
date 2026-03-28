@@ -38,8 +38,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 return;
             }
 
-            string bindingId = UIHandlerBindingId.FromHandler(handler);
-            resolver.BindInstance(handler.GetType(), bindingId, handler);
+            UIHandlerKey key = UIHandlerKey.FromHandler(handler);
+            resolver.BindInstance(handler.GetType(), key.Id, handler);
         }
 
         protected virtual bool TryResolveInContainer<THandler>(string bindingId, out THandler handler)
@@ -66,8 +66,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 return;
             }
 
-            string bindingId = UIHandlerBindingId.FromHandler(handler);
-            resolver.UnbindId(handler.GetType(), bindingId);
+            UIHandlerKey key = UIHandlerKey.FromHandler(handler);
+            resolver.UnbindId(handler.GetType(), key.Id);
         }
 
         public async UniTask AddFilter(Func<FilterAttribute, bool> filter,
@@ -149,7 +149,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             CancellationToken cancellationToken)
             where THandler : UIHandler
         {
-            await UIHandlerUtility.EnsureHandlersReady();
+            await UIHandlerResolver.EnsureHandlersReady();
             ValidateDynamicChildType(typeof(THandler));
 
             if (TryGetDynamicChild(parent, instanceKey, out THandler existingHandler))
@@ -196,8 +196,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 return false;
             }
 
-            string bindingId = UIHandlerBindingId.FromDynamicParent(parent, instanceKey);
-            return TryResolveInContainer(bindingId, out handler);
+            UIHandlerKey key = UIHandlerKey.FromDynamicParent(parent, instanceKey);
+            return TryResolveInContainer(key.Id, out handler);
         }
 
         internal async UniTask DestroyDynamicChild<THandler>(

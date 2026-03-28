@@ -4,20 +4,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 {
     public readonly struct ViewKey
     {
-        public ViewKey(
-            Type viewType,
-            Type handlerType,
-            string bindingId,
-            int index = 0,
-            string instanceKey = null)
-        {
-            ViewType = viewType;
-            HandlerType = handlerType;
-            BindingId = bindingId;
-            Index = index;
-            InstanceKey = instanceKey;
-        }
-
         public Type ViewType { get; }
         public Type HandlerType { get; }
         public string BindingId { get; }
@@ -34,6 +20,20 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                     ? $"{handlerName}:{BindingId}#{Index}"
                     : $"{handlerName}:{InstanceKey}:{BindingId}#{Index}";
             }
+        }
+
+        public ViewKey(
+            Type viewType,
+            Type handlerType,
+            string bindingId,
+            int index = 0,
+            string instanceKey = null)
+        {
+            ViewType = viewType;
+            HandlerType = handlerType;
+            BindingId = bindingId;
+            Index = index;
+            InstanceKey = instanceKey;
         }
     }
 }

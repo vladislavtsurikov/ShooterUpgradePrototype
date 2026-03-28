@@ -5,8 +5,15 @@ using VladislavTsurikov.Core.Runtime.DependencyInjection;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public static class UIHandlerUtility
+    public static class UIHandlerResolver
     {
+        private static readonly DependencyResolver _resolver;
+
+        static UIHandlerResolver()
+        {
+            _resolver = DependencyResolverProvider.GetResolver();
+        }
+
         public static async UniTask EnsureHandlersReady()
         {
             if (UIHandlerManager.CurrentAddFilterTask.Status == UniTaskStatus.Pending)
@@ -18,9 +25,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public static T FindHandler<T>() where T : UIHandler => FindHandler<T>(null);
         public static T FindHandler<T>(Type parentType, string instanceKey) where T : UIHandler
         {
-            string id = UIHandlerBindingId.FromParentType(parentType, instanceKey);
-            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
-            if (resolver != null && resolver.TryResolveId(typeof(T), id, out object instance) && instance is T handler)
+            UIHandlerKey key = UIHandlerKey.FromParentType(parentType, instanceKey);
+            if (_resolver != null && _resolver.TryResolveId(typeof(T), key.Id, out object instance) && instance is T handler)
             {
                 return handler;
             }

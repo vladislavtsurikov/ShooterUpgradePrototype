@@ -8,8 +8,9 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     {
         private readonly DependencyResolver _resolver;
         private readonly List<ViewKey> _records = new();
-        private readonly ViewBindingRepeatTracker _repeatTracker = new();
         private readonly UIHandler _uiHandler;
+
+        protected UIHandler UIHandler => _uiHandler;
 
         protected ViewBindingScope(UIHandler handler)
         {
@@ -17,14 +18,14 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             _uiHandler = handler;
         }
 
-        protected UIHandler UIHandler => _uiHandler;
-
         protected void RegisterBindings<TNode>(
             IEnumerable<TNode> nodes,
             Func<TNode, string> getBindingId,
             Func<TNode, string> getInstanceKey = null)
             where TNode : class
         {
+            var repeats = new Dictionary<(Type, string), int>();
+
             foreach (TNode node in nodes)
             {
                 if (node == null)
@@ -39,7 +40,10 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 }
 
                 Type type = node.GetType();
-                int index = _repeatTracker.GetAndIncrement(type, rawBindingId);
+                (Type, string) repeatKey = (type, rawBindingId);
+                repeats.TryGetValue(repeatKey, out int index);
+                repeats[repeatKey] = index + 1;
+
                 ViewKey key = new(
                     type,
                     _uiHandler.GetType(),
@@ -61,7 +65,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
 
             _records.Clear();
-            _repeatTracker.Reset();
         }
     }
 }

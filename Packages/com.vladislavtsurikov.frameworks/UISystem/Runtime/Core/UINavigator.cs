@@ -28,11 +28,11 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         private static async UniTask Handle<T>(Type parentType, bool isShow, CancellationToken ct)
             where T : UIHandler
         {
-            await UIHandlerUtility.EnsureHandlersReady();
+            await UIHandlerResolver.EnsureHandlersReady();
 
             T handler = parentType == null
-                ? UIHandlerUtility.FindHandler<T>()
-                : UIHandlerUtility.FindHandler<T>(parentType);
+                ? UIHandlerResolver.FindHandler<T>()
+                : UIHandlerResolver.FindHandler<T>(parentType);
 
             if (handler == null)
             {
