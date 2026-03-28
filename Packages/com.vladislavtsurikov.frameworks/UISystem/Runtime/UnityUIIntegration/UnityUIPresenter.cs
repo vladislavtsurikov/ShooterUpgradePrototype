@@ -17,7 +17,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 
         protected virtual string SpawnedRootName => null;
 
-        protected virtual bool UsesParentBindingContext => Loader == null;
+        protected override bool UsesParentBindingContext => Loader == null;
 
         protected UnityUIComponentBinder ComponentBinder => _componentBinder;
 

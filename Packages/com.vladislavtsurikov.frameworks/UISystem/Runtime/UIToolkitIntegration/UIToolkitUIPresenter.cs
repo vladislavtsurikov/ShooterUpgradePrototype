@@ -33,6 +33,8 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected virtual string SpawnedRootName => null;
 
+        protected virtual bool UseParentContainerAsSpawnedRoot => false;
+
         protected override bool UsesParentBindingContext => Loader == null;
 
         protected UIToolkitElementBinder ElementBinder => _elementBinder;
@@ -46,7 +48,10 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected override void ShowPresenterRoot()
         {
-            _spawnedRoot.style.display = StyleKeyword.Null;
+            if (_spawnedRoot != null)
+            {
+                _spawnedRoot.style.display = StyleKeyword.Null;
+            }
         }
 
         protected override void HidePresenterRoot()
@@ -59,10 +64,9 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected override async UniTask DestroyPresenterRoot(bool unload, CancellationToken cancellationToken)
         {
-            if (_spawnedRoot != null)
+            if (Loader != null && _spawnedRoot != null)
             {
                 _spawnedRoot.RemoveFromHierarchy();
-                _spawnedRoot = null;
             }
 
             if (Loader != null)
@@ -72,6 +76,8 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                     await Loader.Unload(cancellationToken);
                 }
             }
+
+            _spawnedRoot = null;
         }
 
         protected override async UniTask DestroyUIPresenter(
@@ -94,8 +100,18 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         private async UniTask SpawnLayoutIfNeeded(CancellationToken cancellationToken)
         {
-            if (Loader == null || SpawnedRoot != null)
+            if (SpawnedRoot != null)
             {
+                return;
+            }
+
+            if (Loader == null)
+            {
+                if (UseParentContainerAsSpawnedRoot)
+                {
+                    _spawnedRoot = ResolveParentElement();
+                }
+
                 return;
             }
 
@@ -136,13 +152,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return parentPresenter.SpawnedRoot;
             }
 
-            if (parentPresenter.ViewResolver.TryGetView(parentContainerName, out VisualElement container))
-            {
-                return container;
-            }
-
-            throw new InvalidOperationException(
-                $"[UIToolkitUIPresenter] Parent container `{parentContainerName}` was not found in presenter `{parentPresenter.GetType().Name}`.");
+            return parentPresenter.ViewResolver.GetView<VisualElement>(parentContainerName);
         }
 
         internal string ResolveParentContainerName()

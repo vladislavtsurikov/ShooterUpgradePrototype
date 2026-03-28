@@ -10,29 +10,12 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public sealed class UIPresenterChildrenModule : IDisposable
     {
         private readonly UIPresenter _owner;
-        private readonly SerialDisposable _childActivitySubscriptions = new();
-        private readonly SerialDisposable _childrenChanges = new();
-        private UIPresenter _activeChild;
 
         public ReactiveCollection<UIPresenter> All { get; } = new();
 
         public UIPresenterChildrenModule(UIPresenter owner)
         {
             _owner = owner;
-        }
-
-        public void EnableSingleActiveChildMode()
-        {
-            _activeChild = null;
-            _childrenChanges.Disposable = null;
-            _childActivitySubscriptions.Disposable = null;
-
-            _childrenChanges.Disposable = new CompositeDisposable(
-                All.ObserveAdd().Subscribe(_ => RebuildChildActivitySubscriptions()),
-                All.ObserveRemove().Subscribe(_ => RebuildChildActivitySubscriptions()),
-                All.ObserveReset().Subscribe(_ => RebuildChildActivitySubscriptions()));
-
-            RebuildChildActivitySubscriptions();
         }
 
         public void Add(UIPresenter child) => All.Add(child);
@@ -123,42 +106,10 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public void Dispose()
         {
-            _childrenChanges.Dispose();
-            _childActivitySubscriptions.Dispose();
             All.Clear();
         }
 
         private static bool IsDynamicChild(UIPresenter child) =>
             child != null && Attribute.IsDefined(child.GetType(), typeof(DynamicUIPresenterChildAttribute), inherit: true);
-
-        private void RebuildChildActivitySubscriptions()
-        {
-            var subscriptions = new CompositeDisposable();
-
-            foreach (UIPresenter child in All)
-            {
-                if (child == null)
-                {
-                    continue;
-                }
-
-                child.IsActive
-                    .Where(isActive => isActive)
-                    .Subscribe(_ => OnChildBecameActive(child))
-                    .AddTo(subscriptions);
-            }
-
-            _childActivitySubscriptions.Disposable = subscriptions;
-        }
-
-        private void OnChildBecameActive(UIPresenter next)
-        {
-            if (_activeChild != null && _activeChild != next)
-            {
-                _activeChild.Hide(CancellationToken.None).Forget();
-            }
-
-            _activeChild = next;
-        }
     }
 }
