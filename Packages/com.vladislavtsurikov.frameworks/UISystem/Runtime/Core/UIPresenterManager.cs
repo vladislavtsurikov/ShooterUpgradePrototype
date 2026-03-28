@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -12,34 +12,34 @@ using VladislavTsurikov.ReflectionUtility.Runtime;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public class UIHandlerManager
+    public class UIPresenterManager
     {
-        private readonly Dictionary<Node, UIHandler> _activeUIHandlers = new();
+        private readonly Dictionary<Node, UIPresenter> _activeUIPresenters = new();
         private readonly List<Func<FilterAttribute, bool>> _filters = new();
         private readonly DependencyResolver _resolver;
 
         internal static UniTask CurrentAddFilterTask { get; private set; }
 
-        public UIHandlerManager()
+        public UIPresenterManager()
         {
             _resolver = DependencyResolverProvider.GetResolver();
         }
 
-        protected virtual UIHandler CreateUIHandler(Type type)
+        protected virtual UIPresenter CreateUIPresenter(Type type)
         {
-            return _resolver.Instantiate(type) as UIHandler;
+            return _resolver.Instantiate(type) as UIPresenter;
         }
 
-        protected virtual void RegisterInContainer(UIHandler handler)
+        protected virtual void RegisterInContainer(UIPresenter presenter)
         {
-            UIHandlerKey key = UIHandlerKey.FromHandler(handler);
-            _resolver.BindInstance(handler.GetType(), key.Id, handler);
+            UIPresenterKey key = UIPresenterKey.FromPresenter(presenter);
+            _resolver.BindInstance(presenter.GetType(), key.Id, presenter);
         }
 
-        protected virtual void BeforeRemoveHandler(UIHandler handler)
+        protected virtual void BeforeRemovePresenter(UIPresenter presenter)
         {
-            UIHandlerKey key = UIHandlerKey.FromHandler(handler);
-            _resolver.UnbindId(handler.GetType(), key.Id);
+            UIPresenterKey key = UIPresenterKey.FromPresenter(presenter);
+            _resolver.UnbindId(presenter.GetType(), key.Id);
         }
 
         public async UniTask AddFilter(Func<FilterAttribute, bool> filter,
@@ -57,14 +57,14 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 if (tree.Roots.Count == 0)
                 {
                     Debug.LogError(
-                        "[UIHandlerManager] NodeTree contains no roots. Please check NodeTreeAsset or generation logic.");
+                        "[UIPresenterManager] NodeTree contains no roots. Please check NodeTreeAsset or generation logic.");
                     return;
                 }
 
                 foreach (Node root in tree.Roots)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await TraverseMissingUIHandler(root, null, cancellationToken);
+                    await TraverseMissingUIPresenter(root, null, cancellationToken);
                 }
             }
             finally
@@ -95,112 +95,112 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         {
             var toRemove = new List<Node>();
 
-            foreach (KeyValuePair<Node, UIHandler> pair in _activeUIHandlers)
+            foreach (KeyValuePair<Node, UIPresenter> pair in _activeUIPresenters)
             {
-                Type type = pair.Key.HandlerType;
+                Type type = pair.Key.PresenterType;
 
                 if (type == null || !activeFilters.Any(f => type.MatchesAnyFilter(f)))
                 {
-                    UIHandler handler = pair.Value;
-                    handler.Dispose();
-                    BeforeRemoveHandler(handler);
+                    UIPresenter presenter = pair.Value;
+                    presenter.Dispose();
+                    BeforeRemovePresenter(presenter);
                     toRemove.Add(pair.Key);
                 }
             }
 
             foreach (Node node in toRemove)
             {
-                _activeUIHandlers.Remove(node);
+                _activeUIPresenters.Remove(node);
             }
         }
 
-        internal async UniTask<THandler> CreateDynamicChild<THandler>(
-            UIHandler parent,
+        internal async UniTask<TPresenter> CreateDynamicChild<TPresenter>(
+            UIPresenter parent,
             string instanceKey,
             bool showAutomatically,
             CancellationToken cancellationToken)
-            where THandler : UIHandler
+            where TPresenter : UIPresenter
         {
-            await UIHandlerResolver.EnsureHandlersReady();
+            await UIPresenterResolver.EnsurePresentersReady();
 
-            if (TryGetDynamicChild(parent, instanceKey, out THandler existingHandler))
+            if (TryGetDynamicChild(parent, instanceKey, out TPresenter existingPresenter))
             {
-                if (showAutomatically && !existingHandler.IsActive.Value)
+                if (showAutomatically && !existingPresenter.IsActive.Value)
                 {
-                    await existingHandler.Show(cancellationToken);
+                    await existingPresenter.Show(cancellationToken);
                 }
 
-                return existingHandler;
+                return existingPresenter;
             }
 
-            THandler handler = (THandler)CreateUIHandler(typeof(THandler));
-            AttachHandler(handler, parent, instanceKey);
-            await handler.Initialize(cancellationToken, handler.Disposables);
+            TPresenter presenter = (TPresenter)CreateUIPresenter(typeof(TPresenter));
+            AttachPresenter(presenter, parent, instanceKey);
+            await presenter.Initialize(cancellationToken, presenter.Disposables);
 
             if (showAutomatically)
             {
-                await handler.Show(cancellationToken);
+                await presenter.Show(cancellationToken);
             }
 
-            return handler;
+            return presenter;
         }
 
-        internal THandler GetDynamicChild<THandler>(UIHandler parent, string instanceKey)
-            where THandler : UIHandler
+        internal TPresenter GetDynamicChild<TPresenter>(UIPresenter parent, string instanceKey)
+            where TPresenter : UIPresenter
         {
-            TryGetDynamicChild(parent, instanceKey, out THandler handler);
-            return handler;
+            TryGetDynamicChild(parent, instanceKey, out TPresenter presenter);
+            return presenter;
         }
 
-        internal bool TryGetDynamicChild<THandler>(UIHandler parent, string instanceKey, out THandler handler)
-            where THandler : UIHandler
+        internal bool TryGetDynamicChild<TPresenter>(UIPresenter parent, string instanceKey, out TPresenter presenter)
+            where TPresenter : UIPresenter
         {
             if (parent == null || string.IsNullOrEmpty(instanceKey))
             {
-                handler = null;
+                presenter = null;
                 return false;
             }
 
             if (parent.ChildrenModule == null)
             {
-                handler = null;
+                presenter = null;
                 return false;
             }
 
-            UIHandlerKey key = UIHandlerKey.FromDynamicParent(parent, instanceKey);
-            return UIHandlerResolver.TryResolve(key, out handler);
+            UIPresenterKey key = UIPresenterKey.FromDynamicParent(parent, instanceKey);
+            return UIPresenterResolver.TryResolve(key, out presenter);
         }
 
-        internal async UniTask DestroyDynamicChild<THandler>(
-            UIHandler parent,
+        internal async UniTask DestroyDynamicChild<TPresenter>(
+            UIPresenter parent,
             string instanceKey,
             bool unload,
             CancellationToken cancellationToken)
-            where THandler : UIHandler
+            where TPresenter : UIPresenter
         {
-            if (!TryGetDynamicChild(parent, instanceKey, out THandler handler))
+            if (!TryGetDynamicChild(parent, instanceKey, out TPresenter presenter))
             {
                 return;
             }
 
-            UIChildrenModule childrenModule = RequireChildrenModule(parent);
-            await handler.Destroy(unload, cancellationToken);
-            BeforeRemoveHandler(handler);
-            childrenModule.Remove(handler);
+            UIPresenterChildrenModule childrenModule = RequireChildrenModule(parent);
+            await presenter.Destroy(unload, cancellationToken);
+            BeforeRemovePresenter(presenter);
+            childrenModule.Remove(presenter);
         }
 
-        private async UniTask TraverseMissingUIHandler(Node node, UIHandler parent, CancellationToken cancellationToken)
+        private async UniTask TraverseMissingUIPresenter(Node node, UIPresenter parent, CancellationToken cancellationToken)
         {
-            if (_activeUIHandlers.ContainsKey(node))
+            if (_activeUIPresenters.ContainsKey(node))
             {
                 return;
             }
 
-            Type type = node.HandlerType;
+            Type type = node.PresenterType;
             if (type == null)
             {
                 Debug.LogError(
-                    "[UIHandlerManager] Failed to resolve type for node. Node was probably deserialized incorrectly or type is missing.");
+                    "[UIPresenterManager] Failed to resolve type for node. Node was probably deserialized incorrectly or type is missing.");
                 return;
             }
 
@@ -209,47 +209,47 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 return;
             }
 
-            UIHandler handler = CreateUIHandler(type);
-            _activeUIHandlers[node] = handler;
-            AttachHandler(handler, parent);
+            UIPresenter presenter = CreateUIPresenter(type);
+            _activeUIPresenters[node] = presenter;
+            AttachPresenter(presenter, parent);
 
-            if (handler.Parent == null)
+            if (presenter.Parent == null)
             {
-                await handler.Initialize(cancellationToken, handler.Disposables);
+                await presenter.Initialize(cancellationToken, presenter.Disposables);
             }
 
             foreach (Node child in node.Children)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                await TraverseMissingUIHandler(child, handler, cancellationToken);
+                await TraverseMissingUIPresenter(child, presenter, cancellationToken);
             }
         }
 
-        private void AttachHandler(UIHandler handler, UIHandler parent, string instanceKey = null)
+        private void AttachPresenter(UIPresenter presenter, UIPresenter parent, string instanceKey = null)
         {
-            handler.SetUIHandlerManager(this);
+            presenter.SetUIPresenterManager(this);
 
             if (parent != null)
             {
-                UIChildrenModule childrenModule = RequireChildrenModule(parent);
-                childrenModule.Add(handler);
-                handler.SetParent(parent);
+                UIPresenterChildrenModule childrenModule = RequireChildrenModule(parent);
+                childrenModule.Add(presenter);
+                presenter.SetParent(parent);
             }
 
-            handler.SetInstanceKey(instanceKey);
+            presenter.SetInstanceKey(instanceKey);
 
-            RegisterInContainer(handler);
+            RegisterInContainer(presenter);
         }
 
-        private static UIChildrenModule RequireChildrenModule(UIHandler handler)
+        private static UIPresenterChildrenModule RequireChildrenModule(UIPresenter presenter)
         {
-            if (handler?.ChildrenModule != null)
+            if (presenter?.ChildrenModule != null)
             {
-                return handler.ChildrenModule;
+                return presenter.ChildrenModule;
             }
 
             throw new InvalidOperationException(
-                $"[UISystem] Handler `{handler?.GetType().FullName}` does not support child handlers.");
+                $"[UISystem] Presenter `{presenter?.GetType().FullName}` does not support child presenters.");
         }
 
         private static NodeTree GetNodeTree()
@@ -265,7 +265,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         private static NodeTree BuildNodeTreeAtRuntime()
         {
-            Type[] allTypes = AllTypesDerivedFrom<UIHandler>.Types
+            Type[] allTypes = AllTypesDerivedFrom<UIPresenter>.Types
                 .Where(type => !IsDynamicChildType(type))
                 .ToArray();
             var typeToNode = new Dictionary<Type, Node>();
@@ -274,7 +274,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             {
                 var node = new Node
                 {
-                    HandlerType = type,
+                    PresenterType = type,
                     Filters = type
                         .GetCustomAttributes(typeof(FilterAttribute), true)
                         .Cast<FilterAttribute>()
@@ -304,7 +304,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 if (parentAttribute != null)
                 {
                     Debug.LogWarning(
-                        $"[UIHandlerManager] Runtime tree generation skipped `{type.FullName}` because parent `{parentAttribute.ParentType?.FullName}` was not found.");
+                        $"[UIPresenterManager] Runtime tree generation skipped `{type.FullName}` because parent `{parentAttribute.ParentType?.FullName}` was not found.");
                     continue;
                 }
 
@@ -315,6 +315,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         }
 
         private static bool IsDynamicChildType(Type type) =>
-            Attribute.IsDefined(type, typeof(DynamicUIChildAttribute), inherit: true);
+            Attribute.IsDefined(type, typeof(DynamicUIPresenterChildAttribute), inherit: true);
     }
 }

@@ -5,7 +5,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public readonly struct ViewKey
     {
         public Type ViewType { get; }
-        public Type HandlerType { get; }
+        public Type PresenterType { get; }
         public string BindingId { get; }
         public int Index { get; }
         public string InstanceKey { get; }
@@ -14,23 +14,23 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         {
             get
             {
-                string handlerName = HandlerType.Name;
+                string presenterName = PresenterType.Name;
 
                 return string.IsNullOrEmpty(InstanceKey)
-                    ? $"{handlerName}:{BindingId}#{Index}"
-                    : $"{handlerName}:{InstanceKey}:{BindingId}#{Index}";
+                    ? $"{presenterName}:{BindingId}#{Index}"
+                    : $"{presenterName}:{InstanceKey}:{BindingId}#{Index}";
             }
         }
 
         public ViewKey(
             Type viewType,
-            Type handlerType,
+            Type presenterType,
             string bindingId,
             int index = 0,
             string instanceKey = null)
         {
             ViewType = viewType;
-            HandlerType = handlerType;
+            PresenterType = presenterType;
             BindingId = bindingId;
             Index = index;
             InstanceKey = instanceKey;

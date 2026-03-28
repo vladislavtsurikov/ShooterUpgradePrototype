@@ -15,14 +15,14 @@ namespace ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(Root), RootSlots.HUD)]
-    public sealed class BattleHUDRootPresenter : UIToolkitUIHandler
+    public sealed class BattleHUDRootPresenter : UIToolkitUIPresenter
     {
         public BattleHUDRootPresenter(BattleHUDLayoutLoader loader)
             : base(loader)
         {
         }
 
-        protected override async UniTask InitializeUIHandler(
+        protected override async UniTask InitializeUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables) => await Show(cancellationToken);
 

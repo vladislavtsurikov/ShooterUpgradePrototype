@@ -41,7 +41,7 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
             LoadSceneMode loadSceneMode = LoadSceneMode.Single,
             CancellationToken cancellationToken = default)
         {
-            _sceneUICompositionService.RemoveSceneHandlers();
+            _sceneUICompositionService.RemoveScenePresenters();
 
             await _resourceLoaderManager.Load(Filter, cancellationToken);
 
@@ -76,7 +76,7 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
             LoadSceneRelationship containerMode = LoadSceneRelationship.None,
             CancellationToken cancellationToken = default)
         {
-            _sceneUICompositionService.RemoveSceneHandlers();
+            _sceneUICompositionService.RemoveScenePresenters();
 
             await _resourceLoaderManager.Load(Filter, cancellationToken);
 

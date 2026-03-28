@@ -15,8 +15,8 @@ using Zenject;
 namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
-    [DynamicUIChild]
-    public sealed class UpgradeStatRowPresenter : UIToolkitUIHandler
+    [DynamicUIPresenterChild]
+    public sealed class UpgradeStatRowPresenter : UIToolkitUIPresenter
     {
         private UpgradeStatRowView _view;
 
@@ -41,7 +41,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
             _playerStatsService =  playerStatsService;
         }
 
-        protected override UniTask AfterShowUIHandler(
+        protected override UniTask AfterShowUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {

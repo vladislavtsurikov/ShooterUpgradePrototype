@@ -8,16 +8,16 @@ namespace VladislavTsurikov.UIBackSystem.Runtime
 {
     public static class UIBackStack
     {
-        private static readonly Stack<UIHandler> _stack = new();
+        private static readonly Stack<UIPresenter> _stack = new();
 
         static UIBackStack()
         {
-            UIHandler.OnUIHandlerOnShow += Push;
-            UIHandler.OnUIHandlerHide += _ => Peek();
-            UIHandler.OnUIHandlerDestroyed += Remove;
+            UIPresenter.OnUIPresenterOnShow += Push;
+            UIPresenter.OnUIPresenterHide += _ => Peek();
+            UIPresenter.OnUIPresenterDestroyed += Remove;
         }
 
-        private static void Push(UIHandler handler)
+        private static void Push(UIPresenter handler)
         {
             if (!_stack.Contains(handler))
             {
@@ -25,32 +25,32 @@ namespace VladislavTsurikov.UIBackSystem.Runtime
             }
         }
 
-        internal static UIHandler Peek() => _stack.Count > 0 ? _stack.Peek() : null;
+        internal static UIPresenter Peek() => _stack.Count > 0 ? _stack.Peek() : null;
 
         internal static async UniTask PopAndHide(CancellationToken cancellationToken)
         {
             if (_stack.Count > 0)
             {
-                UIHandler top = _stack.Pop();
+                UIPresenter top = _stack.Pop();
                 await top.Hide(cancellationToken);
             }
         }
 
-        private static void Remove(UIHandler handler)
+        private static void Remove(UIPresenter handler)
         {
             if (!_stack.Contains(handler))
             {
                 return;
             }
 
-            UIHandler[] reordered = _stack
+            UIPresenter[] reordered = _stack
                 .Where(item => !ReferenceEquals(item, handler))
                 .Reverse()
                 .ToArray();
 
             _stack.Clear();
 
-            foreach (UIHandler item in reordered)
+            foreach (UIPresenter item in reordered)
             {
                 _stack.Push(item);
             }

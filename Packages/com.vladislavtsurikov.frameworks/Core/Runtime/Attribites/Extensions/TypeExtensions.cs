@@ -16,7 +16,7 @@ namespace VladislavTsurikov.AddressableLoaderSystem.Runtime.Core
             if (filters.Length == 0)
             {
                 Debug.LogError(
-                    $"[UIHandlerManager] Type `{type.FullName}` does not have any FilterAttribute. This is required.");
+                    $"[UIPresenterManager] Type `{type.FullName}` does not have any FilterAttribute. This is required.");
                 return false;
             }
 

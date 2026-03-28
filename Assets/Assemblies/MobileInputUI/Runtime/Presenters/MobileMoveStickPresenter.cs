@@ -15,7 +15,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(MobileControlsRootPresenter))]
-    public sealed class MobileMoveStickPresenter : UIToolkitUIHandler
+    public sealed class MobileMoveStickPresenter : UIToolkitUIPresenter
     {
         private readonly MobileVirtualInputService _mobileVirtualInputService;
         private readonly InputModeService _inputModeService;
@@ -29,7 +29,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
             _inputModeService = inputModeService;
         }
 
-        protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override UniTask InitializeUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             MobileMoveStickView view = ViewResolver.GetView<MobileMoveStickView>(nameof(MobileMoveStickView));
 

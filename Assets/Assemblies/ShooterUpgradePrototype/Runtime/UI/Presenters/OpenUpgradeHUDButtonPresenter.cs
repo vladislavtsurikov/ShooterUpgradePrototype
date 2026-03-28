@@ -13,11 +13,11 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(BattleHUDRootPresenter))]
-    public sealed class OpenUpgradeHUDButtonPresenter : UIToolkitUIHandler
+    public sealed class OpenUpgradeHUDButtonPresenter : UIToolkitUIPresenter
     {
         private OpenUpgradeHUDButtonView _view;
 
-        protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override UniTask InitializeUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             _view = ViewResolver.GetView<OpenUpgradeHUDButtonView>(nameof(OpenUpgradeHUDButtonView));
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using OdinSerializer;
 
@@ -14,6 +14,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core.Graph
         public List<Type> Filters = new();
 
         [OdinSerialize]
-        public Type HandlerType;
+        public Type PresenterType;
     }
 }

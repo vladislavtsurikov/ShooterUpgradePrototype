@@ -1,49 +1,49 @@
-﻿using System;
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public abstract class UIHandler
+    public abstract class UIPresenter
     {
-        private readonly UIChildrenModule _childrenModule;
+        private readonly UIPresenterChildrenModule _childrenModule;
         private readonly ViewResolver _viewResolver;
         private bool _isInitialized;
 
-        public UIHandler Parent { get; private set; }
+        public UIPresenter Parent { get; private set; }
         public string InstanceKey { get; private set; }
-        internal UIHandlerManager UIHandlerManager { get; private set; }
+        internal UIPresenterManager UIPresenterManager { get; private set; }
         internal readonly BoolReactiveProperty IsActive = new();
-        public UIChildrenModule ChildrenModule => _childrenModule;
+        public UIPresenterChildrenModule ChildrenModule => _childrenModule;
         public ViewResolver ViewResolver => _viewResolver;
 
         protected virtual bool AllowMultipleActiveChildren => true;
 
         protected internal CompositeDisposable Disposables { get; } = new();
 
-        public static event Action<UIHandler> OnUIHandlerBeforeShow;
-        public static event Action<UIHandler> OnUIHandlerOnShow;
-        public static event Action<UIHandler> OnUIHandlerAfterShow;
+        public static event Action<UIPresenter> OnUIPresenterBeforeShow;
+        public static event Action<UIPresenter> OnUIPresenterOnShow;
+        public static event Action<UIPresenter> OnUIPresenterAfterShow;
 
-        public static event Action<UIHandler> OnUIHandlerBeforeHide;
-        public static event Action<UIHandler> OnUIHandlerHide;
-        public static event Action<UIHandler> OnUIHandlerAfterHide;
+        public static event Action<UIPresenter> OnUIPresenterBeforeHide;
+        public static event Action<UIPresenter> OnUIPresenterHide;
+        public static event Action<UIPresenter> OnUIPresenterAfterHide;
 
-        public static event Action<UIHandler> OnUIHandlerDestroyed;
+        public static event Action<UIPresenter> OnUIPresenterDestroyed;
 
-        protected UIHandler()
+        protected UIPresenter()
             : this(true)
         {
         }
 
-        protected UIHandler(bool supportsChildren)
+        protected UIPresenter(bool supportsChildren)
         {
             _viewResolver = new ViewResolver(this);
 
             if (supportsChildren)
             {
-                _childrenModule = new UIChildrenModule(this);
+                _childrenModule = new UIPresenterChildrenModule(this);
             }
         }
 
@@ -56,36 +56,36 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             _isInitialized = true;
             ChildrenModule?.Initialize(AllowMultipleActiveChildren);
-            InitializeUIHandler(cancellationToken, disposables);
+            InitializeUIPresenter(cancellationToken, disposables);
             return UniTask.CompletedTask;
         }
 
-        protected virtual UniTask InitializeUIHandler(CancellationToken cancellationToken,
+        protected virtual UniTask InitializeUIPresenter(CancellationToken cancellationToken,
             CompositeDisposable disposables) => UniTask.CompletedTask;
 
-        protected virtual UniTask BeforeShowUIHandler(CancellationToken ct, CompositeDisposable disposables) =>
+        protected virtual UniTask BeforeShowUIPresenter(CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
-        protected virtual UniTask OnShowUIHandler(CancellationToken ct, CompositeDisposable disposables) =>
+        protected virtual UniTask OnShowUIPresenter(CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
-        protected virtual UniTask AfterShowUIHandler(CancellationToken ct, CompositeDisposable disposables) =>
+        protected virtual UniTask AfterShowUIPresenter(CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
-        protected virtual UniTask BeforeHideUIHandler(CancellationToken ct, CompositeDisposable disposables) =>
+        protected virtual UniTask BeforeHideUIPresenter(CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
-        protected virtual UniTask OnHideUIHandler(CancellationToken ct, CompositeDisposable disposables) =>
+        protected virtual UniTask OnHideUIPresenter(CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
-        protected virtual UniTask AfterHideUIHandler(CancellationToken ct, CompositeDisposable disposables) =>
+        protected virtual UniTask AfterHideUIPresenter(CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
         protected virtual UniTask
-            DestroyUIHandler(bool unload, CancellationToken ct, CompositeDisposable disposables) =>
+            DestroyUIPresenter(bool unload, CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
-        public virtual void DisposeUIHandler()
+        public virtual void DisposeUIPresenter()
         {
         }
 
@@ -98,48 +98,48 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             _isInitialized = false;
             IsActive.Dispose();
 
-            DisposeUIHandler();
+            DisposeUIPresenter();
         }
 
         protected async UniTask BeforeShow(CancellationToken ct)
         {
-            OnUIHandlerBeforeShow?.Invoke(this);
-            await BeforeShowUIHandler(ct, Disposables);
+            OnUIPresenterBeforeShow?.Invoke(this);
+            await BeforeShowUIPresenter(ct, Disposables);
         }
 
         protected async UniTask OnShow(CancellationToken ct)
         {
-            OnUIHandlerOnShow?.Invoke(this);
-            await OnShowUIHandler(ct, Disposables);
+            OnUIPresenterOnShow?.Invoke(this);
+            await OnShowUIPresenter(ct, Disposables);
         }
 
         protected async UniTask AfterShow(CancellationToken ct)
         {
-            OnUIHandlerAfterShow?.Invoke(this);
-            await AfterShowUIHandler(ct, Disposables);
+            OnUIPresenterAfterShow?.Invoke(this);
+            await AfterShowUIPresenter(ct, Disposables);
         }
 
         protected async UniTask BeforeHide(CancellationToken ct)
         {
-            OnUIHandlerBeforeHide?.Invoke(this);
-            await BeforeHideUIHandler(ct, Disposables);
+            OnUIPresenterBeforeHide?.Invoke(this);
+            await BeforeHideUIPresenter(ct, Disposables);
         }
 
         protected async UniTask OnHide(CancellationToken ct)
         {
-            OnUIHandlerHide?.Invoke(this);
-            await OnHideUIHandler(ct, Disposables);
+            OnUIPresenterHide?.Invoke(this);
+            await OnHideUIPresenter(ct, Disposables);
         }
 
         protected async UniTask AfterHide(CancellationToken ct)
         {
-            OnUIHandlerAfterHide?.Invoke(this);
-            await AfterHideUIHandler(ct, Disposables);
+            OnUIPresenterAfterHide?.Invoke(this);
+            await AfterHideUIPresenter(ct, Disposables);
         }
 
         public async UniTask Show(CancellationToken cancellationToken)
         {
-            await UIHandlerResolver.EnsureHandlersReady();
+            await UIPresenterResolver.EnsurePresentersReady();
 
             await BeforeShow(cancellationToken);
             await OnShow(cancellationToken);
@@ -156,7 +156,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public async UniTask Hide(CancellationToken cancellationToken)
         {
-            await UIHandlerResolver.EnsureHandlersReady();
+            await UIPresenterResolver.EnsurePresentersReady();
 
             await BeforeHide(cancellationToken);
             await OnHide(cancellationToken);
@@ -176,18 +176,18 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 await ChildrenModule.DestroyAll(unload, cancellationToken);
             }
 
-            await DestroyUIHandler(unload, cancellationToken, Disposables);
+            await DestroyUIPresenter(unload, cancellationToken, Disposables);
 
             Dispose();
 
-            OnUIHandlerDestroyed?.Invoke(this);
+            OnUIPresenterDestroyed?.Invoke(this);
         }
 
-        internal virtual (Type handlerType, string instanceKey) ResolveBindingContext() =>
+        internal virtual (Type presenterType, string instanceKey) ResolveBindingContext() =>
             (GetType(), InstanceKey);
 
-        internal void SetParent(UIHandler parent) => Parent = parent;
+        internal void SetParent(UIPresenter parent) => Parent = parent;
         internal void SetInstanceKey(string instanceKey) => InstanceKey = instanceKey;
-        internal void SetUIHandlerManager(UIHandlerManager uiHandlerManager) => UIHandlerManager = uiHandlerManager;
+        internal void SetUIPresenterManager(UIPresenterManager uiHandlerManager) => UIPresenterManager = uiHandlerManager;
     }
 }

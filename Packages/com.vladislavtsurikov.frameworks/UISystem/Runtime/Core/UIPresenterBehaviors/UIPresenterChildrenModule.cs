@@ -7,16 +7,16 @@ using UniRx;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    public sealed class UIChildrenModule : IDisposable
+    public sealed class UIPresenterChildrenModule : IDisposable
     {
-        private readonly UIHandler _owner;
+        private readonly UIPresenter _owner;
         private readonly SerialDisposable _childActivitySubscriptions = new();
         private readonly SerialDisposable _childrenChanges = new();
-        private UIHandler _activeChild;
+        private UIPresenter _activeChild;
 
-        public ReactiveCollection<UIHandler> All { get; } = new();
+        public ReactiveCollection<UIPresenter> All { get; } = new();
 
-        public UIChildrenModule(UIHandler owner)
+        public UIPresenterChildrenModule(UIPresenter owner)
         {
             _owner = owner;
         }
@@ -40,45 +40,45 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             RebuildChildActivitySubscriptions();
         }
 
-        public void Add(UIHandler child) => All.Add(child);
+        public void Add(UIPresenter child) => All.Add(child);
 
-        public void Remove(UIHandler child) => All.Remove(child);
+        public void Remove(UIPresenter child) => All.Remove(child);
 
-        public UniTask<THandler> CreateDynamicChild<THandler>(
+        public UniTask<TPresenter> CreateDynamicChild<TPresenter>(
             string instanceKey,
             bool showAutomatically = false,
             CancellationToken cancellationToken = default)
-            where THandler : UIHandler
+            where TPresenter : UIPresenter
         {
-            return _owner.UIHandlerManager.CreateDynamicChild<THandler>(_owner, instanceKey, showAutomatically,
+            return _owner.UIPresenterManager.CreateDynamicChild<TPresenter>(_owner, instanceKey, showAutomatically,
                 cancellationToken);
         }
 
-        public THandler GetDynamicChild<THandler>(string instanceKey)
-            where THandler : UIHandler
+        public TPresenter GetDynamicChild<TPresenter>(string instanceKey)
+            where TPresenter : UIPresenter
         {
-            return _owner.UIHandlerManager.GetDynamicChild<THandler>(_owner, instanceKey);
+            return _owner.UIPresenterManager.GetDynamicChild<TPresenter>(_owner, instanceKey);
         }
 
-        public bool TryGetDynamicChild<THandler>(string instanceKey, out THandler handler)
-            where THandler : UIHandler
+        public bool TryGetDynamicChild<TPresenter>(string instanceKey, out TPresenter presenter)
+            where TPresenter : UIPresenter
         {
-            return _owner.UIHandlerManager.TryGetDynamicChild(_owner, instanceKey, out handler);
+            return _owner.UIPresenterManager.TryGetDynamicChild(_owner, instanceKey, out presenter);
         }
 
-        public UniTask DestroyChild<THandler>(
+        public UniTask DestroyChild<TPresenter>(
             string instanceKey,
             bool unload,
             CancellationToken cancellationToken = default)
-            where THandler : UIHandler
+            where TPresenter : UIPresenter
         {
-            return _owner.UIHandlerManager.DestroyDynamicChild<THandler>(_owner, instanceKey, unload,
+            return _owner.UIPresenterManager.DestroyDynamicChild<TPresenter>(_owner, instanceKey, unload,
                 cancellationToken);
         }
 
         public async UniTask DestroyAll(bool unload, CancellationToken cancellationToken)
         {
-            foreach (UIHandler child in All)
+            foreach (UIPresenter child in All)
             {
                 await child.Destroy(unload, cancellationToken);
             }
@@ -86,7 +86,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public async Task InitializeChildren(CancellationToken cancellationToken)
         {
-            foreach (UIHandler child in All)
+            foreach (UIPresenter child in All)
             {
                 if (IsDynamicChild(child))
                 {
@@ -99,9 +99,9 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public async Task HideChildren(CancellationToken cancellationToken)
         {
-            List<UIHandler> childrenToHide = new();
+            List<UIPresenter> childrenToHide = new();
 
-            foreach (UIHandler child in All)
+            foreach (UIPresenter child in All)
             {
                 if (child.IsActive.Value)
                 {
@@ -109,7 +109,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 }
             }
 
-            foreach (UIHandler child in childrenToHide)
+            foreach (UIPresenter child in childrenToHide)
             {
                 await child.Hide(cancellationToken);
             }
@@ -117,7 +117,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public async Task ShowDynamicChildren(CancellationToken cancellationToken)
         {
-            foreach (UIHandler child in All)
+            foreach (UIPresenter child in All)
             {
                 if (IsDynamicChild(child))
                 {
@@ -133,14 +133,14 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             All.Clear();
         }
 
-        private static bool IsDynamicChild(UIHandler child) =>
-            child != null && Attribute.IsDefined(child.GetType(), typeof(DynamicUIChildAttribute), inherit: true);
+        private static bool IsDynamicChild(UIPresenter child) =>
+            child != null && Attribute.IsDefined(child.GetType(), typeof(DynamicUIPresenterChildAttribute), inherit: true);
 
         private void RebuildChildActivitySubscriptions()
         {
             var subscriptions = new CompositeDisposable();
 
-            foreach (UIHandler child in All)
+            foreach (UIPresenter child in All)
             {
                 if (child == null)
                 {
@@ -156,7 +156,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             _childActivitySubscriptions.Disposable = subscriptions;
         }
 
-        private void OnChildBecameActive(UIHandler next)
+        private void OnChildBecameActive(UIPresenter next)
         {
             if (_activeChild != null && _activeChild != next)
             {

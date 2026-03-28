@@ -14,7 +14,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(MobileControlsRootPresenter))]
-    public sealed class MobileFireButtonPresenter : UIToolkitUIHandler
+    public sealed class MobileFireButtonPresenter : UIToolkitUIPresenter
     {
         private readonly MobileVirtualInputService _mobileVirtualInputService;
 
@@ -25,7 +25,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
             _mobileVirtualInputService = mobileVirtualInputService;
         }
 
-        protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override UniTask InitializeUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             MobileFireButtonView view = ViewResolver.GetView<MobileFireButtonView>(nameof(MobileFireButtonView));
 

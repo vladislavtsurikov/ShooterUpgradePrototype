@@ -5,32 +5,32 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 {
     public sealed class ViewResolver
     {
-        private readonly UIHandler _handler;
+        private readonly UIPresenter _presenter;
         private readonly DependencyResolver _resolver;
 
-        public ViewResolver(UIHandler handler)
+        public ViewResolver(UIPresenter presenter)
         {
-            _handler = handler;
+            _presenter = presenter;
             _resolver = DependencyResolverProvider.GetResolver();
         }
 
-        public TView GetView<TView>(string bindingId, Type handlerType, int index = 0)
+        public TView GetView<TView>(string bindingId, Type presenterType, int index = 0)
         {
-            ViewKey key = new(typeof(TView), handlerType, bindingId, index, _handler.InstanceKey);
+            ViewKey key = new(typeof(TView), presenterType, bindingId, index, _presenter.InstanceKey);
             return ResolveWithKey<TView>(key);
         }
 
         public TView GetView<TView>(string bindingId, int index = 0)
         {
-            (Type handlerType, string instanceKey) = _handler.ResolveBindingContext();
-            ViewKey key = new(typeof(TView), handlerType, bindingId, index, instanceKey);
+            (Type presenterType, string instanceKey) = _presenter.ResolveBindingContext();
+            ViewKey key = new(typeof(TView), presenterType, bindingId, index, instanceKey);
             return ResolveWithKey<TView>(key);
         }
 
         public bool TryGetView<TView>(string bindingId, out TView view, int index = 0)
         {
-            (Type handlerType, string instanceKey) = _handler.ResolveBindingContext();
-            ViewKey key = new(typeof(TView), handlerType, bindingId, index, instanceKey);
+            (Type presenterType, string instanceKey) = _presenter.ResolveBindingContext();
+            ViewKey key = new(typeof(TView), presenterType, bindingId, index, instanceKey);
             return TryResolveWithKey(key, out view);
         }
 

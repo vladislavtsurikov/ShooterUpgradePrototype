@@ -8,14 +8,14 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     {
         private readonly DependencyResolver _resolver;
         private readonly List<ViewKey> _records = new();
-        private readonly UIHandler _uiHandler;
+        private readonly UIPresenter _presenter;
 
-        protected UIHandler UIHandler => _uiHandler;
+        protected UIPresenter UIPresenter => _presenter;
 
-        protected ViewBindingScope(UIHandler handler)
+        protected ViewBindingScope(UIPresenter presenter)
         {
             _resolver = DependencyResolverProvider.GetResolver();
-            _uiHandler = handler;
+            _presenter = presenter;
         }
 
         protected void RegisterBindings<TNode>(
@@ -46,7 +46,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
                 ViewKey key = new(
                     type,
-                    _uiHandler.GetType(),
+                    _presenter.GetType(),
                     rawBindingId,
                     index,
                     getInstanceKey?.Invoke(node));

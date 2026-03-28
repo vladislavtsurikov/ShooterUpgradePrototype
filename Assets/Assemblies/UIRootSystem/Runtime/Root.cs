@@ -11,14 +11,14 @@ using Zenject;
 namespace UIRootSystem.Runtime
 {
     [SceneFilter("Battle")]
-    public sealed class Root : UIToolkitUIHandler
+    public sealed class Root : UIToolkitUIPresenter
     {
         public Root(RootLoader loader)
             : base(loader)
         {
         }
 
-        protected override async UniTask InitializeUIHandler(
+        protected override async UniTask InitializeUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables) => await Show(cancellationToken);
 

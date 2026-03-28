@@ -17,7 +17,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(Root), RootSlots.Screens)]
-    public sealed class UpgradeWindowPresenter : UIToolkitUIHandler
+    public sealed class UpgradeWindowPresenter : UIToolkitUIPresenter
     {
         private readonly GameplayInputBlocker _gameplayInputBlocker;
         private readonly PlayerStatsService _playerStatsService;
@@ -40,7 +40,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         protected override string SpawnedRootName => "ShooterUpgradePrototypeUpgradeWindow";
 
-        protected override async UniTask AfterShowUIHandler(
+        protected override async UniTask AfterShowUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
@@ -76,7 +76,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
             Refresh();
         }
 
-        protected override UniTask AfterHideUIHandler(
+        protected override UniTask AfterHideUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
@@ -117,7 +117,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
                 return;
             }
 
-            UIChildrenModule childrenModule = ChildrenModule;
+            UIPresenterChildrenModule childrenModule = ChildrenModule;
             if (childrenModule == null)
             {
                 return;
@@ -194,7 +194,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         private async UniTask CreateStats(CancellationToken cancellationToken)
         {
-            UIChildrenModule childrenModule = ChildrenModule;
+            UIPresenterChildrenModule childrenModule = ChildrenModule;
             if (childrenModule == null)
             {
                 return;
@@ -216,9 +216,9 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
             }
         }
 
-        protected override void DisposeUIToolkitUIHandler()
+        protected override void DisposeUIToolkitUIPresenter()
         {
-            UIChildrenModule childrenModule = ChildrenModule;
+            UIPresenterChildrenModule childrenModule = ChildrenModule;
 
             foreach (string statId in _upgradeStatIds)
             {

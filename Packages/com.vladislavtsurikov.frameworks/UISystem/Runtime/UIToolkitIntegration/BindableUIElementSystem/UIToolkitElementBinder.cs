@@ -7,7 +7,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
     public sealed class UIToolkitElementBinder : ViewBindingScope
     {
-        public UIToolkitElementBinder(UIHandler handler)
+        public UIToolkitElementBinder(UIPresenter handler)
             : base(handler)
         {
         }
@@ -22,7 +22,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             RegisterBindings(
                 EnumerateElements(root),
                 GetBindingId,
-                _ => UIHandler.InstanceKey);
+                _ => UIPresenter.InstanceKey);
         }
 
         private static IEnumerable<VisualElement> EnumerateElements(VisualElement root)

@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +16,8 @@ namespace VladislavTsurikov.UISystem.Editor.Core.Graph
         [MenuItem("Tools/UISystem/Generate Node Tree")]
         public static void Generate()
         {
-            Type[] allTypes = AllTypesDerivedFrom<UIHandler>.Types
-                .Where(type => !Attribute.IsDefined(type, typeof(DynamicUIChildAttribute), inherit: true))
+            Type[] allTypes = AllTypesDerivedFrom<UIPresenter>.Types
+                .Where(type => !Attribute.IsDefined(type, typeof(DynamicUIPresenterChildAttribute), inherit: true))
                 .ToArray();
             Dictionary<Type, Node> typeToNode = CreateNodes(allTypes);
             List<Node> roots = BuildHierarchy(allTypes, typeToNode);
@@ -35,7 +35,7 @@ namespace VladislavTsurikov.UISystem.Editor.Core.Graph
             {
                 var node = new Node
                 {
-                    HandlerType = type,
+                    PresenterType = type,
                     Filters = type
                         .GetCustomAttributes(typeof(FilterAttribute), true)
                         .Cast<FilterAttribute>()

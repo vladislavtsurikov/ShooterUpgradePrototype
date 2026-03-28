@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace VladislavTsurikov.UISystem.Runtime.Core
 {
-    internal readonly struct UIHandlerKey
+    internal readonly struct UIPresenterKey
     {
         public Type ParentType { get; }
         public int ParentRuntimeId { get; }
@@ -26,7 +26,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
         }
 
-        private UIHandlerKey(Type parentType, int parentRuntimeId, string instanceKey, bool isDynamic)
+        private UIPresenterKey(Type parentType, int parentRuntimeId, string instanceKey, bool isDynamic)
         {
             ParentType = parentType;
             ParentRuntimeId = parentRuntimeId;
@@ -34,18 +34,18 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             IsDynamic = isDynamic;
         }
 
-        public static UIHandlerKey FromHandler(UIHandler handler) =>
-            IsDynamicChild(handler)
-                ? FromDynamicParent(handler.Parent, handler.InstanceKey)
-                : FromParentType(handler.Parent?.GetType(), handler.InstanceKey);
+        public static UIPresenterKey FromPresenter(UIPresenter presenter) =>
+            IsDynamicChild(presenter)
+                ? FromDynamicParent(presenter.Parent, presenter.InstanceKey)
+                : FromParentType(presenter.Parent?.GetType(), presenter.InstanceKey);
 
-        public static UIHandlerKey FromParentType(Type parentType, string instanceKey = null) =>
+        public static UIPresenterKey FromParentType(Type parentType, string instanceKey = null) =>
             new(parentType, 0, instanceKey, false);
 
-        public static UIHandlerKey FromDynamicParent(UIHandler parent, string instanceKey) =>
+        public static UIPresenterKey FromDynamicParent(UIPresenter parent, string instanceKey) =>
             new(null, parent != null ? RuntimeHelpers.GetHashCode(parent) : 0, instanceKey, true);
 
-        private static bool IsDynamicChild(UIHandler handler) =>
-            handler != null && Attribute.IsDefined(handler.GetType(), typeof(DynamicUIChildAttribute), inherit: true);
+        private static bool IsDynamicChild(UIPresenter presenter) =>
+            presenter != null && Attribute.IsDefined(presenter.GetType(), typeof(DynamicUIPresenterChildAttribute), inherit: true);
     }
 }

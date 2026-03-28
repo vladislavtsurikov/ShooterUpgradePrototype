@@ -8,11 +8,11 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
 {
     public sealed class SceneUICompositionService
     {
-        private readonly UIHandlerManager _handlerManager;
+        private readonly UIPresenterManager _presenterManager;
 
-        public SceneUICompositionService(UIHandlerManager handlerManager) => _handlerManager = handlerManager;
+        public SceneUICompositionService(UIPresenterManager presenterManager) => _presenterManager = presenterManager;
 
-        public void RemoveSceneHandlers() => _handlerManager.RemoveExceptGlobalHandlers();
+        public void RemoveScenePresenters() => _presenterManager.RemoveExceptGlobalHandlers();
 
         public UniTask ComposeScene(string sceneName, CancellationToken cancellationToken = default)
         {
@@ -21,14 +21,14 @@ namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration
                 return UniTask.CompletedTask;
             }
 
-            return _handlerManager.AddFilter(
+            return _presenterManager.AddFilter(
                 attribute => attribute is SceneFilterAttribute sceneFilter && sceneFilter.Matches(sceneName),
                 cancellationToken);
         }
 
         public UniTask RecomposeScene(string sceneName, CancellationToken cancellationToken = default)
         {
-            RemoveSceneHandlers();
+            RemoveScenePresenters();
             return ComposeScene(sceneName, cancellationToken);
         }
     }

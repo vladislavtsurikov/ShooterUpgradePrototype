@@ -10,18 +10,18 @@ using Object = UnityEngine.Object;
 
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
-    public abstract class UnityUIHandler : UIHandler
+    public abstract class UnityUIPresenter : UIPresenter
     {
         private readonly UIComponentBinder _componentBinder;
         private GameObject _spawnedRoot;
 
-        protected UnityUIHandler(PrefabAssetLoader loader)
+        protected UnityUIPresenter(PrefabAssetLoader loader)
         {
             Loader = loader;
             _componentBinder = new UIComponentBinder(this);
         }
 
-        protected UnityUIHandler()
+        protected UnityUIPresenter()
             : this(null)
         {
         }
@@ -35,11 +35,11 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 
         protected UIComponentBinder ComponentBinder => _componentBinder;
 
-        protected virtual void DisposeUnityUIHandler()
+        protected virtual void DisposeUnityUIPresenter()
         {
         }
 
-        protected override async UniTask BeforeShowUIHandler(
+        protected override async UniTask BeforeShowUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables) => await SpawnMainPrefab(true, cancellationToken);
 
@@ -50,18 +50,18 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 return null;
             }
 
-            if (Parent is UnityUIHandler unityUIHandler)
+            if (Parent is UnityUIPresenter unityUIPresenter)
             {
-                return unityUIHandler.SpawnedRoot != null ? unityUIHandler.SpawnedRoot.transform : null;
+                return unityUIPresenter.SpawnedRoot != null ? unityUIPresenter.SpawnedRoot.transform : null;
             }
 
             throw new InvalidOperationException(
-                $"Invalid parent type: {Parent.GetType().Name}. Expected {nameof(UnityUIHandler)}.");
+                $"Invalid parent type: {Parent.GetType().Name}. Expected {nameof(UnityUIPresenter)}.");
         }
 
         internal Transform ResolveSpawnParentTransform() => GetSpawnParentTransform();
 
-        internal override (Type handlerType, string instanceKey) ResolveBindingContext()
+        internal override (Type presenterType, string instanceKey) ResolveBindingContext()
         {
             if (!UsesParentBindingContext)
             {
@@ -71,7 +71,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
             return (Parent?.GetType() ?? GetType(), Parent?.InstanceKey);
         }
 
-        protected override UniTask OnShowUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override UniTask OnShowUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             if (_spawnedRoot != null)
             {
@@ -81,7 +81,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
             return UniTask.CompletedTask;
         }
 
-        protected override UniTask OnHideUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override UniTask OnHideUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             if (_spawnedRoot != null)
             {
@@ -91,7 +91,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
             return UniTask.CompletedTask;
         }
 
-        protected override async UniTask DestroyUIHandler(
+        protected override async UniTask DestroyUIPresenter(
             bool unload,
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
@@ -110,17 +110,17 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 }
             }
 
-            await DestroyUnityUIHandler(unload, cancellationToken);
+            await DestroyUnityUIPresenter(unload, cancellationToken);
         }
 
-        protected virtual UniTask DestroyUnityUIHandler(bool unload, CancellationToken cancellationToken) =>
+        protected virtual UniTask DestroyUnityUIPresenter(bool unload, CancellationToken cancellationToken) =>
             UniTask.CompletedTask;
 
-        public override void DisposeUIHandler()
+        public override void DisposeUIPresenter()
         {
             _componentBinder.Dispose();
             _spawnedRoot = null;
-            DisposeUnityUIHandler();
+            DisposeUnityUIPresenter();
         }
 
         private async UniTask<GameObject> SpawnMainPrefab(bool enable, CancellationToken cancellationToken)

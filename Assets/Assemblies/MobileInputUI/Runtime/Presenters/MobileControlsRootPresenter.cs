@@ -15,7 +15,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(Root), RootSlots.HUD)]
-    public sealed class MobileControlsRootPresenter : UIToolkitUIHandler
+    public sealed class MobileControlsRootPresenter : UIToolkitUIPresenter
     {
         private readonly InputModeService _inputModeService;
 
@@ -27,7 +27,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
             _inputModeService = inputModeService;
         }
 
-        protected override UniTask InitializeUIHandler(
+        protected override UniTask InitializeUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {

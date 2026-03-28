@@ -105,7 +105,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 970315330294483f9377e1579c67344c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UISystem::VladislavTsurikov.UISystem.Runtime.UIHandlerManagerInstaller
+  m_EditorClassIdentifier: UISystem::VladislavTsurikov.UISystem.Runtime.UIPresenterManagerInstaller
 --- !u!114 &1346916720997097528
 MonoBehaviour:
   m_ObjectHideFlags: 0

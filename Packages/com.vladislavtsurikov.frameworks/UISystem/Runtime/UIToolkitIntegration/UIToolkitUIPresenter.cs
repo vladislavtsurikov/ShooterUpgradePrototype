@@ -10,18 +10,18 @@ using VladislavTsurikov.UISystem.Runtime.Core;
 
 namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 {
-    public abstract class UIToolkitUIHandler : UIHandler
+    public abstract class UIToolkitUIPresenter : UIPresenter
     {
         private readonly UIToolkitElementBinder _elementBinder;
         private VisualElement _spawnedRoot;
 
-        protected UIToolkitUIHandler(UIToolkitLayoutLoader loader)
+        protected UIToolkitUIPresenter(UIToolkitLayoutLoader loader)
         {
             Loader = loader;
             _elementBinder = new UIToolkitElementBinder(this);
         }
 
-        protected UIToolkitUIHandler()
+        protected UIToolkitUIPresenter()
             : this(null)
         {
         }
@@ -37,14 +37,14 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected UIToolkitElementBinder ElementBinder => _elementBinder;
 
-        protected virtual void DisposeUIToolkitUIHandler()
+        protected virtual void DisposeUIToolkitUIPresenter()
         {
         }
 
-        protected override async UniTask BeforeShowUIHandler(CancellationToken cancellationToken,
+        protected override async UniTask BeforeShowUIPresenter(CancellationToken cancellationToken,
             CompositeDisposable disposables) => await SpawnLayoutIfNeeded(cancellationToken);
 
-        protected override UniTask OnShowUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override UniTask OnShowUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             if (_spawnedRoot != null)
             {
@@ -54,7 +54,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             return UniTask.CompletedTask;
         }
 
-        protected override UniTask OnHideUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override UniTask OnHideUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             if (_spawnedRoot != null)
             {
@@ -64,7 +64,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             return UniTask.CompletedTask;
         }
 
-        protected override async UniTask DestroyUIHandler(
+        protected override async UniTask DestroyUIPresenter(
             bool unload,
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
@@ -83,17 +83,17 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 }
             }
 
-            await DestroyUIToolkitUIHandler(unload, cancellationToken);
+            await DestroyUIToolkitUIPresenter(unload, cancellationToken);
         }
 
-        protected virtual UniTask DestroyUIToolkitUIHandler(bool unload, CancellationToken cancellationToken) =>
+        protected virtual UniTask DestroyUIToolkitUIPresenter(bool unload, CancellationToken cancellationToken) =>
             UniTask.CompletedTask;
 
-        public override void DisposeUIHandler()
+        public override void DisposeUIPresenter()
         {
             _elementBinder.Dispose();
             _spawnedRoot = null;
-            DisposeUIToolkitUIHandler();
+            DisposeUIToolkitUIPresenter();
         }
 
         private async UniTask SpawnLayoutIfNeeded(CancellationToken cancellationToken)
@@ -107,7 +107,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             if (parent == null)
             {
                 Debug.LogError(
-                    $"[UIToolkitUIHandler] Cannot resolve parent root for handler `{GetType().Name}`.");
+                    $"[UIToolkitUIPresenter] Cannot resolve parent root for presenter `{GetType().Name}`.");
                 return;
             }
 
@@ -116,7 +116,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             if (spawnedRoot == null)
             {
                 Debug.LogError(
-                    $"[UIToolkitUIHandler] Failed to spawn root layout for handler `{GetType().Name}`.");
+                    $"[UIToolkitUIPresenter] Failed to spawn root layout for presenter `{GetType().Name}`.");
                 return;
             }
         }
@@ -128,25 +128,25 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 return ResolveTopLevelRoot();
             }
 
-            if (Parent is not UIToolkitUIHandler parentHandler)
+            if (Parent is not UIToolkitUIPresenter parentPresenter)
             {
                 throw new InvalidOperationException(
-                    $"Invalid parent type: {Parent.GetType().Name}. Expected {nameof(UIToolkitUIHandler)}.");
+                    $"Invalid parent type: {Parent.GetType().Name}. Expected {nameof(UIToolkitUIPresenter)}.");
             }
 
             string parentContainerName = ResolveParentContainerName();
             if (string.IsNullOrEmpty(parentContainerName))
             {
-                return parentHandler.SpawnedRoot;
+                return parentPresenter.SpawnedRoot;
             }
 
-            if (parentHandler.ViewResolver.TryGetView(parentContainerName, out VisualElement container))
+            if (parentPresenter.ViewResolver.TryGetView(parentContainerName, out VisualElement container))
             {
                 return container;
             }
 
             throw new InvalidOperationException(
-                $"[UIToolkitUIHandler] Parent container `{parentContainerName}` was not found in handler `{parentHandler.GetType().Name}`.");
+                $"[UIToolkitUIPresenter] Parent container `{parentContainerName}` was not found in presenter `{parentPresenter.GetType().Name}`.");
         }
 
         internal string ResolveParentContainerName()
@@ -164,7 +164,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             return attribute?.ContainerId;
         }
 
-        internal override (Type handlerType, string instanceKey) ResolveBindingContext()
+        internal override (Type presenterType, string instanceKey) ResolveBindingContext()
         {
             if (!UsesParentBindingContext)
             {

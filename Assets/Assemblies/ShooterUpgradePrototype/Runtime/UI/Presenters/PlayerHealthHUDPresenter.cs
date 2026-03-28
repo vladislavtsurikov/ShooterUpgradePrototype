@@ -13,7 +13,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
     [SceneFilter("Battle")]
     [UIParent(typeof(BattleHUDRootPresenter))]
-    public sealed class PlayerHealthHUDPresenter : UIToolkitUIHandler
+    public sealed class PlayerHealthHUDPresenter : UIToolkitUIPresenter
     {
         private const string HealthStatId = "HP";
 
@@ -26,7 +26,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
             _playerStatsService = playerStatsService;
         }
 
-        protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override UniTask InitializeUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
             _view = ViewResolver.GetView<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
 
