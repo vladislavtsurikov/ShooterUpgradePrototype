@@ -1,9 +1,8 @@
 #if UI_SYSTEM_ZENJECT
 using System;
 using Zenject;
-using VladislavTsurikov.Core.Runtime.DependencyInjection;
 
-namespace VladislavTsurikov.UISystem.Runtime.Core
+namespace VladislavTsurikov.Core.Runtime.DependencyInjection
 {
     public sealed class ZenjectUIDependencyResolver : DependencyResolver
     {

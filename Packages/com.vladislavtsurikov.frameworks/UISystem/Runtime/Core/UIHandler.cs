@@ -9,38 +9,18 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     {
         private readonly UIChildrenModule _childrenModule;
         private readonly ViewResolver _viewResolver;
-        private bool _isActive;
         private bool _isInitialized;
-        protected virtual bool AllowMultipleActiveChildren => true;
 
         public UIHandler Parent { get; private set; }
         public string InstanceKey { get; private set; }
         internal UIHandlerManager UIHandlerManager { get; private set; }
+        internal readonly BoolReactiveProperty IsActive = new();
         public UIChildrenModule ChildrenModule => _childrenModule;
         public ViewResolver ViewResolver => _viewResolver;
 
-        public bool IsActive
-        {
-            get => _isActive;
-            private set
-            {
-                if (value == _isActive)
-                {
-                    return;
-                }
-
-                if (value)
-                {
-                    BecameActive?.Invoke(this);
-                }
-
-                _isActive = value;
-            }
-        }
+        protected virtual bool AllowMultipleActiveChildren => true;
 
         protected internal CompositeDisposable Disposables { get; } = new();
-
-        public event Action<UIHandler> BecameActive;
 
         public static event Action<UIHandler> OnUIHandlerBeforeShow;
         public static event Action<UIHandler> OnUIHandlerOnShow;
@@ -111,11 +91,12 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         internal void Dispose()
         {
+            IsActive.Value = false;
             Disposables.Dispose();
             ChildrenModule?.Dispose();
 
-            IsActive = false;
             _isInitialized = false;
+            IsActive.Dispose();
 
             DisposeUIHandler();
         }
@@ -164,7 +145,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             await OnShow(cancellationToken);
             await AfterShow(cancellationToken);
 
-            IsActive = true;
+            IsActive.Value = true;
 
             if (ChildrenModule != null)
             {
@@ -185,7 +166,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 await ChildrenModule.HideChildren(cancellationToken);
             }
 
-            IsActive = false;
+            IsActive.Value = false;
         }
 
         internal async UniTask Destroy(bool unload, CancellationToken cancellationToken)

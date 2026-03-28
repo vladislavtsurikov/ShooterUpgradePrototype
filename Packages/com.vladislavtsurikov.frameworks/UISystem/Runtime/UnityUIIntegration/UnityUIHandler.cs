@@ -29,8 +29,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
         public PrefabAssetLoader Loader { get; }
         public GameObject SpawnedRoot => _spawnedRoot;
 
-        public event Action<GameObject, UnityUIHandler> OnAnyChildAdded;
-
         protected virtual string SpawnedRootName => null;
 
         protected virtual bool UsesParentBindingContext => Loader == null;
@@ -139,11 +137,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 .Enable(enable)
                 .WithName(SpawnedRootName)
                 .Execute(Loader, ComponentBinder, cancellationToken);
-
-            if (Parent is UnityUIHandler parentUnityUIHandler)
-            {
-                parentUnityUIHandler.OnAnyChildAdded?.Invoke(_spawnedRoot, this);
-            }
 
             return SpawnedRoot;
         }

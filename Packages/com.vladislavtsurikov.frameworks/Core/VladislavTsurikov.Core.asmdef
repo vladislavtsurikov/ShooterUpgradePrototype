@@ -2,7 +2,8 @@
     "name": "VladislavTsurikov.Core",
     "rootNamespace": "",
     "references": [
-        "VladislavTsurikov.ReflectionUtility"
+        "VladislavTsurikov.ReflectionUtility",
+        "Zenject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

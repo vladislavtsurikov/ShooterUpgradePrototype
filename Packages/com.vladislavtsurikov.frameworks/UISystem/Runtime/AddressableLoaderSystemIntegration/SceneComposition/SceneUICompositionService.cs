@@ -2,7 +2,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
-using VladislavTsurikov.Core.Runtime;
 using VladislavTsurikov.UISystem.Runtime.Core;
 
 namespace VladislavTsurikov.UISystem.Runtime.AddressableLoaderSystemIntegration

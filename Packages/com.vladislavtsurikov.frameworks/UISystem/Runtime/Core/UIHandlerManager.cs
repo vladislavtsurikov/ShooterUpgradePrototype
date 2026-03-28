@@ -154,7 +154,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             if (TryGetDynamicChild(parent, instanceKey, out THandler existingHandler))
             {
-                if (showAutomatically && !existingHandler.IsActive)
+                if (showAutomatically && !existingHandler.IsActive.Value)
                 {
                     await existingHandler.Show(cancellationToken);
                 }

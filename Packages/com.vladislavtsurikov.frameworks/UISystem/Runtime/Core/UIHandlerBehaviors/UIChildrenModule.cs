@@ -10,8 +10,9 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public sealed class UIChildrenModule : IDisposable
     {
         private readonly UIHandler _owner;
-        private ChildActivityTracker _childTracker;
-        private SingleActiveUIChildSwitcher _switcher;
+        private readonly SerialDisposable _childActivitySubscriptions = new();
+        private readonly SerialDisposable _childrenChanges = new();
+        private UIHandler _activeChild;
 
         public ReactiveCollection<UIHandler> All { get; } = new();
 
@@ -22,19 +23,21 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public void Initialize(bool allowMultipleActiveChildren)
         {
-            _childTracker?.Dispose();
-            _childTracker = new ChildActivityTracker(All);
+            _activeChild = null;
+            _childrenChanges.Disposable = null;
+            _childActivitySubscriptions.Disposable = null;
 
-            if (!allowMultipleActiveChildren)
+            if (allowMultipleActiveChildren)
             {
-                _switcher?.Dispose();
-                _switcher = new SingleActiveUIChildSwitcher(_childTracker);
+                return;
             }
-            else
-            {
-                _switcher?.Dispose();
-                _switcher = null;
-            }
+
+            _childrenChanges.Disposable = new CompositeDisposable(
+                All.ObserveAdd().Subscribe(_ => RebuildChildActivitySubscriptions()),
+                All.ObserveRemove().Subscribe(_ => RebuildChildActivitySubscriptions()),
+                All.ObserveReset().Subscribe(_ => RebuildChildActivitySubscriptions()));
+
+            RebuildChildActivitySubscriptions();
         }
 
         public void Add(UIHandler child) => All.Add(child);
@@ -100,7 +103,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
             foreach (UIHandler child in All)
             {
-                if (child.IsActive)
+                if (child.IsActive.Value)
                 {
                     childrenToHide.Add(child);
                 }
@@ -125,12 +128,42 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public void Dispose()
         {
-            _childTracker?.Dispose();
-            _switcher?.Dispose();
+            _childrenChanges.Dispose();
+            _childActivitySubscriptions.Dispose();
             All.Clear();
         }
 
         private static bool IsDynamicChild(UIHandler child) =>
             child != null && Attribute.IsDefined(child.GetType(), typeof(DynamicUIChildAttribute), inherit: true);
+
+        private void RebuildChildActivitySubscriptions()
+        {
+            var subscriptions = new CompositeDisposable();
+
+            foreach (UIHandler child in All)
+            {
+                if (child == null)
+                {
+                    continue;
+                }
+
+                child.IsActive
+                    .Where(isActive => isActive)
+                    .Subscribe(_ => OnChildBecameActive(child))
+                    .AddTo(subscriptions);
+            }
+
+            _childActivitySubscriptions.Disposable = subscriptions;
+        }
+
+        private void OnChildBecameActive(UIHandler next)
+        {
+            if (_activeChild != null && _activeChild != next)
+            {
+                _activeChild.Hide(CancellationToken.None).Forget();
+            }
+
+            _activeChild = next;
+        }
     }
 }
