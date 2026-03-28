@@ -8,7 +8,6 @@ using UniRx;
 using VladislavTsurikov.AddressableLoaderSystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.Core;
 using VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration;
-using Zenject;
 
 namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 {
@@ -17,11 +16,6 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
     public sealed class OpenUpgradeHUDButtonPresenter : UIToolkitUIHandler
     {
         private OpenUpgradeHUDButtonView _view;
-
-        public OpenUpgradeHUDButtonPresenter()
-            : base()
-        {
-        }
 
         protected override UniTask InitializeUIHandler(CancellationToken cancellationToken, CompositeDisposable disposables)
         {

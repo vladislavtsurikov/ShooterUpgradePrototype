@@ -16,58 +16,30 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     {
         private readonly Dictionary<Node, UIHandler> _activeUIHandlers = new();
         private readonly List<Func<FilterAttribute, bool>> _filters = new();
+        private readonly DependencyResolver _resolver;
 
         internal static UniTask CurrentAddFilterTask { get; private set; }
 
+        public UIHandlerManager()
+        {
+            _resolver = DependencyResolverProvider.GetResolver();
+        }
+
         protected virtual UIHandler CreateUIHandler(Type type)
         {
-            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
-            if (resolver != null && resolver.Instantiate(type) is UIHandler handler)
-            {
-                return handler;
-            }
-
-            return (UIHandler)Activator.CreateInstance(type);
+            return _resolver.Instantiate(type) as UIHandler;
         }
 
         protected virtual void RegisterInContainer(UIHandler handler)
         {
-            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
-            if (resolver == null)
-            {
-                return;
-            }
-
             UIHandlerKey key = UIHandlerKey.FromHandler(handler);
-            resolver.BindInstance(handler.GetType(), key.Id, handler);
-        }
-
-        protected virtual bool TryResolveInContainer<THandler>(string bindingId, out THandler handler)
-            where THandler : UIHandler
-        {
-            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
-            if (resolver != null &&
-                resolver.TryResolveId(typeof(THandler), bindingId, out object instance) &&
-                instance is THandler typedHandler)
-            {
-                handler = typedHandler;
-                return true;
-            }
-
-            handler = null;
-            return false;
+            _resolver.BindInstance(handler.GetType(), key.Id, handler);
         }
 
         protected virtual void BeforeRemoveHandler(UIHandler handler)
         {
-            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
-            if (resolver == null)
-            {
-                return;
-            }
-
             UIHandlerKey key = UIHandlerKey.FromHandler(handler);
-            resolver.UnbindId(handler.GetType(), key.Id);
+            _resolver.UnbindId(handler.GetType(), key.Id);
         }
 
         public async UniTask AddFilter(Func<FilterAttribute, bool> filter,
@@ -150,7 +122,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             where THandler : UIHandler
         {
             await UIHandlerResolver.EnsureHandlersReady();
-            ValidateDynamicChildType(typeof(THandler));
 
             if (TryGetDynamicChild(parent, instanceKey, out THandler existingHandler))
             {
@@ -197,7 +168,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
 
             UIHandlerKey key = UIHandlerKey.FromDynamicParent(parent, instanceKey);
-            return TryResolveInContainer(key.Id, out handler);
+            return UIHandlerResolver.TryResolve(key, out handler);
         }
 
         internal async UniTask DestroyDynamicChild<THandler>(
@@ -266,11 +237,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
 
             handler.SetInstanceKey(instanceKey);
-
-            if (parent != null && IsDynamicChildType(handler.GetType()))
-            {
-                ValidateDynamicInstanceKey(instanceKey, handler.GetType());
-            }
 
             RegisterInContainer(handler);
         }
@@ -350,24 +316,5 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         private static bool IsDynamicChildType(Type type) =>
             Attribute.IsDefined(type, typeof(DynamicUIChildAttribute), inherit: true);
-
-        private static void ValidateDynamicChildType(Type type)
-        {
-            if (!IsDynamicChildType(type))
-            {
-                throw new InvalidOperationException(
-                    $"Dynamic child handler `{type.FullName}` must be marked with [{nameof(DynamicUIChildAttribute)}].");
-            }
-        }
-
-        private static void ValidateDynamicInstanceKey(string instanceKey, Type type)
-        {
-            if (string.IsNullOrEmpty(instanceKey))
-            {
-                throw new InvalidOperationException(
-                    $"Dynamic child handler `{type.FullName}` must have a non-empty instance key.");
-            }
-        }
-
     }
 }

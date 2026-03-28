@@ -26,7 +26,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public static T FindHandler<T>(Type parentType, string instanceKey) where T : UIHandler
         {
             UIHandlerKey key = UIHandlerKey.FromParentType(parentType, instanceKey);
-            if (_resolver != null && _resolver.TryResolveId(typeof(T), key.Id, out object instance) && instance is T handler)
+            if (TryResolve(key, out T handler))
             {
                 return handler;
             }
@@ -36,5 +36,17 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         public static T FindHandler<T>(Type parentType) where T : UIHandler
             => FindHandler<T>(parentType, null);
+
+        internal static bool TryResolve<T>(UIHandlerKey key, out T handler) where T : UIHandler
+        {
+            if (_resolver.TryResolveId(typeof(T), key.Id, out object instance) && instance is T typedHandler)
+            {
+                handler = typedHandler;
+                return true;
+            }
+
+            handler = null;
+            return false;
+        }
     }
 }
