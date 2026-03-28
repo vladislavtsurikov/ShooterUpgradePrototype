@@ -8,7 +8,7 @@ using VladislavTsurikov.UISystem.Runtime.Core;
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
     public class UnityCanvasSpawnOperation
-        : UISpawnOperation<UnityCanvasSpawnOperation, Transform, GameObject, PrefabAssetLoader, UIComponentBinder>
+        : UISpawnOperation<UnityCanvasSpawnOperation, Transform, GameObject, PrefabAssetLoader, UnityUIComponentBinder>
     {
         public UnityCanvasSpawnOperation Enable(bool enable)
         {
@@ -32,7 +32,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
         {
         }
 
-        protected override void Bind(GameObject instance, UIComponentBinder componentBinder) =>
+        protected override void Bind(GameObject instance, UnityUIComponentBinder componentBinder) =>
             componentBinder.BindUIComponentsFrom(instance);
     }
 }

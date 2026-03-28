@@ -33,7 +33,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected virtual string SpawnedRootName => null;
 
-        protected virtual bool UsesParentBindingContext => Loader == null;
+        protected override bool UsesParentBindingContext => Loader == null;
 
         protected UIToolkitElementBinder ElementBinder => _elementBinder;
 
@@ -41,27 +41,37 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
         {
         }
 
-        protected override async UniTask BeforeShowUIPresenter(CancellationToken cancellationToken,
-            CompositeDisposable disposables) => await SpawnLayoutIfNeeded(cancellationToken);
+        protected override UniTask EnsurePresenterRoot(CancellationToken cancellationToken) =>
+            SpawnLayoutIfNeeded(cancellationToken);
 
-        protected override UniTask OnShowUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override void ShowPresenterRoot()
         {
-            if (_spawnedRoot != null)
-            {
-                _spawnedRoot.style.display = StyleKeyword.Null;
-            }
-
-            return UniTask.CompletedTask;
+            _spawnedRoot.style.display = StyleKeyword.Null;
         }
 
-        protected override UniTask OnHideUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
+        protected override void HidePresenterRoot()
         {
             if (_spawnedRoot != null)
             {
                 _spawnedRoot.style.display = DisplayStyle.None;
             }
+        }
 
-            return UniTask.CompletedTask;
+        protected override async UniTask DestroyPresenterRoot(bool unload, CancellationToken cancellationToken)
+        {
+            if (_spawnedRoot != null)
+            {
+                _spawnedRoot.RemoveFromHierarchy();
+                _spawnedRoot = null;
+            }
+
+            if (Loader != null)
+            {
+                if (unload)
+                {
+                    await Loader.Unload(cancellationToken);
+                }
+            }
         }
 
         protected override async UniTask DestroyUIPresenter(
@@ -69,20 +79,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
-            if (Loader != null)
-            {
-                if (_spawnedRoot != null)
-                {
-                    _spawnedRoot.RemoveFromHierarchy();
-                    _spawnedRoot = null;
-                }
-
-                if (unload)
-                {
-                    await Loader.Unload(cancellationToken);
-                }
-            }
-
             await DestroyUIToolkitUIPresenter(unload, cancellationToken);
         }
 
@@ -162,16 +158,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
                 typeof(UIParentAttribute));
 
             return attribute?.ContainerId;
-        }
-
-        internal override (Type presenterType, string instanceKey) ResolveBindingContext()
-        {
-            if (!UsesParentBindingContext)
-            {
-                return (GetType(), InstanceKey);
-            }
-
-            return (Parent?.GetType() ?? GetType(), Parent?.InstanceKey);
         }
 
         internal VisualElement ResolveTopLevelRoot()

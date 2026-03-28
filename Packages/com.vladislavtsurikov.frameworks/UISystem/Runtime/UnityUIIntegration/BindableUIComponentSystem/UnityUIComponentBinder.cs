@@ -2,9 +2,9 @@ using UnityEngine;
 using VladislavTsurikov.UISystem.Runtime.Core;
 namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
-    public class UIComponentBinder : ViewBindingScope
+    public class UnityUIComponentBinder : ViewBindingScope
     {
-        public UIComponentBinder(UIPresenter presenter)
+        public UnityUIComponentBinder(UIPresenter presenter)
             : base(presenter)
         {
         }

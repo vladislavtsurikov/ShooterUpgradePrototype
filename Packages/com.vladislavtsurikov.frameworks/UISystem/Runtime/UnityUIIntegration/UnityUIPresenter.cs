@@ -12,28 +12,28 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
 {
     public abstract class UnityUIPresenter : UIPresenter
     {
-        private readonly UIComponentBinder _componentBinder;
+        private readonly UnityUIComponentBinder _componentBinder;
         private GameObject _spawnedRoot;
+
+        protected virtual string SpawnedRootName => null;
+
+        protected virtual bool UsesParentBindingContext => Loader == null;
+
+        protected UnityUIComponentBinder ComponentBinder => _componentBinder;
+
+        public PrefabAssetLoader Loader { get; }
+        public GameObject SpawnedRoot => _spawnedRoot;
 
         protected UnityUIPresenter(PrefabAssetLoader loader)
         {
             Loader = loader;
-            _componentBinder = new UIComponentBinder(this);
+            _componentBinder = new UnityUIComponentBinder(this);
         }
 
         protected UnityUIPresenter()
             : this(null)
         {
         }
-
-        public PrefabAssetLoader Loader { get; }
-        public GameObject SpawnedRoot => _spawnedRoot;
-
-        protected virtual string SpawnedRootName => null;
-
-        protected virtual bool UsesParentBindingContext => Loader == null;
-
-        protected UIComponentBinder ComponentBinder => _componentBinder;
 
         protected virtual void DisposeUnityUIPresenter()
         {
@@ -59,24 +59,9 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 $"Invalid parent type: {Parent.GetType().Name}. Expected {nameof(UnityUIPresenter)}.");
         }
 
-        internal Transform ResolveSpawnParentTransform() => GetSpawnParentTransform();
-
-        internal override (Type presenterType, string instanceKey) ResolveBindingContext()
-        {
-            if (!UsesParentBindingContext)
-            {
-                return (GetType(), InstanceKey);
-            }
-
-            return (Parent?.GetType() ?? GetType(), Parent?.InstanceKey);
-        }
-
         protected override UniTask OnShowUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            if (_spawnedRoot != null)
-            {
-                _spawnedRoot.SetActive(true);
-            }
+            _spawnedRoot.SetActive(true);
 
             return UniTask.CompletedTask;
         }
@@ -88,6 +73,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 _spawnedRoot.SetActive(false);
             }
 
+
             return UniTask.CompletedTask;
         }
 
@@ -96,25 +82,20 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
+            if (_spawnedRoot != null)
+            {
+                Object.Destroy(_spawnedRoot);
+                _spawnedRoot = null;
+            }
+
             if (Loader != null)
             {
-                if (_spawnedRoot != null)
-                {
-                    Object.Destroy(_spawnedRoot);
-                    _spawnedRoot = null;
-                }
-
                 if (unload)
                 {
                     await Loader.Unload(cancellationToken);
                 }
             }
-
-            await DestroyUnityUIPresenter(unload, cancellationToken);
         }
-
-        protected virtual UniTask DestroyUnityUIPresenter(bool unload, CancellationToken cancellationToken) =>
-            UniTask.CompletedTask;
 
         public override void DisposeUIPresenter()
         {
@@ -130,7 +111,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 return SpawnedRoot;
             }
 
-            Transform parentTransform = ResolveSpawnParentTransform();
+            Transform parentTransform = GetSpawnParentTransform();
 
             _spawnedRoot = await UnityCanvasSpawnOperation.Spawn()
                 .WithParent(parentTransform)

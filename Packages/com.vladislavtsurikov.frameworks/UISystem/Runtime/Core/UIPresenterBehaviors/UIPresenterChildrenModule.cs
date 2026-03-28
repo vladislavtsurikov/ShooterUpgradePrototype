@@ -21,16 +21,11 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             _owner = owner;
         }
 
-        public void Initialize(bool allowMultipleActiveChildren)
+        public void EnableSingleActiveChildMode()
         {
             _activeChild = null;
             _childrenChanges.Disposable = null;
             _childActivitySubscriptions.Disposable = null;
-
-            if (allowMultipleActiveChildren)
-            {
-                return;
-            }
 
             _childrenChanges.Disposable = new CompositeDisposable(
                 All.ObserveAdd().Subscribe(_ => RebuildChildActivitySubscriptions()),

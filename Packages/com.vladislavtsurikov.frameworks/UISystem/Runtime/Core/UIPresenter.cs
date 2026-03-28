@@ -18,7 +18,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         public UIPresenterChildrenModule ChildrenModule => _childrenModule;
         public ViewResolver ViewResolver => _viewResolver;
 
-        protected virtual bool AllowMultipleActiveChildren => true;
+        protected virtual bool UsesParentBindingContext => false;
 
         protected internal CompositeDisposable Disposables { get; } = new();
 
@@ -55,7 +55,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             }
 
             _isInitialized = true;
-            ChildrenModule?.Initialize(AllowMultipleActiveChildren);
             InitializeUIPresenter(cancellationToken, disposables);
             return UniTask.CompletedTask;
         }
@@ -85,6 +84,19 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
             DestroyUIPresenter(bool unload, CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
+        protected virtual UniTask EnsurePresenterRoot(CancellationToken cancellationToken) => UniTask.CompletedTask;
+
+        protected virtual void ShowPresenterRoot()
+        {
+        }
+
+        protected virtual void HidePresenterRoot()
+        {
+        }
+
+        protected virtual UniTask DestroyPresenterRoot(bool unload, CancellationToken cancellationToken) =>
+            UniTask.CompletedTask;
+
         public virtual void DisposeUIPresenter()
         {
         }
@@ -104,12 +116,14 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         protected async UniTask BeforeShow(CancellationToken ct)
         {
             OnUIPresenterBeforeShow?.Invoke(this);
+            await EnsurePresenterRoot(ct);
             await BeforeShowUIPresenter(ct, Disposables);
         }
 
         protected async UniTask OnShow(CancellationToken ct)
         {
             OnUIPresenterOnShow?.Invoke(this);
+            ShowPresenterRoot();
             await OnShowUIPresenter(ct, Disposables);
         }
 
@@ -128,6 +142,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         protected async UniTask OnHide(CancellationToken ct)
         {
             OnUIPresenterHide?.Invoke(this);
+            HidePresenterRoot();
             await OnHideUIPresenter(ct, Disposables);
         }
 
@@ -176,6 +191,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 await ChildrenModule.DestroyAll(unload, cancellationToken);
             }
 
+            await DestroyPresenterRoot(unload, cancellationToken);
             await DestroyUIPresenter(unload, cancellationToken, Disposables);
 
             Dispose();
@@ -184,7 +200,9 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         }
 
         internal virtual (Type presenterType, string instanceKey) ResolveBindingContext() =>
-            (GetType(), InstanceKey);
+            !UsesParentBindingContext
+                ? (GetType(), InstanceKey)
+                : (Parent?.GetType() ?? GetType(), Parent?.InstanceKey);
 
         internal void SetParent(UIPresenter parent) => Parent = parent;
         internal void SetInstanceKey(string instanceKey) => InstanceKey = instanceKey;
