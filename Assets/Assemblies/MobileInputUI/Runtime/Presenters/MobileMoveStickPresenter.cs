@@ -31,7 +31,7 @@ namespace AutoStrike.MobileInputUI.MobileInputUI.Runtime
 
         protected override UniTask InitializeUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            MobileMoveStickView view = ViewResolver.GetView<MobileMoveStickView>(nameof(MobileMoveStickView));
+            MobileMoveStickView view = GetView<MobileMoveStickView>(nameof(MobileMoveStickView));
 
             view.OnPointerChanged
                 .Subscribe(pointerData =>

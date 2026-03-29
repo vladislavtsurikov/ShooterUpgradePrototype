@@ -203,6 +203,51 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                 ? (GetType(), InstanceKey)
                 : (Parent?.GetType() ?? GetType(), Parent?.InstanceKey);
 
+        protected TView GetView<TView>(string bindingId, int index = 0) =>
+            ViewResolver.GetView<TView>(bindingId, index);
+
+        protected UniTask<TPresenter> CreateDynamicChild<TPresenter>(
+            string instanceKey,
+            bool showAutomatically = false,
+            CancellationToken cancellationToken = default)
+            where TPresenter : UIPresenter
+        {
+            return RequireChildrenModule().CreateDynamicChild<TPresenter>(instanceKey, showAutomatically,
+                cancellationToken);
+        }
+
+        protected TPresenter GetDynamicChild<TPresenter>(string instanceKey)
+            where TPresenter : UIPresenter
+        {
+            return RequireChildrenModule().GetDynamicChild<TPresenter>(instanceKey);
+        }
+
+        protected bool TryGetDynamicChild<TPresenter>(string instanceKey, out TPresenter presenter)
+            where TPresenter : UIPresenter
+        {
+            return RequireChildrenModule().TryGetDynamicChild(instanceKey, out presenter);
+        }
+
+        protected UniTask DestroyDynamicChild<TPresenter>(
+            string instanceKey,
+            bool unload,
+            CancellationToken cancellationToken = default)
+            where TPresenter : UIPresenter
+        {
+            return RequireChildrenModule().DestroyChild<TPresenter>(instanceKey, unload, cancellationToken);
+        }
+
+        private UIPresenterChildrenModule RequireChildrenModule()
+        {
+            if (ChildrenModule != null)
+            {
+                return ChildrenModule;
+            }
+
+            throw new InvalidOperationException(
+                $"[UISystem] Presenter `{GetType().FullName}` does not support child presenters.");
+        }
+
         internal void SetParent(UIPresenter parent) => Parent = parent;
         internal void SetInstanceKey(string instanceKey) => InstanceKey = instanceKey;
         internal void SetUIPresenterManager(UIPresenterManager uiHandlerManager) => UIPresenterManager = uiHandlerManager;

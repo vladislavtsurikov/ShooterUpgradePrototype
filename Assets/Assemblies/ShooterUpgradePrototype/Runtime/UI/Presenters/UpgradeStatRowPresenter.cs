@@ -50,7 +50,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
                 return UniTask.CompletedTask;
             }
 
-            _view = ViewResolver.GetView<UpgradeStatRowView>(nameof(UpgradeStatRowView));
+            _view = GetView<UpgradeStatRowView>(nameof(UpgradeStatRowView));
             Bind(disposables);
 
             return UniTask.CompletedTask;

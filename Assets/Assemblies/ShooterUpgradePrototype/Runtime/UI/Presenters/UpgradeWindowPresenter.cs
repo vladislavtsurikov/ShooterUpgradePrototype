@@ -46,7 +46,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
         {
             _gameplayInputBlocker.DisableGameplayInput();
 
-            _view = ViewResolver.GetView<UpgradeWindowView>(nameof(UpgradeWindowView));
+            _view = GetView<UpgradeWindowView>(nameof(UpgradeWindowView));
 
             CompositeDisposable showDisposables = new CompositeDisposable();
             _showBindings.Disposable = showDisposables;
@@ -117,18 +117,12 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
                 return;
             }
 
-            UIPresenterChildrenModule childrenModule = ChildrenModule;
-            if (childrenModule == null)
-            {
-                return;
-            }
-
             int availableDraftPoints = GetAvailableDraftPoints();
             _view.SetAvailablePoints(availableDraftPoints);
 
             foreach (string statId in _upgradeStatIds)
             {
-                if (!childrenModule.TryGetDynamicChild(statId, out UpgradeStatRowPresenter rowPresenter))
+                if (!TryGetDynamicChild(statId, out UpgradeStatRowPresenter rowPresenter))
                 {
                     continue;
                 }
@@ -194,19 +188,13 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         private async UniTask CreateStats(CancellationToken cancellationToken)
         {
-            UIPresenterChildrenModule childrenModule = ChildrenModule;
-            if (childrenModule == null)
-            {
-                return;
-            }
-
             foreach (string statId in _upgradeStatIds)
             {
-                UpgradeStatRowPresenter row = childrenModule.GetDynamicChild<UpgradeStatRowPresenter>(statId);
+                UpgradeStatRowPresenter row = GetDynamicChild<UpgradeStatRowPresenter>(statId);
 
                 if (row == null)
                 {
-                    row = await childrenModule.CreateDynamicChild<UpgradeStatRowPresenter>(
+                    row = await CreateDynamicChild<UpgradeStatRowPresenter>(
                         statId,
                         showAutomatically: true,
                         cancellationToken);
@@ -218,12 +206,9 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         protected override void DisposeUIToolkitUIPresenter()
         {
-            UIPresenterChildrenModule childrenModule = ChildrenModule;
-
             foreach (string statId in _upgradeStatIds)
             {
-                if (childrenModule != null &&
-                    childrenModule.TryGetDynamicChild(statId, out UpgradeStatRowPresenter row))
+                if (TryGetDynamicChild(statId, out UpgradeStatRowPresenter row))
                 {
                     row.UpgradeRequested -= AddDraftLevel;
                 }

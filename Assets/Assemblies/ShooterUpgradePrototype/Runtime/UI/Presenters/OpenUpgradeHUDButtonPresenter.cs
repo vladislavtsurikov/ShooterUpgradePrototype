@@ -19,7 +19,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         protected override UniTask InitializeUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            _view = ViewResolver.GetView<OpenUpgradeHUDButtonView>(nameof(OpenUpgradeHUDButtonView));
+            _view = GetView<OpenUpgradeHUDButtonView>(nameof(OpenUpgradeHUDButtonView));
 
             _view.OnClicked
                 .Subscribe(_ => UINavigator.Show<UpgradeWindowPresenter>(cancellationToken).Forget())

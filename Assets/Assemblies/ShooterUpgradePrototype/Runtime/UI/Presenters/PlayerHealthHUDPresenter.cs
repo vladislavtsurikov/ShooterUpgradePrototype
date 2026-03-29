@@ -28,7 +28,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
 
         protected override UniTask InitializeUIPresenter(CancellationToken cancellationToken, CompositeDisposable disposables)
         {
-            _view = ViewResolver.GetView<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
+            _view = GetView<PlayerHealthHUDView>(nameof(PlayerHealthHUDView));
 
             _playerStatsService.GetValueProperty(HealthStatId)
                 .Subscribe(_ => RenderHealth())
