@@ -21,7 +21,7 @@ namespace ShooterUpgradePrototype.ShooterUpgradePrototype.Runtime
         private PlayerHealthHUDView _view;
 
         public PlayerHealthHUDPresenter(
-            PlayerStatsService playerStatsService) : base()
+            PlayerStatsService playerStatsService)
         {
             _playerStatsService = playerStatsService;
         }

@@ -15,22 +15,16 @@ namespace UIRootSystem.Runtime
     {
         private UIPresenter _activeScreen;
 
-        public ScreenPresenter()
-        {
-        }
-
-        protected override bool UseParentContainerAsSpawnedRoot => true;
-
         protected override async UniTask InitializeUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
-            UIPresenter.OnUIPresenterAfterShow += OnChildScreenShown;
-            UIPresenter.OnUIPresenterAfterHide += OnChildScreenHidden;
+            OnUIPresenterAfterShow += OnChildScreenShown;
+            OnUIPresenterAfterHide += OnChildScreenHidden;
             disposables.Add(Disposable.Create(() =>
             {
-                UIPresenter.OnUIPresenterAfterShow -= OnChildScreenShown;
-                UIPresenter.OnUIPresenterAfterHide -= OnChildScreenHidden;
+                OnUIPresenterAfterShow -= OnChildScreenShown;
+                OnUIPresenterAfterHide -= OnChildScreenHidden;
             }));
 
             await Show(cancellationToken);

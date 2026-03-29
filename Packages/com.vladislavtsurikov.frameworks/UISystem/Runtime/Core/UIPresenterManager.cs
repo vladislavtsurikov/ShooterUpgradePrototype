@@ -16,30 +16,28 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     {
         private readonly Dictionary<Node, UIPresenter> _activeUIPresenters = new();
         private readonly List<Func<FilterAttribute, bool>> _filters = new();
-        private readonly DependencyResolver _resolver;
 
         internal static UniTask CurrentAddFilterTask { get; private set; }
 
         public UIPresenterManager()
         {
-            _resolver = DependencyResolverProvider.GetResolver();
         }
 
         protected virtual UIPresenter CreateUIPresenter(Type type)
         {
-            return _resolver.Instantiate(type) as UIPresenter;
+            return Dependencies.Instantiate(type) as UIPresenter;
         }
 
         protected virtual void RegisterInContainer(UIPresenter presenter)
         {
             UIPresenterKey key = UIPresenterKey.FromPresenter(presenter);
-            _resolver.BindInstance(presenter.GetType(), key.Id, presenter);
+            Dependencies.BindInstance(presenter.GetType(), key.Id, presenter);
         }
 
         protected virtual void BeforeRemovePresenter(UIPresenter presenter)
         {
             UIPresenterKey key = UIPresenterKey.FromPresenter(presenter);
-            _resolver.UnbindId(presenter.GetType(), key.Id);
+            Dependencies.UnbindId(presenter.GetType(), key.Id);
         }
 
         public async UniTask AddFilter(Func<FilterAttribute, bool> filter,

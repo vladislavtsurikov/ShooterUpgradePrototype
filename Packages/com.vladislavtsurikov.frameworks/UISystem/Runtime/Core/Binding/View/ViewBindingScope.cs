@@ -6,7 +6,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 {
     public abstract class ViewBindingScope : IDisposable
     {
-        private readonly DependencyResolver _resolver;
         private readonly List<ViewKey> _records = new();
         private readonly UIPresenter _presenter;
 
@@ -14,7 +13,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         protected ViewBindingScope(UIPresenter presenter)
         {
-            _resolver = DependencyResolverProvider.GetResolver();
             _presenter = presenter;
         }
 
@@ -51,7 +49,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
                     index,
                     getInstanceKey?.Invoke(node));
 
-                _resolver.BindInstance(type, key.Id, node);
+                Dependencies.BindInstance(type, key.Id, node);
 
                 _records.Add(key);
             }
@@ -61,7 +59,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         {
             foreach (ViewKey key in _records)
             {
-                _resolver.UnbindId(key.ViewType, key.Id);
+                Dependencies.UnbindId(key.ViewType, key.Id);
             }
 
             _records.Clear();

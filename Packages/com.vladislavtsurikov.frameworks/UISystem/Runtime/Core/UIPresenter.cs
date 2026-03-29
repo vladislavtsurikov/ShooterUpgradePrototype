@@ -80,8 +80,7 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         protected virtual UniTask AfterHideUIPresenter(CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
-        protected virtual UniTask
-            DestroyUIPresenter(bool unload, CancellationToken ct, CompositeDisposable disposables) =>
+        protected virtual UniTask DestroyUIPresenter(bool unload, CancellationToken ct, CompositeDisposable disposables) =>
             UniTask.CompletedTask;
 
         protected virtual UniTask EnsurePresenterRoot(CancellationToken cancellationToken) => UniTask.CompletedTask;

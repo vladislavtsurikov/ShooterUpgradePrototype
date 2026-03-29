@@ -7,13 +7,6 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 {
     public static class UIPresenterResolver
     {
-        private static readonly DependencyResolver _resolver;
-
-        static UIPresenterResolver()
-        {
-            _resolver = DependencyResolverProvider.GetResolver();
-        }
-
         public static async UniTask EnsurePresentersReady()
         {
             if (UIPresenterManager.CurrentAddFilterTask.Status == UniTaskStatus.Pending)
@@ -39,7 +32,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         internal static bool TryResolve<T>(UIPresenterKey key, out T presenter) where T : UIPresenter
         {
-            if (_resolver.TryResolveId(typeof(T), key.Id, out object instance) && instance is T typedPresenter)
+            if (Dependencies.TryResolveId(typeof(T), key.Id, out object instance) &&
+                instance is T typedPresenter)
             {
                 presenter = typedPresenter;
                 return true;

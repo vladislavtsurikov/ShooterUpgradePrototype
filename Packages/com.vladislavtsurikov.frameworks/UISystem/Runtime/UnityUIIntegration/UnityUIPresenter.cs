@@ -73,7 +73,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UnityUIIntegration
                 _spawnedRoot.SetActive(false);
             }
 
-
             return UniTask.CompletedTask;
         }
 

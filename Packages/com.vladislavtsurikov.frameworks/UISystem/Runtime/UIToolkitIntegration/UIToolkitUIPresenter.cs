@@ -33,8 +33,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         protected virtual string SpawnedRootName => null;
 
-        protected virtual bool UseParentContainerAsSpawnedRoot => false;
-
         protected override bool UsesParentBindingContext => Loader == null;
 
         protected UIToolkitElementBinder ElementBinder => _elementBinder;
@@ -107,10 +105,7 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
             if (Loader == null)
             {
-                if (UseParentContainerAsSpawnedRoot)
-                {
-                    _spawnedRoot = ResolveParentElement();
-                }
+                _spawnedRoot = ResolveParentElement();
 
                 return;
             }
@@ -129,7 +124,6 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
             {
                 Debug.LogError(
                     $"[UIToolkitUIPresenter] Failed to spawn root layout for presenter `{GetType().Name}`.");
-                return;
             }
         }
 
@@ -172,16 +166,13 @@ namespace VladislavTsurikov.UISystem.Runtime.UIToolkitIntegration
 
         internal VisualElement ResolveTopLevelRoot()
         {
-            DependencyResolver resolver = DependencyResolverProvider.GetResolver();
-            if (resolver != null &&
-                resolver.TryResolve(typeof(UIDocument), out object instance) &&
+            if (Dependencies.TryResolve(typeof(UIDocument), out object instance) &&
                 instance is UIDocument document)
             {
                 return document.rootVisualElement;
             }
 
-            UIDocument fallbackDocument = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
-            return fallbackDocument?.rootVisualElement;
+            return null;
         }
 
         private async UniTask<VisualElement> EnsureSpawnedRoot(

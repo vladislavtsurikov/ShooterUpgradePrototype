@@ -6,12 +6,10 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
     public sealed class ViewResolver
     {
         private readonly UIPresenter _presenter;
-        private readonly DependencyResolver _resolver;
 
         public ViewResolver(UIPresenter presenter)
         {
             _presenter = presenter;
-            _resolver = DependencyResolverProvider.GetResolver();
         }
 
         public TView GetView<TView>(string bindingId, int index = 0)
@@ -22,7 +20,8 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
 
         private TView ResolveWithKey<TView>(ViewKey key)
         {
-            if (_resolver.TryResolveId(typeof(TView), key.Id, out object instance) && instance is TView typedView)
+            if (Dependencies.TryResolveId(typeof(TView), key.Id, out object instance) &&
+                instance is TView typedView)
             {
                 return typedView;
             }
