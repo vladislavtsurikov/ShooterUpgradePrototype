@@ -8,7 +8,7 @@ using VladislavTsurikov.UISystem.Runtime.Core;
 namespace VladislavTsurikov.UISystem.Tests.Runtime.MissionTogglePresenters
 {
     [SceneFilter("TestScene_1")]
-    [UIParent(typeof(UIMissionsMainWindowHandler))]
+    [UIParent(typeof(UIMissionsMainWindowPresenter))]
     public class ProgressMissionTogglePresenter : UIMissionTogglePresenter
     {
         protected override bool UnlockedTab => true;
@@ -18,7 +18,7 @@ namespace VladislavTsurikov.UISystem.Tests.Runtime.MissionTogglePresenters
         protected override string ToggleBindingId => "Progress";
 
         protected override async UniTask OnToggleClicked(CancellationToken cancellationToken) =>
-            await UINavigator.Show<ProgressMissionsWindowHandler>(cancellationToken);
+            await UINavigator.Show<ProgressMissionsWindowPresenter>(cancellationToken);
     }
 }
 

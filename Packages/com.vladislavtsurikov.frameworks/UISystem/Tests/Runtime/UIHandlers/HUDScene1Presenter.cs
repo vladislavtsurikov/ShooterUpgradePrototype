@@ -13,9 +13,9 @@ namespace VladislavTsurikov.UISystem.Tests.Runtime
 {
     [SceneFilter("TestScene_1")]
     [UIParent(typeof(HUD))]
-    public class HUDScene1Handler : UnityUIPresenter
+    public class HUDScene1Presenter : UnityUIPresenter
     {
-        public HUDScene1Handler(HUDScene1Loader loader)
+        public HUDScene1Presenter(HUDScene1Loader loader)
             : base(loader)
         {
         }

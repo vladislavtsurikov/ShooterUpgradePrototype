@@ -13,11 +13,11 @@ namespace VladislavTsurikov.UISystem.Tests.Runtime
 {
     [SceneFilter("TestScene_1")]
     [UIParent(typeof(Screens))]
-    public class UIMissionsMainWindowHandler : UnityUIPresenter
+    public class UIMissionsMainWindowPresenter : UnityUIPresenter
     {
         private readonly SingleActiveChildPresenterModule _singleActiveChildPresenterModule;
 
-        public UIMissionsMainWindowHandler(UIMissionsMainWindowLoader loader)
+        public UIMissionsMainWindowPresenter(UIMissionsMainWindowLoader loader)
             : base(loader)
         {
             _singleActiveChildPresenterModule = new SingleActiveChildPresenterModule(this);

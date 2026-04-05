@@ -11,8 +11,8 @@ using VladislavTsurikov.UISystem.Runtime.UnityUIIntegration;
 namespace VladislavTsurikov.UISystem.Tests.Runtime
 {
     [SceneFilter("TestScene_1")]
-    [UIParent(typeof(HUDScene1Handler))]
-    public class UIMissionsHUDButtonHandler : UnityUIPresenter
+    [UIParent(typeof(HUDScene1Presenter))]
+    public class UIMissionsHUDButtonPresenter : UnityUIPresenter
     {
         protected override UniTask InitializeUIPresenter(
             CancellationToken cancellationToken,
@@ -21,7 +21,7 @@ namespace VladislavTsurikov.UISystem.Tests.Runtime
             MissionsHUDButtonView view = GetView<MissionsHUDButtonView>("MissionsHUDButtonView");
 
             view.OnClicked
-                .Subscribe(_ => UINavigator.Show<UIMissionsMainWindowHandler>(cancellationToken).Forget())
+                .Subscribe(_ => UINavigator.Show<UIMissionsMainWindowPresenter>(cancellationToken).Forget())
                 .AddTo(disposables);
 
             return UniTask.CompletedTask;

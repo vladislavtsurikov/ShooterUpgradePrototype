@@ -13,14 +13,14 @@ using VladislavTsurikov.UISystem.Runtime.UnityUIIntegration;
 namespace VladislavTsurikov.UISystem.Tests.Runtime
 {
     [SceneFilter("TestScene_1")]
-    [UIParent(typeof(UIMissionsMainWindowHandler))]
-    public class ChapterMissionsWindowHandler : UnityUIPresenter
+    [UIParent(typeof(UIMissionsMainWindowPresenter))]
+    public class ProgressMissionsWindowPresenter : UnityUIPresenter
     {
         private readonly MissionViewLoader _missionViewLoader;
         private bool _spawnedOnce;
         private MissionWindowView _view;
 
-        public ChapterMissionsWindowHandler(
+        public ProgressMissionsWindowPresenter(
             GeneralMissionLoader generalMissionLoader,
             MissionViewLoader missionViewLoader)
             : base(generalMissionLoader)
@@ -30,7 +30,7 @@ namespace VladislavTsurikov.UISystem.Tests.Runtime
 
         protected override Transform GetSpawnParentTransform()
         {
-            UIMissionsMainWindowHandler mainWindowHandler = (UIMissionsMainWindowHandler)Parent;
+            UIMissionsMainWindowPresenter mainWindowHandler = (UIMissionsMainWindowPresenter)Parent;
             return mainWindowHandler.View.MissionSpawnRect;
         }
 
@@ -45,7 +45,7 @@ namespace VladislavTsurikov.UISystem.Tests.Runtime
 
             _spawnedOnce = true;
 
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 10; i++)
             {
                 await _missionViewLoader.LoadAndSpawnPrefab(_view.MissionSpawnRect, ct);
             }

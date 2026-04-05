@@ -13,14 +13,14 @@ using VladislavTsurikov.UISystem.Runtime.UnityUIIntegration;
 namespace VladislavTsurikov.UISystem.Tests.Runtime
 {
     [SceneFilter("TestScene_1")]
-    [UIParent(typeof(UIMissionsMainWindowHandler))]
-    public class DailyMissionsWindowHandler : UnityUIPresenter
+    [UIParent(typeof(UIMissionsMainWindowPresenter))]
+    public class DailyMissionsWindowPresenter : UnityUIPresenter
     {
         private readonly MissionViewLoader _missionViewLoader;
         private bool _spawnedOnce;
         private MissionWindowView _view;
 
-        public DailyMissionsWindowHandler(
+        public DailyMissionsWindowPresenter(
             GeneralMissionLoader generalMissionLoader,
             MissionViewLoader missionViewLoader)
             : base(generalMissionLoader)
@@ -30,7 +30,7 @@ namespace VladislavTsurikov.UISystem.Tests.Runtime
 
         protected override Transform GetSpawnParentTransform()
         {
-            UIMissionsMainWindowHandler mainWindowHandler = (UIMissionsMainWindowHandler)Parent;
+            UIMissionsMainWindowPresenter mainWindowHandler = (UIMissionsMainWindowPresenter)Parent;
             return mainWindowHandler.View.MissionSpawnRect;
         }
 

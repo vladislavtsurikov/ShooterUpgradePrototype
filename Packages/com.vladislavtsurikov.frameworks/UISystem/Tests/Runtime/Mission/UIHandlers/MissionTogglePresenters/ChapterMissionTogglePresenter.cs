@@ -8,7 +8,7 @@ using VladislavTsurikov.UISystem.Runtime.Core;
 namespace VladislavTsurikov.UISystem.Tests.Runtime.MissionTogglePresenters
 {
     [SceneFilter("TestScene_1")]
-    [UIParent(typeof(UIMissionsMainWindowHandler))]
+    [UIParent(typeof(UIMissionsMainWindowPresenter))]
     public class ChapterMissionTogglePresenter : UIMissionTogglePresenter
     {
         protected override bool UnlockedTab => true;
@@ -18,7 +18,7 @@ namespace VladislavTsurikov.UISystem.Tests.Runtime.MissionTogglePresenters
         protected override string ToggleBindingId => "Chapter";
 
         protected override async UniTask OnToggleClicked(CancellationToken cancellationToken) =>
-            await UINavigator.Show<ChapterMissionsWindowHandler>(cancellationToken);
+            await UINavigator.Show<ChapterMissionsWindowPresenter>(cancellationToken);
     }
 }
 
