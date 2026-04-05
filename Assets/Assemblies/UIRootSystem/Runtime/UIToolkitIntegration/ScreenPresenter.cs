@@ -13,44 +13,20 @@ namespace UIRootSystem.Runtime
     [UIParent(typeof(Root), RootSlots.Screens)]
     public sealed class ScreenPresenter : UIToolkitUIPresenter
     {
-        private UIPresenter _activeScreen;
+        private readonly SingleActiveChildPresenterModule _singleActiveChildPresenterModule;
+
+        public ScreenPresenter()
+        {
+            _singleActiveChildPresenterModule = new SingleActiveChildPresenterModule(this);
+        }
 
         protected override async UniTask InitializeUIPresenter(
             CancellationToken cancellationToken,
             CompositeDisposable disposables)
         {
-            OnUIPresenterAfterShow += OnChildScreenShown;
-            OnUIPresenterAfterHide += OnChildScreenHidden;
-            disposables.Add(Disposable.Create(() =>
-            {
-                OnUIPresenterAfterShow -= OnChildScreenShown;
-                OnUIPresenterAfterHide -= OnChildScreenHidden;
-            }));
+            _singleActiveChildPresenterModule.Initialize(disposables);
 
             await Show(cancellationToken);
-        }
-
-        private void OnChildScreenShown(UIPresenter presenter)
-        {
-            if (presenter.Parent != this)
-            {
-                return;
-            }
-
-            if (_activeScreen != null && _activeScreen != presenter)
-            {
-                _activeScreen.Hide(CancellationToken.None).Forget();
-            }
-
-            _activeScreen = presenter;
-        }
-
-        private void OnChildScreenHidden(UIPresenter presenter)
-        {
-            if (_activeScreen == presenter)
-            {
-                _activeScreen = null;
-            }
         }
     }
 }

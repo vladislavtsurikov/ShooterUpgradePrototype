@@ -112,4 +112,5 @@ namespace VladislavTsurikov.UISystem.Runtime.Core
         private static bool IsDynamicChild(UIPresenter child) =>
             child != null && Attribute.IsDefined(child.GetType(), typeof(DynamicUIPresenterChildAttribute), inherit: true);
     }
+
 }
