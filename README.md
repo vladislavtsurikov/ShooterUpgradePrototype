@@ -1,81 +1,62 @@
-- Видео геймплея: https://youtu.be/uXD4HFMA-ck
-- Билд: https://drive.google.com/file/d/15z0wJ5YjUkUvmIg06pOqkqSFNOWz6S3l/view?usp=sharing
+# Shooter Upgrade Prototype
 
-Видео записано в редакторе. В билде шейдер врагов, отвечающий за эффект затухания после смерти, отображается розовым, хотя сам шейдер добавлен в билд, а в реакторе такой проблемы нет. Пробовал переписать шейдер, но причину на данный момент не успел понять.
+- Gameplay video: https://youtu.be/uXD4HFMA-ck
+- Build: https://drive.google.com/file/d/15z0wJ5YjUkUvmIg06pOqkqSFNOWz6S3l/view?usp=sharing
 
-## 1. Базовая архитектура папок и сборок
+The video was recorded in the editor. In the build, the enemy shader responsible for the fade-out effect after death renders pink. The shader is included in the build and the issue does not appear in the editor. I tried rewriting it but did not have time to identify the cause.
 
-Проект организован вокруг `Assets/Assemblies`, где каждый доменный блок вынесен в отдельную assembly.
+## 1. Folder and Assembly Architecture
 
-Типовая структура внутри assembly:
-- `Content` — сцены, префабы, ScriptableObject-конфиги, UI-ассеты.
-- `Runtime` — runtime-код, участвующий в игре.
-- `Editor` — редакторские инструменты и расширения.
+The project is organized around `Assets/Assemblies`, with every domain area extracted into a separate assembly.
 
-### 1.1 Пакет личных фреймворков
+Typical assembly structure:
 
-Проект опирается на мой UPM-пакет `Packages/com.vladislavtsurikov.frameworks`, который содержит базовые строительные блоки архитектуры.
+- `Content` — scenes, prefabs, ScriptableObject configurations, and UI assets.
+- `Runtime` — runtime code used by the game.
+- `Editor` — editor tools and extensions.
 
-### 1.2 Разделение на asmdef
+### 1.1 Personal Frameworks Package
 
-Разделение на отдельные `asmdef` сделано, чтобы развести ответственность модулей и упростить дальнейшее развитие.
+The project relies on my UPM package, `Packages/com.vladislavtsurikov.frameworks`, which contains the architecture's foundational building blocks.
 
-- `Assets/Assemblies/ShooterUpgradePrototype/ShooterUpgradePrototype.asmdef` (`ShooterUpgradePrototype`) — базовый gameplay-модуль с основной логикой игры. Здесь находятся игрок, враги, UI, сервисы, конфиги и интеграция доменной логики в runtime.
-- `Assets/Assemblies/Stats/Stats.asmdef` (`Stats`) — модуль системы статов. Система не создавалась с нуля под этот проект: была переиспользована ранее разработанная stat-система, которая уже применялась в нескольких проектах. Она изначально спроектирована как расширяемая и позволяет удобно создавать новые статы без изменения существующего кода. Поддерживает модификаторы значений, эффекты и бафы, а также интеграцию с таблицами прогрессии.
-- `Assets/Assemblies/LevelProgression/LevelProgression.asmdef` (`LevelProgression`) — модуль прогрессии уровней. Отвечает за хранение таблиц уровней, вычисление cumulative значений и используется для реализации системы апгрейдов.
-- `Assets/Assemblies/Input/Input.asmdef` (`Input`) — модуль обработки пользовательского ввода. Инкапсулирует работу с Input System и предоставляет унифицированный слой данных для gameplay-логики.
-- `Assets/Assemblies/InputMode/InputMode.asmdef` (`InputMode`) — модуль переключения режимов ввода. Позволяет абстрагировать различия между Desktop и Mobile управлением и централизованно управлять текущим режимом.
-- `Assets/Assemblies/MobileInputUI/MobileInputUI.asmdef` (`MobileInputUI`) — модуль UI для мобильного управления. Содержит визуальные элементы управления (джойстики, кнопки) и интеграцию с системой ввода.
-- `Assets/Assemblies/FirstPersonCamera/FirstPersonCamera.asmdef` (`FirstPersonCamera`) — модуль камеры от первого лица. Вынесен отдельно, чтобы изолировать логику камеры от gameplay и упростить её замену или расширение.
-- `Assets/Assemblies/UIRootSystem/UIRootSystem.asmdef` (`UIRootSystem`) — интеграция с UISystem asmdef. Представляет собой базу для построения сложного UI, включающего экраны, попапы и HUD. Позволяет добавлять интерфейсы в заранее определённые родительские контейнеры (например, отдельные слои под попапы, HUD или основные экраны). Такой подход хорошо масштабируется и ранее использовался в проекте с большим количеством интерфейсов и сложной UI-структурой, где было множество экранов, попапов и элементов HUD.
-- `Assets/Assemblies/WaypointsSystem/WaypointsSystem.asmdef` (`WaypointsSystem`) — она используется для движения врагов по заданной линии между точками. В рамках этого проекта система не создавалась, а была переиспользована из другого проекта. Дополнительно система используется как основа для спавна врагов непосредственно на путях.
-- `Assets/Assemblies/WaypointPathEntitySpawner/WaypointPathEntitySpawner.asmdef` (`WaypointPathEntitySpawner`) — модуль спавна сущностей на waypoint-путях. Позволяет переиспользовать сам подход спавна и отдельно расширять правила выбора пути, capacity и позиции спавна.
-- `Assets/Assemblies/SceneManagerIntergration/ArmyClash.SceneManager.asmdef` (`ArmyClash.SceneManager`) — интеграционный bootstrap-модуль на базе `SceneManagerTool`. Содержит операции, которые выполняются при старте игры: загрузка resource loaders, биндинг конфигов и начальный спавн врагов после загрузки сцены.
+### 1.2 asmdef Separation
 
-## 2. Технологический стек и каркас
+Separate `asmdef` files keep module responsibilities distinct and make the project easier to extend.
 
-- **Zenject**
-  Используется для DI и архитектуры зависимостей: внутри класса не нужно вручную искать зависимости, они приходят через контейнер.
-  Через `Zenject` в проекте создаются и связываются сервисы, системы ввода, спавнеры, bootstrap-операции и runtime-конфиги.
+- `ShooterUpgradePrototype` — the core gameplay module. It contains the player, enemies, UI, services, configurations, and runtime integration of domain logic.
+- `Stats` — a reusable, extensible stats system used in several previous projects. It supports new stats without changing existing code, value modifiers, effects, buffs, and progression tables.
+- `LevelProgression` — stores level tables, calculates cumulative values, and implements upgrades.
+- `Input` — encapsulates the Input System and provides a unified data layer for gameplay logic.
+- `InputMode` — abstracts desktop and mobile control differences and centrally manages the current input mode.
+- `MobileInputUI` — visual mobile controls (joysticks and buttons) and their input-system integration.
+- `FirstPersonCamera` — isolates first-person camera logic from gameplay so it is easier to replace or extend.
+- `UIRootSystem` — integrates with `UISystem` and provides parent containers for screens, popups, and HUD layers. This approach scales to complex UI structures.
+- `WaypointsSystem` — reused from another project to move enemies along paths and to support spawning them on those paths.
+- `WaypointPathEntitySpawner` — reusable entity spawning on waypoint paths, with independently extensible path selection, capacity, and spawn-position rules.
+- `ArmyClash.SceneManager` — a `SceneManagerTool`-based bootstrap integration module that loads resource loaders, binds configurations, and performs initial enemy spawning after the scene loads.
 
-- **UniRx**
-  Выбран как оптимизационный реактивный инструмент: логика выполняется по событию, а не через постоянные проверки условий в `Update`.
-  Используется для работы с вводом, состояниями, статами, апгрейдами и UI-синхронизацией.
+## 2. Technology Stack and Framework
 
-- **EntityDataAction**
-  Выбран как основной подход к построению gameplay-логики: код получается расширяемым и собирается из `ComponentData` и `Action`.
-  Сущности в проекте строятся через `EntityMonoBehaviour`, `ComponentData` и `EntityMonoBehaviourAction`.
-  Плюсы такого подхода в этом проекте: можно точечно отключать отдельные `Action` и быстро проверять влияние на поведение, добавлять debug-блоки вроде `OnDrawGizmos`, переиспользовать готовые data/action-элементы и не решать всё через большое наследование и дублирование.
-  Такой подход ускоряет создание механик, но увеличивает количество файлов.
+- **Zenject** — used for dependency injection. Classes receive dependencies through the container instead of looking them up manually. It creates and binds services, input systems, spawners, bootstrap operations, and runtime configurations.
+- **UniRx** — an optimization-oriented reactive tool: logic runs in response to events rather than continuously checking conditions in `Update`. It is used for input, states, stats, upgrades, and UI synchronization.
+- **EntityDataAction** — the main gameplay approach. Behavior is composed from `ComponentData` and `Action`; entities use `EntityMonoBehaviour`, `ComponentData`, and `EntityMonoBehaviourAction`. Individual actions can be disabled to assess their impact, include debug blocks such as `OnDrawGizmos`, and be reused without deep inheritance or duplicated code. The trade-off is a higher file count.
+- **UI Toolkit** — used for the UI.
+- **AddressableLoaderSystem** — loads and binds configurations through Addressables before combat, automatically binds them in Zenject, and unloads them correctly. It also supports parallel batch loading. The project loads one configuration through it, but the system provides an architectural foundation.
+- **SceneManagerTool** — the bootstrap entry point. `Play` runs a controlled startup pipeline with operations before and after scene loading; the ready-made implementation is highly extensible.
+- **UISystem** — the MVP-based UI layer. Developers create a `UIPresenter`, assign it an optional parent, and form an interface tree with unlimited nesting. Initialization runs from top to bottom; child Presenters wait for their parent. UI can be opened externally or from other Presenters, and prefabs or `UIDocument`s can be loaded through Addressables.
 
-- **UI Toolkit**
-  Используется для UI.
+## 3. Entry Point and Bootstrap Flow
 
-- **AddressableLoaderSystem**
-  Выбран для загрузки/биндинга конфигов: конфиги поднимаются через Addressables до старта боя, автоматически биндятся в Zenject и корректно выгружаются, это мощный инструмент для автоматической загрузку и выгрузки, также позволяет множество конфигов загружать батчами паралельно. Хоть в проекте через него загружается один конфиг, я решил его добавить, как основу архитектуры проекта
+Start the game in the editor using the `Play` button in the `Scene Manager` window:
 
-- **SceneManagerTool**
-  Выбран как bootstrap-точка входа в игру: через `Play` выполняется управляемый конвейер старта с операциями до и после загрузки сцены. Это уже готовая bootstrap реализация, она очень расширяемая и аналогов по вохможностям не видел
-
-- **UISystem**
-  Используется как базовый слой для UI, построенный на паттерне MVP. Разработчик создаёт Presenter, наследуясь от `UIPresenter`, и может задавать ему родителя, формируя дерево интерфейсов в глубину с неограниченным количеством вложенных Presenter. Инициализация происходит сверху вниз: пока родитель не активирован, дочерние Presenter не инициализируются. UI можно открывать как извне, так и из других `UIPresenter`. Также система позволяет управлять моментом загрузки префабов или `UIDocument` через Addressables.
-
-## 3. Точка запуска и bootstrap-поток
-
-Старт игры в редакторе выполняется через `SceneManagerTool`, через кнопку `Play` в окне `Scene Manager`.
-
-Окно открывается через путь:
 - `Window -> Vladislav Tsurikov -> Scene Manager`
 
-Этот подход был выбран не только как способ запуска сцены, но и как расширяемая точка инициализации игры. `SceneManagerTool` достаточно мощный для более крупных проектов: он даёт более удобный способ работать со сценами, управлять bootstrap-процессом и постепенно наращивать пайплайн инициализации без превращения старта игры в набор случайных вызовов из разных мест.
+The tool is both a scene launcher and an extensible initialization point. It makes scene work and bootstrap management easier, allowing the initialization pipeline to grow without turning startup into a collection of unrelated calls.
 
-При таком запуске используется конвейер операций `SceneManager`:
+The `SceneManager` pipeline performs the following operations:
 
-`BeforeLoad`: выполняется `LoadResourceLoadersOperation` — загружаются нужные конфиги и resource loaders до загрузки целевой сцены.
-
-`AfterLoad`: выполняется `SpawnEnemiesOperation` — вызывается стартовый спавн врагов до `MaxMobCount`.
-
-Скриншот bootstrap-инструмента:
+- `BeforeLoad`: `LoadResourceLoadersOperation` loads required configurations and resource loaders before the target scene.
+- `AfterLoad`: `SpawnEnemiesOperation` performs the initial enemy spawn up to `MaxMobCount`.
 
 <p align="center">
   <a href="Docs/Images/scene-manager-tool.png">
@@ -83,45 +64,20 @@
   </a>
 </p>
 
-## 4. Архитектура данных и поведения
+## 4. Data and Behavior Architecture
 
-### 4.1 Entity-уровень
+### 4.1 Entity Layer
 
-В проекте есть две основные gameplay-сущности:
-- `PlayerEntity`
-- `EnemyEntity`
+The project has two gameplay entities, `PlayerEntity` and `EnemyEntity`. Neither contains a large controller: each creates a set of `ComponentData` and `Action` objects that compose its behavior.
 
-Обе сущности не содержат "большой контроллер". Они создают набор `ComponentData` и `Action`, из которых собирается итоговое поведение.
+### 4.2 Player
 
-### 4.2 Игрок
+`PlayerEntity` creates:
 
-`PlayerEntity` создаёт данные:
-- `StatsEntityData`
-- `CameraData`
-- `MoveInputData`
-- `LookInputData`
-- `FireInputData`
+- data: `StatsEntityData`, `CameraData`, `MoveInputData`, `LookInputData`, and `FireInputData`;
+- actions: `ApplyStatLevelsByTableAction`, `ReadMoveInputAction`, `ReadLookInputAction`, `ReadFireInputAction`, `MoveByInputAction`, `DesktopFirstPersonCameraLookAction`, `MobileFirstPersonCameraLookAction`, `AttackTargetAction`, and `PlayShootAudioAction`.
 
-И набор action:
-- `ApplyStatLevelsByTableAction`
-- `ReadMoveInputAction`
-- `ReadLookInputAction`
-- `ReadFireInputAction`
-- `MoveByInputAction`
-- `DesktopFirstPersonCameraLookAction`
-- `MobileFirstPersonCameraLookAction`
-- `AttackTargetAction`
-- `PlayShootAudioAction`
-
-Роли этих action:
-- `ApplyStatLevelsByTableAction` применяет значения статов из таблицы прогрессии;
-- `ReadMoveInputAction`, `ReadLookInputAction`, `ReadFireInputAction` читают ввод и записывают его в соответствующие Data;
-- `MoveByInputAction` перемещает игрока на основе ввода и статов;
-- `DesktopFirstPersonCameraLookAction`, `MobileFirstPersonCameraLookAction` управляют поворотом камеры в зависимости от платформы;
-- `AttackTargetAction` обрабатывает стрельбу;
-- `PlayShootAudioAction` воспроизводит звук выстрела.
-
-Скриншот `PlayerEntity` в инспекторе:
+The actions apply stat values from the progression table; read and store input; move the player from input and stats; rotate the camera for the relevant platform; handle shooting; and play its audio.
 
 <p align="center">
   <a href="Docs/Images/player-entity-inspector.png">
@@ -129,26 +85,9 @@
   </a>
 </p>
 
-### 4.3 Противники
+### 4.3 Enemies
 
-`EnemyEntity` создаёт данные:
-- `StatsEntityData`
-- `WaypointPathData`
-- `WaypointPathDirectionData`
-
-И action:
-- `ModifyStatRandomAction`
-- `PatrolMoveAction`
-- `PatrolRotateAction`
-- `DeathAction`
-
-Роли:
-- `ModifyStatRandomAction` модифицирует статы врага (например, добавляет вариативность);
-- `PatrolMoveAction` двигает врага по waypoint-пути;
-- `PatrolRotateAction` синхронизирует поворот с движением;
-- `DeathAction` обрабатывает смерть врага.
-
-Скриншот `EnemyEntity` в инспекторе:
+`EnemyEntity` creates `StatsEntityData`, `WaypointPathData`, and `WaypointPathDirectionData`, then uses `ModifyStatRandomAction`, `PatrolMoveAction`, `PatrolRotateAction`, and `DeathAction`. These actions add stat variation, move an enemy along a waypoint path, keep rotation synchronized with movement, and handle death.
 
 <p align="center">
   <a href="Docs/Images/enemy-entity-inspector.png">
@@ -156,190 +95,126 @@
   </a>
 </p>
 
-### 4.4 Почему выбран такой подход
+### 4.4 Why This Approach Was Chosen
 
-В вакансии написано, что будет большим плюсом опыт работы с ECS, это мой первый опыт использования этого фреймворка именно для gameplay-логики, хотел расширить свои знания в таком подходе программирования, для ТЗ, в плане расширяемости, он очень годится. До этого у меня уже был опыт с `DOTS`, а сам этот подход раньше применялся для сложного UI на `Unity UI Canvas`, где он помогал переиспользовать блоки кода в другом UI и ускорял разработку.
+The vacancy listed ECS experience as a major advantage. This is my first experience using this framework specifically for gameplay logic, and I wanted to broaden my understanding of this programming approach. It fits the assignment well because it is extensible. I had prior experience with `DOTS`, and had used this approach for complex `Unity UI Canvas` interfaces, where it helped reuse blocks of code and speed development.
 
-По сути это ECS-подход. В классическом ECS поведение обычно уходит в `System`, который нельзя настраивать в Inspector. Здесь эту роль выполняет `Action`: его можно конфигурировать прямо в Inspector и быстрее собирать логику в строгих архитектурных рамках, позволяет не задуматься, что где-то будет дублирование логики. Также этот подход позволил быстрее сделать тестовое, смог часть логики перенести в этот проект.
+In essence, this is an ECS approach. In classic ECS, behavior generally lives in a `System`, which is not configurable in the Inspector. Here that role is played by an `Action`, which can be configured directly in the Inspector. This speeds up composing logic within architectural boundaries, helps prevent duplication, and let me reuse part of the existing logic for the test assignment.
 
-Дополнительно система удобна тем, что `ComponentData` может становиться "грязным": если `Action` или сторонний код меняет данные, автоматически вызывается зависимый `Action`. Это упрощает реактивное поведение, хорошо работает для UI и позволяет тестировать часть логики в `EditMode` без запуска `PlayMode`. Ещё один практический плюс — у каждого `Action` можно отдельно включать `OnDrawGizmos`, что удобно для отладки и настройки конкретной логики.
+`ComponentData` can also become “dirty”: when an `Action` or external code changes data, a dependent `Action` is triggered automatically. This simplifies reactive behavior, works well for UI, and makes it possible to test parts of the logic in `EditMode` without entering `PlayMode`. Each `Action` can independently enable `OnDrawGizmos`, which is useful for debugging and tuning.
 
-## 5. Архитектура статов и конфигов
+## 5. Stats and Configuration Architecture
 
-Система статов в проекте не создавалась с нуля, а была переиспользована из ранее разработанного решения, которое уже применялось в нескольких проектах.
+The stats system was reused from a previously developed solution already applied in several projects. It is a separate extensible system: every stat is an entity; values support modifiers; effects and buffs can be added; and it integrates with `LevelProgression` tables.
 
-Статы построены как отдельная расширяемая система:
-- каждый стат представляет собой отдельную сущность;
-- поддерживаются модификаторы значений;
-- можно добавлять эффекты и бафы;
-- есть интеграция с таблицами прогрессии (`LevelProgression`).
+### 5.1 Upgrade Points Through EXP
 
-### 5.1 Очки прокачки через EXP
+**`EXP`** is the upgrade-point stat:
 
-В роли очков прокачки используется стат **`EXP`**:
-- `EXP` не вынесен в отдельную систему для окна апгрейдов;
-- это такой же stat из общей системы **Stats**, как `HP`, `ATK` и `SPEED`;
-- stat `EXP` входит в набор статов игрока и добавлен в `PlayerEntity` через общий `StatsEntityConfig`.
+- It is not a separate upgrades-window system; it is part of the common **Stats** system, alongside `HP`, `ATK`, and `SPEED`.
+- It belongs to the player's stat set and is added to `PlayerEntity` through the shared `StatsEntityConfig`.
+- The player gets `+1 EXP` for every enemy kill.
+- The upgrades window reads available points from the current `EXP` value and deducts the required points from it when applying upgrades.
 
-- за убийство врага игрок получает `+1 EXP`;
-- доступное количество очков в окне апгрейдов читается из текущего значения `EXP`;
-- при применении апгрейдов нужное количество очков списывается тоже из `EXP`.
-
-На уровне конфигов это видно в `EXP.asset`: у стата включён `Save`, поэтому накопленный `EXP` сохраняется между сессиями тем же механизмом, что и другие stat-данные.
+`EXP.asset` has `Save` enabled, so accumulated EXP persists between sessions using the same mechanism as other stat data.
 
 <p align="center">
-  <img src="Docs/Images/EXP.png" alt="EXP stat config" width="400">
+  <img src="Docs/Images/EXP.png" alt="EXP stat configuration" width="400">
 </p>
 
-Для улучшаемых характеристик, например `ATK`, отдельно настраивается `Level Table` с включённым `Save`. Это означает, что сохраняется уже не просто текущее value, а применённый уровень стата.
+Upgradeable attributes such as `ATK` use a separate `Level Table` with `Save` enabled. Therefore, the applied stat level—not only the current value—is saved.
 
 <p align="center">
-  <img src="Docs/Images/ATK.png" alt="ATK stat config" width="400">
+  <img src="Docs/Images/ATK.png" alt="ATK stat configuration" width="400">
 </p>
 
-### 5.2 Сохранение между сессиями
+### 5.2 Persistence Between Sessions
 
-Прогресс игрока сохраняется между сессиями на уровне самой stat-системы, а не отдельным "save manager" для окна апгрейдов.
+Progress is persisted at the stats-system level, rather than by a separate upgrades-window save manager. The project saves upgradeable stat levels (`HP`, `ATK`, `SPEED`) and the `EXP` value used as available upgrade points.
 
-В проекте сохраняются:
-- **уровни улучшаемых статов** (`HP`, `ATK`, `SPEED`);
-- **значение `EXP`**, которое используется как доступные очки прокачки.
+The **`Save`** field on a configured stat component enables persistence. Runtime data is restored on startup and written when the value changes.
 
-Сохранение включается через поле **`Save`** у stat-компонентов в конфиге. Если у компонента включён `Save`, runtime-данные автоматически восстанавливаются при старте и записываются при изменении значения.
+- `RuntimeStatLevelData` stores a stat's **level** in `PlayerPrefs` under `{StatId}Level`.
+- `RuntimeStatValueData` stores its **numeric value** in `PlayerPrefs` under `{StatId}Value`.
 
-Технически это устроено так:
-- `RuntimeStatLevelData` сохраняет **уровень стата** в `PlayerPrefs` по ключу вида `{StatId}Level`;
-- `RuntimeStatValueData` сохраняет **числовое значение стата** в `PlayerPrefs` по ключу вида `{StatId}Value`.
+After restarting, upgraded levels and accumulated EXP are restored as the entity initializes.
 
-За счёт этого после перезапуска игры:
-- уровни прокачанных статов остаются прежними;
-- накопленный `EXP` также восстанавливается;
-- при инициализации entity stat-система поднимает runtime-состояние из сохранённых данных.
+### 5.3 Progression Tables
 
-### 5.3 Таблицы прогрессии
-
-Таблица прогрессии задаёт, какое итоговое значение получает stat на каждом уровне. Для `HP`, `ATK` и `SPEED` используются отдельные `LevelProgression`-assets, поэтому баланс можно менять без правок кода.
-
-В проекте используется `Manual Progression`: каждое значение уровня авторится вручную в инспекторе.
+A progression table defines a stat's final value at every level. `HP`, `ATK`, and `SPEED` each use their own `LevelProgression` asset, so balance can be adjusted without code changes. The project uses `Manual Progression`: every level value is authored manually in the Inspector.
 
 <p align="center">
   <img src="Docs/Images/progression-table.png" alt="Level progression table" width="230">
 </p>
 
-### 5.4 Конфиги проекта
+### 5.4 Project Configurations
 
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/EnemySpawnConfig.asset` — конфиг спавна врагов: задаёт задержку респавна и максимальное количество врагов.
+- `EnemySpawnConfig.asset` — enemy respawn delay and maximum enemy count.
+- `PlayerStatsEntityConfig.asset` — player stat set and initial values.
+- Player stats: `ATK.asset`, `HP.asset`, `SPEED.asset`, and `EXP.asset` under `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/Stats/Player/`.
+- Enemy stats: `HP.asset` and `SPEED.asset` under `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/Stats/Enemy/`.
+- Player progression tables: `ATK_LevelProgression.asset`, `HP_LevelProgression.asset`, and `SPEED_LevelProgression.asset` under `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/LevelProgression/Player/`.
+- Stat collections: `PlayerEntityCollection.asset` and `EnemyEntityCollection.asset` under `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/StatsCollections/`.
 
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/PlayerStatsEntityConfig.asset` — конфиг игрока, определяет набор статов и их начальные значения.
+## 6. UI: Logic, Scaling, and Localization
 
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/Stats/Player/ATK.asset` — стат урона игрока.
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/Stats/Player/HP.asset` — стат здоровья игрока.
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/Stats/Player/SPEED.asset` — стат скорости игрока.
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/Stats/Player/EXP.asset` — стат опыта игрока.
+### 6.1 UI Logic (UISystem + MVP)
 
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/Stats/Enemy/HP.asset` — стат здоровья врага.
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/Stats/Enemy/SPEED.asset` — стат скорости врага.
+The UI is built with **UISystem** + **UI Toolkit** and follows MVP:
 
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/LevelProgression/Player/ATK_LevelProgression.asset` — таблица прогрессии урона.
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/LevelProgression/Player/HP_LevelProgression.asset` — таблица прогрессии здоровья.
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/LevelProgression/Player/SPEED_LevelProgression.asset` — таблица прогрессии скорости.
+- **Presenter (Handler)** manages the UI lifecycle, subscriptions, and data. For example, `BattleHUDRootPresenter` creates the HUD in `RootSlots.HudRoot`; `UpgradeWindowPresenter` opens the upgrades window, blocks gameplay input, creates dynamic stat rows, and applies pending upgrades.
+- **View** is a `BindableVisualElement` (or `Button` descendant) that holds UXML-element references, forwards click events, and updates the visual state. `UpgradeWindowView` contains Apply/Close controls, backdrop, title, and localized text; `UpgradeStatRowView` contains a stat name, level segments, delta, and `+` button.
+- **LayoutLoader** addressably loads UXML/USS by addresses such as `BattleHUD` and `UpgradeWindow`.
 
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/StatsCollections/PlayerEntityCollection.asset` — набор статов игрока.
-- `Assets/Assemblies/ShooterUpgradePrototype/Content/Configs/StatsCollections/EnemyEntityCollection.asset` — набор статов врага.
-
-## 6. UI: логика, масштабирование и локализация
-
-### 6.1 Логика UI (UISystem + MVP)
-
-UI в проекте построен на связке **UISystem** + **UI Toolkit** и следует MVP-подходу:
-
-- **Presenter (Handler)**: класс, который управляет жизненным циклом UI, подписками и данными. Примеры:
-  - `BattleHUDRootPresenter` — поднимает HUD и встраивает его в `RootSlots.HudRoot`.
-  - `UpgradeWindowPresenter` — открывает окно апгрейдов, блокирует gameplay-ввод, создаёт динамические строки статов и применяет черновые апгрейды.
-- **View**: `BindableVisualElement` (или наследник `Button`), который хранит ссылки на элементы из UXML, прокидывает события кликов и обновляет визуальное состояние. Примеры:
-  - `UpgradeWindowView` — кнопки `Apply/Close`, бэкдроп, заголовок, локализованный текст.
-  - `UpgradeStatRowView` — строка стата: название, сегменты уровня, дельта и кнопка `+`.
-- **LayoutLoader**: адресуемая загрузка UXML/USS по адресу (например, `BattleHUD`, `UpgradeWindow`).
-
-### 6.2 Масштабирование/адаптивность UI Toolkit
-
-Скриншоты адаптивности (разные варианты экранов):
+### 6.2 UI Toolkit Scaling and Responsiveness
 
 <p align="center">
-  <a href="Docs/Images/upgrade-window-responsive-wide.png"><img src="Docs/Images/upgrade-window-responsive-wide.png" alt="UpgradeWindow responsive (wide)" width="230"></a>
-  <a href="Docs/Images/upgrade-window-responsive-holepunch.png"><img src="Docs/Images/upgrade-window-responsive-holepunch.png" alt="UpgradeWindow responsive (hole-punch)" width="230"></a>
-  <a href="Docs/Images/upgrade-window-responsive-notch.png"><img src="Docs/Images/upgrade-window-responsive-notch.png" alt="UpgradeWindow responsive (notch)" width="230"></a>
+  <a href="Docs/Images/upgrade-window-responsive-wide.png"><img src="Docs/Images/upgrade-window-responsive-wide.png" alt="UpgradeWindow responsive wide layout" width="230"></a>
+  <a href="Docs/Images/upgrade-window-responsive-holepunch.png"><img src="Docs/Images/upgrade-window-responsive-holepunch.png" alt="UpgradeWindow responsive hole-punch layout" width="230"></a>
+  <a href="Docs/Images/upgrade-window-responsive-notch.png"><img src="Docs/Images/upgrade-window-responsive-notch.png" alt="UpgradeWindow responsive notch layout" width="230"></a>
 </p>
 
-### 6.3 Локализация
+### 6.3 Localization
 
-В Unity 2022.3 нет полноценной “из коробки” поддержки Unity Localization для привязки текстов в **UI Toolkit** так же удобно, как для `Unity UI`.
-Поэтому в этом проекте локализация сделана **кодом во View**:
+Unity 2022.3 does not offer equally convenient out-of-the-box Unity Localization text binding for **UI Toolkit** and `Unity UI`. Therefore, localization is implemented **in View code**:
 
-- даже **статические** элементы (заголовки, кнопки) выставляются из `LocalizationSettings.StringDatabase` при инициализации View;
-- используется таблица `UILocalization` и ключи вида `upgrade.window.title`, `upgrade.window.apply`, `hud.open-upgrade`.
+- even **static** elements such as titles and buttons are assigned from `LocalizationSettings.StringDatabase` during View initialization;
+- it uses the `UILocalization` table and keys such as `upgrade.window.title`, `upgrade.window.apply`, and `hud.open-upgrade`.
 
-Это решение **не идеальное** (хотелось бы декларативную привязку на уровне UXML/локализованных компонентов).
+This is **not ideal**; declarative binding at the UXML/localized-component level would be preferable.
 
-## 7. Поддержка Desktop и Mobile управления
+## 7. Desktop and Mobile Input Support
 
-Поддержка двух режимов ввода в проекте построена не через две отдельные gameplay-ветки, а через общий input-pipeline с разными источниками ввода.
+The two input modes use a shared input pipeline with different sources rather than separate gameplay branches.
 
-### 7.1 Общая схема
+### 7.1 Shared Design
 
-В проекте есть единый `InputActionAsset` `PlayerInputActions`, в котором описаны три gameplay-действия:
-- `Move`
-- `Look`
-- `Fire`
+One `InputActionAsset`, `PlayerInputActions`, defines `Move`, `Look`, and `Fire`. Each has two binding groups: `Desktop` and `Mobile`.
 
-Для них заведены две группы биндов:
-- `Desktop`
-- `Mobile`
+- `Desktop` uses `Keyboard + Mouse`.
+- `Mobile` uses `Touchscreen` and optionally `Gamepad`.
 
-На уровне `controlSchemes` это выглядит так:
-- `Desktop` использует `Keyboard + Mouse`;
-- `Mobile` использует `Touchscreen` и опциональный `Gamepad`.
+On desktop, movement uses `WASD`, looking uses `Mouse delta`, and firing uses the left mouse button. On mobile, movement uses `Gamepad leftStick`; looking uses `Touchscreen primaryTouch delta` and `Gamepad rightStick`; firing uses `Gamepad buttonSouth`.
 
-Практически это означает следующее:
-- на **Desktop** движение читается с `WASD`, обзор с `Mouse delta`, выстрел с `Mouse left button`;
-- на **Mobile** движение читается с `Gamepad leftStick`, обзор с `Touchscreen primaryTouch delta` и `Gamepad rightStick`, выстрел с `Gamepad buttonSouth`.
+### 7.2 Why InputModeService Is Needed
 
-### 7.2 Зачем нужен InputModeService
+`InputModeService` detects the device type currently used by the player. It distinguishes `KeyboardMouse`, `Gamepad`, and `Touch`. It does not read input values itself; instead, it exposes the current **input mode** so other systems can adapt their UI and gameplay behavior.
 
-`InputModeService` нужен для определения, каким типом устройства игрок пользуется в данный момент.
+- On PC, using keyboard or mouse selects `KeyboardMouse`.
+- Pressing a physical gamepad control switches to `Gamepad`.
+- Using keyboard or mouse again switches back to `KeyboardMouse`.
+- On mobile, the default is `Touch`; a connected physical gamepad that is actively used takes priority as `Gamepad`.
 
-Он различает три состояния:
-- `KeyboardMouse`
-- `Gamepad`
-- `Touch`
+### 7.3 Desktop and Mobile Modes
 
-Сервис нужен не для чтения самих значений input, а для определения текущего **input mode** на уровне игрока. Это позволяет другим системам понимать, какой способ управления сейчас активен, и под него подстраивать поведение интерфейса и gameplay-слоя.
+Both modes use the shared `Input System`. Desktop reads keyboard and mouse directly through `PlayerInputActions`. Mobile adds `MobileInputUI` with a virtual stick and fire button.
 
-Основная идея работы такая:
-- если игрок на ПК начал использовать клавиатуру или мышь, текущим режимом становится `KeyboardMouse`;
-- если затем он нажал кнопку на физическом геймпаде, режим переключится на `Gamepad`;
-- если после этого он снова начнёт пользоваться клавиатурой или мышью, режим вернётся на `KeyboardMouse`;
-- на мобильном устройстве режим по умолчанию будет `Touch`, но если подключён физический геймпад и именно он начинает использоваться, приоритет перейдёт к `Gamepad`.
+Both flows converge into the same gameplay pipeline: input becomes unified player data consumed by movement, camera, and shooting. Gameplay code is therefore not duplicated. The mobile HUD appears only when the active `InputMode` is `Touch`, so the desktop and mobile interfaces do not overlap.
 
-### 7.3 Desktop и Mobile режимы
+### 7.4 How Mobile UI Reaches Gameplay Input
 
-И desktop, и mobile-управление в проекте работают через общий `Input System`.
+The mobile UI does not write directly to gameplay. It emulates a virtual device via `MobileVirtualInputService`, and input then travels through the same `Input System` used by desktop controls. This keeps one input-reading pipeline for every mode.
 
-В desktop-режиме клавиатура и мышь читаются напрямую через `PlayerInputActions`.
-В mobile-режиме поверх этого добавляется `MobileInputUI` с экранными контролами: виртуальным стиком и кнопкой выстрела.
+### 7.5 Why the Camera Works on Both Desktop and Mobile
 
-При этом дальше обе ветки сходятся в общий gameplay-pipeline: ввод переводится в единые данные игрока, и уже от них работают движение, камера и стрельба. За счёт этого gameplay-логика не дублируется под разные платформы.
-
-Дополнительно мобильный HUD показывается только тогда, когда текущий `InputMode` определяется как `Touch`, поэтому desktop и mobile интерфейс не смешиваются между собой.
-
-### 7.4 Как mobile UI попадает в gameplay input
-
-Мобильный UI не пишет данные напрямую в gameplay.
-
-Вместо этого он эмулирует виртуальное устройство через `MobileVirtualInputService`, а дальше весь ввод проходит через тот же `Input System`, что и desktop-управление. Это позволяет держать единый pipeline чтения input для всех режимов.
-
-### 7.5 Почему камера работает и для Desktop, и для Mobile
-
-Для камеры используется единый `FirstPersonCameraLookAction`.
-
-Desktop и mobile не разводятся на две отдельные gameplay-системы: различие остаётся на уровне входных данных, а сама логика поворота камеры общая. За счёт этого поддержка нескольких режимов ввода не дублирует camera gameplay-код.
+The camera uses a single `FirstPersonCameraLookAction`. Desktop and mobile do not have separate gameplay systems: the difference remains at the input-data level, while camera-rotation logic is shared. This avoids duplicated camera gameplay code while supporting multiple control modes.
